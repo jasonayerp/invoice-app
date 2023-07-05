@@ -10,9 +10,9 @@ DROP PROCEDURE IF EXISTS MigrationsScript;
 DELIMITER //
 CREATE PROCEDURE MigrationsScript()
 BEGIN
-    IF NOT EXISTS(SELECT 1 FROM `__EFMigrationsHistory` WHERE `MigrationId` = '20230705201527_InitialMigration') THEN
+    IF NOT EXISTS(SELECT 1 FROM `__EFMigrationsHistory` WHERE `MigrationId` = '20230705211000_InitialMigration') THEN
 
-    ALTER DATABASE `invoice` CHARACTER SET utf8mb4;
+    ALTER DATABASE CHARACTER SET utf8mb4;
 
     END IF;
 END //
@@ -24,7 +24,7 @@ DROP PROCEDURE IF EXISTS MigrationsScript;
 DELIMITER //
 CREATE PROCEDURE MigrationsScript()
 BEGIN
-    IF NOT EXISTS(SELECT 1 FROM `__EFMigrationsHistory` WHERE `MigrationId` = '20230705201527_InitialMigration') THEN
+    IF NOT EXISTS(SELECT 1 FROM `__EFMigrationsHistory` WHERE `MigrationId` = '20230705211000_InitialMigration') THEN
 
     CREATE TABLE `addresses` (
         `address_id` BIGINT NOT NULL AUTO_INCREMENT,
@@ -53,7 +53,7 @@ DROP PROCEDURE IF EXISTS MigrationsScript;
 DELIMITER //
 CREATE PROCEDURE MigrationsScript()
 BEGIN
-    IF NOT EXISTS(SELECT 1 FROM `__EFMigrationsHistory` WHERE `MigrationId` = '20230705201527_InitialMigration') THEN
+    IF NOT EXISTS(SELECT 1 FROM `__EFMigrationsHistory` WHERE `MigrationId` = '20230705211000_InitialMigration') THEN
 
     CREATE TABLE `clients` (
         `client_id` BIGINT NOT NULL AUTO_INCREMENT,
@@ -77,7 +77,7 @@ DROP PROCEDURE IF EXISTS MigrationsScript;
 DELIMITER //
 CREATE PROCEDURE MigrationsScript()
 BEGIN
-    IF NOT EXISTS(SELECT 1 FROM `__EFMigrationsHistory` WHERE `MigrationId` = '20230705201527_InitialMigration') THEN
+    IF NOT EXISTS(SELECT 1 FROM `__EFMigrationsHistory` WHERE `MigrationId` = '20230705211000_InitialMigration') THEN
 
     CREATE TABLE `invoices` (
         `invoice_id` BIGINT NOT NULL AUTO_INCREMENT,
@@ -108,7 +108,7 @@ DROP PROCEDURE IF EXISTS MigrationsScript;
 DELIMITER //
 CREATE PROCEDURE MigrationsScript()
 BEGIN
-    IF NOT EXISTS(SELECT 1 FROM `__EFMigrationsHistory` WHERE `MigrationId` = '20230705201527_InitialMigration') THEN
+    IF NOT EXISTS(SELECT 1 FROM `__EFMigrationsHistory` WHERE `MigrationId` = '20230705211000_InitialMigration') THEN
 
     CREATE TABLE `invoice_items` (
         `invoice_item_id` BIGINT NOT NULL AUTO_INCREMENT,
@@ -133,7 +133,7 @@ DROP PROCEDURE IF EXISTS MigrationsScript;
 DELIMITER //
 CREATE PROCEDURE MigrationsScript()
 BEGIN
-    IF NOT EXISTS(SELECT 1 FROM `__EFMigrationsHistory` WHERE `MigrationId` = '20230705201527_InitialMigration') THEN
+    IF NOT EXISTS(SELECT 1 FROM `__EFMigrationsHistory` WHERE `MigrationId` = '20230705211000_InitialMigration') THEN
 
     CREATE INDEX `ix_addresses_country_code` ON `addresses` (`country_code`);
 
@@ -147,7 +147,7 @@ DROP PROCEDURE IF EXISTS MigrationsScript;
 DELIMITER //
 CREATE PROCEDURE MigrationsScript()
 BEGIN
-    IF NOT EXISTS(SELECT 1 FROM `__EFMigrationsHistory` WHERE `MigrationId` = '20230705201527_InitialMigration') THEN
+    IF NOT EXISTS(SELECT 1 FROM `__EFMigrationsHistory` WHERE `MigrationId` = '20230705211000_InitialMigration') THEN
 
     CREATE INDEX `ix_addresses_cty` ON `addresses` (`city`);
 
@@ -161,7 +161,7 @@ DROP PROCEDURE IF EXISTS MigrationsScript;
 DELIMITER //
 CREATE PROCEDURE MigrationsScript()
 BEGIN
-    IF NOT EXISTS(SELECT 1 FROM `__EFMigrationsHistory` WHERE `MigrationId` = '20230705201527_InitialMigration') THEN
+    IF NOT EXISTS(SELECT 1 FROM `__EFMigrationsHistory` WHERE `MigrationId` = '20230705211000_InitialMigration') THEN
 
     CREATE INDEX `ix_addresses_region` ON `addresses` (`region`);
 
@@ -175,7 +175,7 @@ DROP PROCEDURE IF EXISTS MigrationsScript;
 DELIMITER //
 CREATE PROCEDURE MigrationsScript()
 BEGIN
-    IF NOT EXISTS(SELECT 1 FROM `__EFMigrationsHistory` WHERE `MigrationId` = '20230705201527_InitialMigration') THEN
+    IF NOT EXISTS(SELECT 1 FROM `__EFMigrationsHistory` WHERE `MigrationId` = '20230705211000_InitialMigration') THEN
 
     CREATE UNIQUE INDEX `ux_addresses_address` ON `addresses` (`address_line_1`, `city`, `region`, `postal_code`, `country_code`);
 
@@ -189,7 +189,7 @@ DROP PROCEDURE IF EXISTS MigrationsScript;
 DELIMITER //
 CREATE PROCEDURE MigrationsScript()
 BEGIN
-    IF NOT EXISTS(SELECT 1 FROM `__EFMigrationsHistory` WHERE `MigrationId` = '20230705201527_InitialMigration') THEN
+    IF NOT EXISTS(SELECT 1 FROM `__EFMigrationsHistory` WHERE `MigrationId` = '20230705211000_InitialMigration') THEN
 
     CREATE INDEX `Iix_client_guid` ON `clients` (`guid`);
 
@@ -203,7 +203,7 @@ DROP PROCEDURE IF EXISTS MigrationsScript;
 DELIMITER //
 CREATE PROCEDURE MigrationsScript()
 BEGIN
-    IF NOT EXISTS(SELECT 1 FROM `__EFMigrationsHistory` WHERE `MigrationId` = '20230705201527_InitialMigration') THEN
+    IF NOT EXISTS(SELECT 1 FROM `__EFMigrationsHistory` WHERE `MigrationId` = '20230705211000_InitialMigration') THEN
 
     CREATE UNIQUE INDEX `ux_client_name` ON `clients` (`name`);
 
@@ -217,7 +217,7 @@ DROP PROCEDURE IF EXISTS MigrationsScript;
 DELIMITER //
 CREATE PROCEDURE MigrationsScript()
 BEGIN
-    IF NOT EXISTS(SELECT 1 FROM `__EFMigrationsHistory` WHERE `MigrationId` = '20230705201527_InitialMigration') THEN
+    IF NOT EXISTS(SELECT 1 FROM `__EFMigrationsHistory` WHERE `MigrationId` = '20230705211000_InitialMigration') THEN
 
     CREATE INDEX `IX_invoice_items_invoice_id` ON `invoice_items` (`invoice_id`);
 
@@ -231,7 +231,7 @@ DROP PROCEDURE IF EXISTS MigrationsScript;
 DELIMITER //
 CREATE PROCEDURE MigrationsScript()
 BEGIN
-    IF NOT EXISTS(SELECT 1 FROM `__EFMigrationsHistory` WHERE `MigrationId` = '20230705201527_InitialMigration') THEN
+    IF NOT EXISTS(SELECT 1 FROM `__EFMigrationsHistory` WHERE `MigrationId` = '20230705211000_InitialMigration') THEN
 
     CREATE UNIQUE INDEX `ux_invoice_items_description` ON `invoice_items` (`description`);
 
@@ -245,7 +245,7 @@ DROP PROCEDURE IF EXISTS MigrationsScript;
 DELIMITER //
 CREATE PROCEDURE MigrationsScript()
 BEGIN
-    IF NOT EXISTS(SELECT 1 FROM `__EFMigrationsHistory` WHERE `MigrationId` = '20230705201527_InitialMigration') THEN
+    IF NOT EXISTS(SELECT 1 FROM `__EFMigrationsHistory` WHERE `MigrationId` = '20230705211000_InitialMigration') THEN
 
     CREATE UNIQUE INDEX `IX_invoices_bill_from_address_id` ON `invoices` (`bill_from_address_id`);
 
@@ -259,7 +259,7 @@ DROP PROCEDURE IF EXISTS MigrationsScript;
 DELIMITER //
 CREATE PROCEDURE MigrationsScript()
 BEGIN
-    IF NOT EXISTS(SELECT 1 FROM `__EFMigrationsHistory` WHERE `MigrationId` = '20230705201527_InitialMigration') THEN
+    IF NOT EXISTS(SELECT 1 FROM `__EFMigrationsHistory` WHERE `MigrationId` = '20230705211000_InitialMigration') THEN
 
     CREATE UNIQUE INDEX `IX_invoices_bill_to_address_id` ON `invoices` (`bill_to_address_id`);
 
@@ -273,7 +273,7 @@ DROP PROCEDURE IF EXISTS MigrationsScript;
 DELIMITER //
 CREATE PROCEDURE MigrationsScript()
 BEGIN
-    IF NOT EXISTS(SELECT 1 FROM `__EFMigrationsHistory` WHERE `MigrationId` = '20230705201527_InitialMigration') THEN
+    IF NOT EXISTS(SELECT 1 FROM `__EFMigrationsHistory` WHERE `MigrationId` = '20230705211000_InitialMigration') THEN
 
     CREATE INDEX `IX_invoices_client_id` ON `invoices` (`client_id`);
 
@@ -287,7 +287,7 @@ DROP PROCEDURE IF EXISTS MigrationsScript;
 DELIMITER //
 CREATE PROCEDURE MigrationsScript()
 BEGIN
-    IF NOT EXISTS(SELECT 1 FROM `__EFMigrationsHistory` WHERE `MigrationId` = '20230705201527_InitialMigration') THEN
+    IF NOT EXISTS(SELECT 1 FROM `__EFMigrationsHistory` WHERE `MigrationId` = '20230705211000_InitialMigration') THEN
 
     CREATE UNIQUE INDEX `ux_invoices_number` ON `invoices` (`number`);
 
@@ -301,10 +301,10 @@ DROP PROCEDURE IF EXISTS MigrationsScript;
 DELIMITER //
 CREATE PROCEDURE MigrationsScript()
 BEGIN
-    IF NOT EXISTS(SELECT 1 FROM `__EFMigrationsHistory` WHERE `MigrationId` = '20230705201527_InitialMigration') THEN
+    IF NOT EXISTS(SELECT 1 FROM `__EFMigrationsHistory` WHERE `MigrationId` = '20230705211000_InitialMigration') THEN
 
     INSERT INTO `__EFMigrationsHistory` (`MigrationId`, `ProductVersion`)
-    VALUES ('20230705201527_InitialMigration', '6.0.19');
+    VALUES ('20230705211000_InitialMigration', '6.0.19');
 
     END IF;
 END //

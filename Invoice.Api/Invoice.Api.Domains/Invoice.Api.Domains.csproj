@@ -12,7 +12,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Invoice.Api.Data.MySql\Invoice.Api.Data.MySql.csproj" />
     <ProjectReference Include="..\Invoice.Api.Data\Invoice.Api.Data.csproj" />
   </ItemGroup>
 

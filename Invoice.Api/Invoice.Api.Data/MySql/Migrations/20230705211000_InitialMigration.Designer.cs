@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Invoice.Api.Data.MySql.Migrations
 {
     [DbContext(typeof(MySqlDbContext))]
-    [Migration("20230705201527_InitialMigration")]
+    [Migration("20230705211000_InitialMigration")]
     partial class InitialMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
