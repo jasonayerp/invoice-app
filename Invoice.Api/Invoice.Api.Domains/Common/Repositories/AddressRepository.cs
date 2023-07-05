@@ -163,7 +163,7 @@ public class AddressRepository : IAddressRepository
                 entity.City = address.City;
                 entity.Region = address.Region;
                 entity.PostalCode = address.PostalCode;
-                entity.CountryCode = address.Country;
+                entity.CountryCode = address.CountryCode;
                 entity.UtcCreatedDate = address.UtcCreatedDate;
                 entity.UtcUpdatedDate = address.UtcUpdatedDate;
                 entity.UtcDeletedDate = address.UtcDeletedDate;
@@ -192,7 +192,7 @@ public class AddressRepository : IAddressRepository
                 entity.City = address.City;
                 entity.Region = address.Region;
                 entity.PostalCode = address.PostalCode;
-                entity.CountryCode = address.Country;
+                entity.CountryCode = address.CountryCode;
                 entity.UtcCreatedDate = address.UtcCreatedDate;
                 entity.UtcUpdatedDate = address.UtcUpdatedDate;
                 entity.UtcDeletedDate = address.UtcDeletedDate;
