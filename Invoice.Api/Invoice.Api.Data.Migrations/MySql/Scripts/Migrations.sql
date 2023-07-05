@@ -12,7 +12,7 @@ CREATE PROCEDURE MigrationsScript()
 BEGIN
     IF NOT EXISTS(SELECT 1 FROM `__EFMigrationsHistory` WHERE `MigrationId` = '20230705211000_InitialMigration') THEN
 
-    ALTER DATABASE CHARACTER SET utf8mb4;
+    ALTER DATABASE `invoice` CHARACTER SET utf8mb4;
 
     END IF;
 END //
