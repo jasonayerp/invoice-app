@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Invoice.Api.Data.MySql;
 
-public class InvoiceDbContext : DbContext
+public class MySqlDbContext : DbContext
 {
     public DbSet<AddressEntity> Addresses { get; set; }
     public DbSet<ClientEntity> Clients { get; set; }
@@ -14,7 +14,9 @@ public class InvoiceDbContext : DbContext
     {
         if (!optionsBuilder.IsConfigured)
         {
-            optionsBuilder.UseSqlServer("server=localhost;uid=root;pwd=Mang0isGreat!;database=invoice");
+            var conectionString = "server=localhost;uid=root;pwd=Mang0isGreat!;database=invoice";
+
+            optionsBuilder.UseMySql(conectionString, ServerVersion.AutoDetect(conectionString));
         }
     }
 
@@ -25,7 +27,7 @@ public class InvoiceDbContext : DbContext
             entity.ToTable("addresses");
 
             entity.Property(e => e.AddressId).HasColumnName("address_id").HasColumnType("bigint").IsRequired().UseIdentityColumn();
-            entity.Property(e => e.Guid).HasColumnName("guid").HasColumnType("varchar(16)").IsRequired().HasDefaultValueSql("uuid()");
+            entity.Property(e => e.Guid).HasColumnName("guid").HasColumnType("varchar(32)").IsRequired().HasDefaultValueSql("uuid()");
             entity.Property(e => e.AddressLine1).HasColumnName("address_line_1").HasColumnType("varchar(128)").IsRequired();
             entity.Property(e => e.AddressLine2).HasColumnName("address_line_2").HasColumnType("varchar(128)").IsRequired(false).HasDefaultValueSql("null");
             entity.Property(e => e.AddressLine3).HasColumnName("address_line_3").HasColumnType("varchar(128)").IsRequired(false).HasDefaultValueSql("null");
@@ -50,7 +52,7 @@ public class InvoiceDbContext : DbContext
             entity.ToTable("clients");
 
             entity.Property(e => e.ClientId).HasColumnName("client_id").HasColumnType("bigint").IsRequired().UseIdentityColumn();
-            entity.Property(e => e.Guid).HasColumnName("guid").HasColumnType("varchar(16)").IsRequired().HasDefaultValueSql("uuid()");
+            entity.Property(e => e.Guid).HasColumnName("guid").HasColumnType("varchar(32)").IsRequired().HasDefaultValueSql("uuid()");
             entity.Property(e => e.Name).HasColumnName("name").HasColumnType("varchar(50)").IsRequired();
             entity.Property(e => e.Phone).HasColumnName("phone").HasColumnType("varchar(50)").IsRequired(false).HasDefaultValueSql("null");
             entity.Property(e => e.Email).HasColumnName("email").HasColumnType("varchar(50)").IsRequired(false).HasDefaultValueSql("null");
@@ -67,15 +69,15 @@ public class InvoiceDbContext : DbContext
         {
             entity.ToTable("invoices");
 
-            entity.Property(e => e.InvoiceId).HasColumnName("invoice_id").HasColumnType("BIGINT").IsRequired().UseIdentityColumn();
-            entity.Property(e => e.Guid).HasColumnName("guid").HasColumnType("UNIQUEIDENTIFIER").IsRequired().HasDefaultValueSql("uuid()");
+            entity.Property(e => e.InvoiceId).HasColumnName("invoice_id").HasColumnType("bigint").IsRequired().UseIdentityColumn();
+            entity.Property(e => e.Guid).HasColumnName("guid").HasColumnType("varchar(32)").IsRequired().HasDefaultValueSql("uuid()");
             entity.Property(e => e.Number).HasColumnName("number").HasColumnType("varchar(30)").IsRequired();
-            entity.Property(e => e.UtcDate).HasColumnName("utc_date").HasColumnType("DATETIME2").IsRequired();
-            entity.Property(e => e.Status).HasColumnName("status").HasColumnType("SMALLINT").IsRequired();
-            entity.Property(e => e.PaymentTerm).HasColumnName("payment_term").HasColumnType("SMALLINT").IsRequired();
-            entity.Property(e => e.BillFromAddressId).HasColumnName("bill_from_address_id").HasColumnType("BIGINT").IsRequired();
-            entity.Property(e => e.BillToAddressId).HasColumnName("bill_to_address_id").HasColumnType("BIGINT").IsRequired();
-            entity.Property(e => e.ClientId).HasColumnName("client_id").HasColumnType("BIGINT").IsRequired();
+            entity.Property(e => e.UtcDate).HasColumnName("utc_date").HasColumnType("datetime").IsRequired();
+            entity.Property(e => e.Status).HasColumnName("status").HasColumnType("smallint").IsRequired();
+            entity.Property(e => e.PaymentTerm).HasColumnName("payment_term").HasColumnType("smallint").IsRequired();
+            entity.Property(e => e.BillFromAddressId).HasColumnName("bill_from_address_id").HasColumnType("bigint").IsRequired();
+            entity.Property(e => e.BillToAddressId).HasColumnName("bill_to_address_id").HasColumnType("bigint").IsRequired();
+            entity.Property(e => e.ClientId).HasColumnName("client_id").HasColumnType("bigint").IsRequired();
             entity.Property(e => e.UtcCreatedDate).HasColumnName("utc_created_date").HasColumnType("datetime").IsRequired();
             entity.Property(e => e.UtcUpdatedDate).HasColumnName("utc_updated_date").HasColumnType("datetime").IsRequired(false).HasDefaultValueSql("null");
             entity.Property(e => e.UtcDeletedDate).HasColumnName("utc_deleted_date").HasColumnType("datetime").IsRequired(false).HasDefaultValueSql("null");

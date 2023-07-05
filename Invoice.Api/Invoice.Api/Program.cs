@@ -13,7 +13,7 @@ if (string.IsNullOrEmpty(connectionString))
 }
 
 builder.Services.AddControllers();
-builder.Services.AddDbContextFactory<InvoiceDbContext>(options =>
+builder.Services.AddDbContextFactory<MySqlDbContext>(options =>
     options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString)));
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();

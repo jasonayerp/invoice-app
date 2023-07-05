@@ -13,8 +13,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Invoice.Api.Data.Migrations\Invoice.Api.Data.Migrations.csproj" />
-    <ProjectReference Include="..\Invoice.Api.Data\Invoice.Api.Data.csproj" />
+    <ProjectReference Include="..\Invoice.Api.Data.MySql\Invoice.Api.Data.MySql.csproj" />
   </ItemGroup>
 
 </Project>

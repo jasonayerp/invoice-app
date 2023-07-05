@@ -1,5 +1,5 @@
-﻿using Invoice.Api.Data;
-using Invoice.Api.Data.Entities;
+﻿using Invoice.Api.Data.Entities;
+using Invoice.Api.Data.MySql;
 using Invoice.Api.Domains.Common.Mappers;
 using Microsoft.EntityFrameworkCore;
 
@@ -23,10 +23,10 @@ public interface IAddressRepository
 
 public class AddressRepository : IAddressRepository
 {
-    private readonly IDbContextFactory<InvoiceDbContext> _factory;
+    private readonly IDbContextFactory<MySqlDbContext> _factory;
     private readonly IMapper _mapper;
 
-    public AddressRepository(IDbContextFactory<InvoiceDbContext> factory, IMapper mapper)
+    public AddressRepository(IDbContextFactory<MySqlDbContext> factory, IMapper mapper)
     {
         _factory = factory;
         _mapper = mapper;

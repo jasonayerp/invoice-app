@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Invoice.Api.Data.Sql;
 
-public class InvoiceDbContext : DbContext
+public class SqlDbContext : DbContext
 {
     public DbSet<AddressEntity> Addresses { get; set; }
     public DbSet<ClientEntity> Clients { get; set; }
@@ -14,7 +14,9 @@ public class InvoiceDbContext : DbContext
     {
         if (!optionsBuilder.IsConfigured)
         {
-            optionsBuilder.UseSqlServer("Server=localhost\\SQL2022;Database=Invoice;Trusted_Connection=True;");
+            var connectionString = "Server=localhost\\SQL2022;Database=Invoice;Trusted_Connection=True;";
+
+            optionsBuilder.UseSqlServer(connectionString);
         }
     }
 
