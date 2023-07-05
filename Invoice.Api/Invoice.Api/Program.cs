@@ -1,4 +1,4 @@
-using Invoice.Api.Data.MySql;
+using Invoice.Api.Data;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);

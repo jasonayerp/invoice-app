@@ -1,7 +1,7 @@
-﻿using Invoice.Api.Data.Entities;
-using Invoice.Api.Data.MySql;
+﻿using Invoice.Api.Data;
+using Invoice.Api.Data.Entities;
 using Invoice.Api.Domains.Common.Mappers;
-using Microsoft.EntityFrameworkCore;
+using Invoice.Domains.Common.Models;
 
 namespace Invoice.Api.Domains.Common.Repositories;
 

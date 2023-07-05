@@ -1,7 +1,7 @@
 ﻿using Invoice.Api.Data.Entities;
 using Microsoft.EntityFrameworkCore;
 
-namespace Invoice.Api.Data.MySql;
+namespace Invoice.Api.Data;
 
 public class MySqlDbContext : DbContext
 {

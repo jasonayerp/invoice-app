@@ -1,7 +1,7 @@
 ﻿using Invoice.Api.Data.Entities;
 using Microsoft.EntityFrameworkCore;
 
-namespace Invoice.Api.Data.Sql;
+namespace Invoice.Api.Data;
 
 public class SqlDbContext : DbContext
 {

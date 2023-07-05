@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
 
-namespace Invoice.Api.Data.MySql.Migrations
+namespace Invoice.Api.Data.Migrations.MySql
 {
     [DbContext(typeof(MySqlDbContext))]
     partial class MySqlDbContextModelSnapshot : ModelSnapshot

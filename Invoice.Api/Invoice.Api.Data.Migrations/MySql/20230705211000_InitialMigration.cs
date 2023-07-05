@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
-namespace Invoice.Api.Data.MySql.Migrations
+namespace Invoice.Api.Data.Migrations.MySql
 {
     public partial class InitialMigration : Migration
     {
