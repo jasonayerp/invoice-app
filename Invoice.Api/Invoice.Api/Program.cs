@@ -1,14 +1,15 @@
-using FluentValidation;
 using Invoice.Api.Data;
 using Invoice.Api.Extensions.DependencyInjection;
-using Invoice.Domains.Common.Models;
-using Invoice.Domains.Common.Validators;
 
 var builder = WebApplication.CreateBuilder(args);
 
 var configuration = builder.Configuration;
 
-builder.Services.AddControllers();
+builder.Services.AddControllers()
+    .AddJsonOptions(options =>
+    {
+        options.JsonSerializerOptions.PropertyNamingPolicy = System.Text.Json.JsonNamingPolicy.CamelCase;
+    });
 builder.Services.AddConfigurationReader();
 builder.Services.AddDbContextFactory<MySqlDbContext>(options =>
 {

@@ -7,13 +7,14 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Invoice" Version="1.1.0" />
-    <PackageReference Include="Invoice.Domains" Version="1.1.0" />
+    <PackageReference Include="Invoice" Version="1.1.1" />
+    <PackageReference Include="Invoice.Domains" Version="1.1.3" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.2.3" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\Invoice.Api.Data\Invoice.Api.Data.csproj" />
+    <ProjectReference Include="..\Invoice.Api.Domains\Invoice.Api.Domains.csproj" />
   </ItemGroup>
 
 </Project>
