@@ -7,8 +7,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Invoice" Version="1.0.0" />
-    <PackageReference Include="Invoice.Domains" Version="1.0.0" />
+    <PackageReference Include="Invoice" Version="1.1.0" />
+    <PackageReference Include="Invoice.Domains" Version="1.1.0" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.2.3" />
   </ItemGroup>
 

@@ -1,20 +1,26 @@
+using FluentValidation;
 using Invoice.Api.Data;
-using Microsoft.EntityFrameworkCore;
+using Invoice.Api.Extensions.DependencyInjection;
+using Invoice.Domains.Common.Models;
+using Invoice.Domains.Common.Validators;
 
 var builder = WebApplication.CreateBuilder(args);
 
 var configuration = builder.Configuration;
 
-var connectionString = Environment.GetEnvironmentVariable("ConnectionString");
-
-if (string.IsNullOrEmpty(connectionString))
-{
-    connectionString = configuration.GetValue("Configuration:ConnectionString", "");
-}
-
 builder.Services.AddControllers();
+builder.Services.AddConfigurationReader();
 builder.Services.AddDbContextFactory<MySqlDbContext>(options =>
-    options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString)));
+{
+    var connectionString = Environment.GetEnvironmentVariable("ConnectionString");
+
+    if (string.IsNullOrEmpty(connectionString))
+    {
+        connectionString = configuration.GetValue("Configuration:ConnectionString", "");
+    }
+
+    options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString));
+});    
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddCors(options =>

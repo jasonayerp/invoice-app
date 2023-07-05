@@ -3,6 +3,7 @@
 public class AddressModel
 {
     public int Id { get; set; } = 0;
+    public Guid Guid { get; set; } = Guid.Empty;
     public string AddressLine1 { get; set; } = string.Empty;
     public string? AddressLine2 { get; set; }
     public string? AddressLine3 { get; set; }

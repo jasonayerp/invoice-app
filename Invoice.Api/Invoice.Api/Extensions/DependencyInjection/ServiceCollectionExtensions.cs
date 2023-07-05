@@ -1,11 +1,13 @@
 ﻿
 
+using Invoice.Configuration;
+
 namespace Invoice.Api.Extensions.DependencyInjection;
 
 public static class ServiceCollectionExtensions
 {
-    public static void AddConfigurationReader(this ServiceCollection services)
+    public static void AddConfigurationReader(this IServiceCollection services)
     {
-        // services.AddScoped<IConfigurationReader>
+        services.AddScoped<IConfigurationReader, NetCoreConfigurationReader>();
     }
 }

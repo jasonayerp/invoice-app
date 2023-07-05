@@ -47,6 +47,8 @@ public class SqlDbContext : DbContext
             entity.HasIndex(e => e.Region).IsClustered(false).HasDatabaseName("IX_Addresses_Region");
             entity.HasIndex(e => e.CountryCode).IsClustered(false).HasDatabaseName("IX_Addresses_CountryCode");
             entity.HasIndex(e => new { e.AddressLine1, e.City, e.Region, e.PostalCode, e.CountryCode }).IsClustered(false).IsUnique().HasDatabaseName("UX_Addresses_Address");
+
+            entity.HasQueryFilter(e => e.UtcDeletedDate == null);
         });
 
         modelBuilder.Entity<ClientEntity>(entity =>
@@ -65,6 +67,8 @@ public class SqlDbContext : DbContext
             entity.HasKey(e => e.ClientId).IsClustered().HasName("PK_Clients");
             entity.HasIndex(e => e.Guid).IsClustered(false).HasDatabaseName("IX_Client_Guid");
             entity.HasIndex(e => e.Name).IsClustered(false).IsUnique().HasDatabaseName("UX_Client_Name");
+
+            entity.HasQueryFilter(e => e.UtcDeletedDate == null);
         });
 
         modelBuilder.Entity<InvoiceEntity>(entity =>
@@ -90,6 +94,8 @@ public class SqlDbContext : DbContext
             entity.HasOne(e => e.BillFromAddress).WithOne().HasForeignKey<InvoiceEntity>(e => e.BillFromAddressId).HasConstraintName("FK_Invoices_Addresses_BillFromAddressId");
             entity.HasOne(e => e.BillToAddress).WithOne().HasForeignKey<InvoiceEntity>(e => e.BillToAddressId).HasConstraintName("FK_Invoices_Addresses_BillToAddressId");
             entity.HasOne(e => e.Client).WithMany(e => e.Invoices).HasForeignKey(e => e.ClientId).HasConstraintName("FK_Invoices_Clients_ClientId").OnDelete(DeleteBehavior.Restrict);
+
+            entity.HasQueryFilter(e => e.UtcDeletedDate == null);
         });
 
         modelBuilder.Entity<InvoiceItemEntity>(entity =>
@@ -101,11 +107,16 @@ public class SqlDbContext : DbContext
             entity.Property(e => e.Description).HasColumnName("Description").HasColumnType("NVARCHAR(128)").IsRequired();
             entity.Property(e => e.Quantity).HasColumnName("Quantity").HasColumnType("INT").IsRequired();
             entity.Property(e => e.Amount).HasColumnName("Amount").HasColumnType("DECIMAL(19,4)").HasPrecision(19, 4).IsRequired();
+            entity.Property(e => e.UtcCreatedDate).HasColumnName("UtcCreatedDate").HasColumnType("DATETIME2").IsRequired();
+            entity.Property(e => e.UtcUpdatedDate).HasColumnName("UtcUpdatedDate").HasColumnType("DATETIME2").IsRequired(false).HasDefaultValueSql("NULL");
+            entity.Property(e => e.UtcDeletedDate).HasColumnName("UtcDeletedDate").HasColumnType("DATETIME2").IsRequired(false).HasDefaultValueSql("NULL");
 
             entity.HasKey(e => e.InvoiceItemId).IsClustered().HasName("PK_InvoiceItem");
             entity.HasIndex(e => e.Description).IsClustered(false).IsUnique().HasDatabaseName("UX_InvoiceItems_Description");
 
             entity.HasOne(e => e.Invoice).WithMany(e => e.InvoiceItems).HasForeignKey(e => e.InvoiceId).HasConstraintName("FK_InvoiceItem_Invoice_InvoiceId").OnDelete(DeleteBehavior.Cascade);
+
+            entity.HasQueryFilter(e => e.UtcDeletedDate == null);
         });
     }
 }

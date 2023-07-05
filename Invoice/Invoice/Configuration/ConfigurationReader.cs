@@ -8,7 +8,7 @@ public interface IConfigurationReader
     T? GetValue<T>(string key, T? defaultValue);
 }
 
-internal class NetCoreConfigurationReader : IConfigurationReader
+public class NetCoreConfigurationReader : IConfigurationReader
 {
     private readonly IConfiguration _configuration;
 

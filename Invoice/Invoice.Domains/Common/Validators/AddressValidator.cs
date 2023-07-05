@@ -16,6 +16,7 @@ public class AddressValidator : AbstractValidator<AddressModel>
         When(e => mode == ValidationMode.Update || mode == ValidationMode.Delete, () =>
         {
             RuleFor(e => e.Id).NotNull().GreaterThan(0);
+            RuleFor(e => e.Guid).NotNull().NotEqual(Guid.Empty);
         });
         When(e => e.AddressLine2 != null, () =>
         {

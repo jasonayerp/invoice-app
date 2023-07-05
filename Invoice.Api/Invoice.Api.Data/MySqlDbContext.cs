@@ -45,6 +45,8 @@ public class MySqlDbContext : DbContext
             entity.HasIndex(e => e.Region).IsClustered(false).HasDatabaseName("ix_addresses_region");
             entity.HasIndex(e => e.CountryCode).IsClustered(false).HasDatabaseName("ix_addresses_country_code");
             entity.HasIndex(e => new { e.AddressLine1, e.City, e.Region, e.PostalCode, e.CountryCode }).IsClustered(false).IsUnique().HasDatabaseName("ux_addresses_address");
+
+            entity.HasQueryFilter(e => e.UtcDeletedDate == null);
         });
 
         modelBuilder.Entity<ClientEntity>(entity =>
@@ -63,6 +65,8 @@ public class MySqlDbContext : DbContext
             entity.HasKey(e => e.ClientId).IsClustered().HasName("pk_clients");
             entity.HasIndex(e => e.Guid).IsClustered(false).HasDatabaseName("Iix_client_guid");
             entity.HasIndex(e => e.Name).IsClustered(false).IsUnique().HasDatabaseName("ux_client_name");
+
+            entity.HasQueryFilter(e => e.UtcDeletedDate == null);
         });
 
         modelBuilder.Entity<InvoiceEntity>(entity =>
@@ -88,6 +92,8 @@ public class MySqlDbContext : DbContext
             entity.HasOne(e => e.BillFromAddress).WithOne().HasForeignKey<InvoiceEntity>(e => e.BillFromAddressId).HasConstraintName("fk_invoices_addresses_bill_from_address_id");
             entity.HasOne(e => e.BillToAddress).WithOne().HasForeignKey<InvoiceEntity>(e => e.BillToAddressId).HasConstraintName("fk_invoices_addresses_bill_ftom_address_id");
             entity.HasOne(e => e.Client).WithMany(e => e.Invoices).HasForeignKey(e => e.ClientId).HasConstraintName("fk_invoices_clients_client_id").OnDelete(DeleteBehavior.Restrict);
+
+            entity.HasQueryFilter(e => e.UtcDeletedDate == null);
         });
 
         modelBuilder.Entity<InvoiceItemEntity>(entity =>
@@ -107,6 +113,8 @@ public class MySqlDbContext : DbContext
             entity.HasIndex(e => e.Description).IsClustered(false).IsUnique().HasDatabaseName("ux_invoice_items_description");
 
             entity.HasOne(e => e.Invoice).WithMany(e => e.InvoiceItems).HasForeignKey(e => e.InvoiceId).HasConstraintName("fk_invoice_item_invoice_invoice_id").OnDelete(DeleteBehavior.Cascade);
+
+            entity.HasQueryFilter(e => e.UtcDeletedDate == null);
         });
     }
 }
