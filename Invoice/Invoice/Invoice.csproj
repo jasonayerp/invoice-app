@@ -5,7 +5,7 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
-    <PackageOutputPath>D:\Users\jason\nuget\packages</PackageOutputPath>
+    <PackageOutputPath>D:\Users\jason\source\repos\invoice-app\nuget</PackageOutputPath>
   </PropertyGroup>
 
   <ItemGroup>

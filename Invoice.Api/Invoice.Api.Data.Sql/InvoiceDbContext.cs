@@ -1,7 +1,7 @@
 ﻿using Invoice.Api.Data.Entities;
 using Microsoft.EntityFrameworkCore;
 
-namespace Invoice.Api.Data;
+namespace Invoice.Api.Data.Sql;
 
 public class InvoiceDbContext : DbContext
 {
@@ -14,7 +14,7 @@ public class InvoiceDbContext : DbContext
     {
         if (!optionsBuilder.IsConfigured)
         {
-            optionsBuilder.UseSqlServer("server=localhost;uid=root;pwd=Mang0isGreat!;database=invoice");
+            optionsBuilder.UseSqlServer("Server=localhost\\SQL2022;Database=Invoice;Trusted_Connection=True;");
         }
     }
 
@@ -51,7 +51,7 @@ public class InvoiceDbContext : DbContext
         {
             entity.ToTable("Clients");
 
-            entity.Property(e => e.ClientId).HasColumnType("BIGINT").IsRequired().UseIdentityColumn();
+            entity.Property(e => e.ClientId).HasColumnName("ClientId").HasColumnType("BIGINT").IsRequired().UseIdentityColumn();
             entity.Property(e => e.Guid).HasColumnName("Guid").HasColumnType("UNIQUEIDENTIFIER").IsRequired().HasDefaultValueSql("NEWID()");
             entity.Property(e => e.Name).HasColumnName("Name").HasColumnType("NVARCHAR(50)").IsRequired();
             entity.Property(e => e.Phone).HasColumnName("Phone").HasColumnType("NVARCHAR(50)").IsRequired(false).HasDefaultValueSql("NULL");

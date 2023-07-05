@@ -6,12 +6,11 @@ public class AddressValidator : AbstractValidator<AddressModel>
 {
     public AddressValidator(ValidationMode mode)
     {
-        
         RuleFor(e => e.AddressLine1).NotNull().NotEmpty().MaximumLength(64);
         RuleFor(e => e.City).NotNull().NotEmpty().MaximumLength(64);
         RuleFor(e => e.Region).NotNull().NotEmpty().MaximumLength(64);
         RuleFor(e => e.PostalCode).NotNull().NotEmpty().MaximumLength(64);
-        RuleFor(e => e.Country).NotNull().NotEmpty().MaximumLength(2);
+        RuleFor(e => e.CountryCode).NotNull().NotEmpty().Length(2);
 
         // Conditional
         When(e => mode == ValidationMode.Update || mode == ValidationMode.Delete, () =>

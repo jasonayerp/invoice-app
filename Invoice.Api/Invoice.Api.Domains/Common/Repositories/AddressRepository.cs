@@ -2,7 +2,6 @@
 using Invoice.Api.Data.Entities;
 using Invoice.Api.Domains.Common.Mappers;
 using Microsoft.EntityFrameworkCore;
-using System.Net;
 
 namespace Invoice.Api.Domains.Common.Repositories;
 
@@ -164,7 +163,7 @@ public class AddressRepository : IAddressRepository
                 entity.City = address.City;
                 entity.Region = address.Region;
                 entity.PostalCode = address.PostalCode;
-                entity.Country = address.Country;
+                entity.CountryCode = address.Country;
                 entity.UtcCreatedDate = address.UtcCreatedDate;
                 entity.UtcUpdatedDate = address.UtcUpdatedDate;
                 entity.UtcDeletedDate = address.UtcDeletedDate;
@@ -193,7 +192,7 @@ public class AddressRepository : IAddressRepository
                 entity.City = address.City;
                 entity.Region = address.Region;
                 entity.PostalCode = address.PostalCode;
-                entity.Country = address.Country;
+                entity.CountryCode = address.Country;
                 entity.UtcCreatedDate = address.UtcCreatedDate;
                 entity.UtcUpdatedDate = address.UtcUpdatedDate;
                 entity.UtcDeletedDate = address.UtcDeletedDate;
