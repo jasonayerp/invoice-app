@@ -3,15 +3,15 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.5.33627.172
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Invoice.Api", "Invoice.Api\Invoice.Api.csproj", "{5527F5FB-27C7-4FD8-B130-249EE78074DE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Invoice.Api", "Invoice.Api\Invoice.Api.csproj", "{5527F5FB-27C7-4FD8-B130-249EE78074DE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Invoice.Api.Domains", "Invoice.Api.Domains\Invoice.Api.Domains.csproj", "{78988B1E-7827-4370-A2EA-D29150130D7E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Invoice.Api.Domains", "Invoice.Api.Domains\Invoice.Api.Domains.csproj", "{78988B1E-7827-4370-A2EA-D29150130D7E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Invoice.Api.Data", "Invoice.Api.Data\Invoice.Api.Data.csproj", "{B803FFCE-0FBA-4E6F-9FAF-2C75BED3A06D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Invoice.Api.Data", "Invoice.Api.Data\Invoice.Api.Data.csproj", "{B803FFCE-0FBA-4E6F-9FAF-2C75BED3A06D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Invoice.Api.Domains.Tests", "Invoice.Api.Domains.Tests\Invoice.Api.Domains.Tests.csproj", "{180656A1-0DD3-4E97-9C23-15BF33FFEA19}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Invoice.Api.Domains.Tests", "Invoice.Api.Domains.Tests\Invoice.Api.Domains.Tests.csproj", "{180656A1-0DD3-4E97-9C23-15BF33FFEA19}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Invoice.Api.Data.Migrations", "Invoice.Api.Data.Migrations\Invoice.Api.Data.Migrations.csproj", "{49594D89-06A9-4BF6-9D9C-38A503F6585F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Invoice.Api.Data.Migrations", "Invoice.Api.Data.Migrations\Invoice.Api.Data.Migrations.csproj", "{49594D89-06A9-4BF6-9D9C-38A503F6585F}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "scripts", "scripts", "{D351F55B-346A-43CB-95F1-57D1723F48C3}"
 	ProjectSection(SolutionItems) = preProject

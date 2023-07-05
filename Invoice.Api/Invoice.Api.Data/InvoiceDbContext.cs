@@ -14,7 +14,7 @@ public class InvoiceDbContext : DbContext
     {
         if (!optionsBuilder.IsConfigured)
         {
-            optionsBuilder.UseSqlServer("Server=TEMPEST\\SQL2022;Database=Invoice;Trusted_Connection=True;");
+            optionsBuilder.UseSqlServer("server=localhost;uid=root;pwd=Mang0isGreat!;database=invoice");
         }
     }
 
