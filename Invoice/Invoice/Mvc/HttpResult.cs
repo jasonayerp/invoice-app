@@ -3,8 +3,7 @@
 public interface IHttpResult
 {
     bool IsSuccess { get; }
-    string Error { get; }
-    string[]? Errors { get; }
+    Error? Error { get; }
 }
 
 public interface IHttpResult<T> : IHttpResult
@@ -12,27 +11,25 @@ public interface IHttpResult<T> : IHttpResult
     T? Data { get; }
 }
 
-public interface IHttpListResult<T> : IHttpResult
+public interface IHttpCollectionResult<T> : IHttpResult
 {
-    IList<T>? Data { get; }
+    ICollection<T>? Data { get; }
 }
 
 public class HttpResult : IHttpResult
 {
     public bool IsSuccess { get; private set; } = true;
-    public string Error { get; private set; } = "Ok";
-    public string[]? Errors { get; private set; }
+    public Error? Error { get; private set; }
 
     public HttpResult()
     {
     }
 
-    public HttpResult(string error, string[]? errors = null)
+    public HttpResult(Error error)
         : base()
     {
         IsSuccess = false;
         Error = error;
-        Errors = errors;
     }
 }
 
@@ -46,24 +43,24 @@ public class HttpResult<T> : HttpResult, IHttpResult<T>
         Data = data;
     }
 
-    public HttpResult(string error, string[]? errors = null)
-        : base(error, errors)
+    public HttpResult(Error error)
+        : base(error)
     {
     }
 }
 
-public class HttpListResult<T> : HttpResult, IHttpListResult<T>
+public class HttpCollectionResult<T> : HttpResult, IHttpCollectionResult<T>
 {
-    public IList<T>? Data { get; private set; }
+    public ICollection<T>? Data { get; private set; }
 
-    public HttpListResult(IList<T>? data)
+    public HttpCollectionResult(ICollection<T>? data)
         : base()
     {
         Data = data;
     }
 
-    public HttpListResult(string error, string[]? errors = null)
-        : base(error, errors)
+    public HttpCollectionResult(Error error)
+        : base(error)
     {
     }
 }

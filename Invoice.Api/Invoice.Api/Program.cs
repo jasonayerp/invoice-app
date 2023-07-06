@@ -37,9 +37,7 @@ builder.Services.AddCors(options =>
 });
 builder.Services.AddScoped<IMapper, JsonMapper>();
 builder.Services.AddScoped<IDateTimeService, DateTimeService>();
-//builder.Services.AddScoped<IAddressRepository, AddressRepository>();
-//builder.Services.AddScoped<IAddressService, AddressService>();
-builder.Services.AddDomain("Common");
+builder.Services.AddScopedDomain("Common");
 
 var app = builder.Build();
 
