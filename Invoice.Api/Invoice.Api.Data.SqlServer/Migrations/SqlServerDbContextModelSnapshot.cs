@@ -339,14 +339,14 @@ namespace Invoice.Api.Data.SqlServer.Migrations
                     b.HasOne("Invoice.Api.Data.Entities.AddressEntity", "BillFromAddress")
                         .WithOne()
                         .HasForeignKey("Invoice.Api.Data.Entities.InvoiceEntity", "BillFromAddressId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired()
                         .HasConstraintName("FK_Invoices_Addresses_BillFromAddressId");
 
                     b.HasOne("Invoice.Api.Data.Entities.AddressEntity", "BillToAddress")
                         .WithOne()
                         .HasForeignKey("Invoice.Api.Data.Entities.InvoiceEntity", "BillToAddressId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired()
                         .HasConstraintName("FK_Invoices_Addresses_BillToAddressId");
 

@@ -87,15 +87,13 @@ namespace Invoice.Api.Data.SqlServer.Migrations
                         column: x => x.BillFromAddressId,
                         principalSchema: "dbo",
                         principalTable: "Addresses",
-                        principalColumn: "AddressId",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "AddressId");
                     table.ForeignKey(
                         name: "FK_Invoices_Addresses_BillToAddressId",
                         column: x => x.BillToAddressId,
                         principalSchema: "dbo",
                         principalTable: "Addresses",
-                        principalColumn: "AddressId",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "AddressId");
                     table.ForeignKey(
                         name: "FK_Invoices_Clients_ClientId",
                         column: x => x.ClientId,

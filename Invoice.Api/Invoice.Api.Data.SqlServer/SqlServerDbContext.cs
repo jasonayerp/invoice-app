@@ -91,8 +91,8 @@ public class SqlServerDbContext : DbContext
             entity.HasKey(e => e.InvoiceId).IsClustered().HasName("PK_Invoices");
             entity.HasIndex(e => e.Number).IsClustered(false).IsUnique().HasDatabaseName("UX_Invoices_Number");
 
-            entity.HasOne(e => e.BillFromAddress).WithOne().HasForeignKey<InvoiceEntity>(e => e.BillFromAddressId).HasConstraintName("FK_Invoices_Addresses_BillFromAddressId");
-            entity.HasOne(e => e.BillToAddress).WithOne().HasForeignKey<InvoiceEntity>(e => e.BillToAddressId).HasConstraintName("FK_Invoices_Addresses_BillToAddressId");
+            entity.HasOne(e => e.BillFromAddress).WithOne().HasForeignKey<InvoiceEntity>(e => e.BillFromAddressId).HasConstraintName("FK_Invoices_Addresses_BillFromAddressId").OnDelete(DeleteBehavior.NoAction);
+            entity.HasOne(e => e.BillToAddress).WithOne().HasForeignKey<InvoiceEntity>(e => e.BillToAddressId).HasConstraintName("FK_Invoices_Addresses_BillToAddressId").OnDelete(DeleteBehavior.NoAction);
             entity.HasOne(e => e.Client).WithMany(e => e.Invoices).HasForeignKey(e => e.ClientId).HasConstraintName("FK_Invoices_Clients_ClientId").OnDelete(DeleteBehavior.Restrict);
 
             entity.HasQueryFilter(e => e.UtcDeletedDate == null);

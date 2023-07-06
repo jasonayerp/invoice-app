@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Invoice.Api.Data.SqlServer.Migrations
 {
     [DbContext(typeof(SqlServerDbContext))]
-    [Migration("20230706020616_InitialMigration")]
+    [Migration("20230706021713_InitialMigration")]
     partial class InitialMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -341,14 +341,14 @@ namespace Invoice.Api.Data.SqlServer.Migrations
                     b.HasOne("Invoice.Api.Data.Entities.AddressEntity", "BillFromAddress")
                         .WithOne()
                         .HasForeignKey("Invoice.Api.Data.Entities.InvoiceEntity", "BillFromAddressId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired()
                         .HasConstraintName("FK_Invoices_Addresses_BillFromAddressId");
 
                     b.HasOne("Invoice.Api.Data.Entities.AddressEntity", "BillToAddress")
                         .WithOne()
                         .HasForeignKey("Invoice.Api.Data.Entities.InvoiceEntity", "BillToAddressId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired()
                         .HasConstraintName("FK_Invoices_Addresses_BillToAddressId");
 
