@@ -13,6 +13,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Invoice.Api.Data.SqlServer\Invoice.Api.Data.SqlServer.csproj" />
     <ProjectReference Include="..\Invoice.Api.Data\Invoice.Api.Data.csproj" />
     <ProjectReference Include="..\Invoice.Api.Domains\Invoice.Api.Domains.csproj" />
   </ItemGroup>

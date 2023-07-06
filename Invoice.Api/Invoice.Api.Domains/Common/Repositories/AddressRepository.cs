@@ -1,5 +1,6 @@
 ﻿using Invoice.Api.Data;
 using Invoice.Api.Data.Entities;
+using Invoice.Api.Data.SqlServer;
 using Invoice.Api.Domains.Common.Mappers;
 using Invoice.Domains.Common.Models;
 
@@ -23,7 +24,7 @@ public interface IAddressRepository
 
 public class AddressRepository : IAddressRepository
 {
-    private readonly IDbContextFactory<MySqlDbContext> _factory;
+    private readonly IDbContextFactory<SqlServerDbContext> _factory;
     private readonly IMapper _mapper;
 
     private IQueryable<AddressEntity> SetQueryFilters(IQueryable<AddressEntity> source, bool ignoreQueryFilters)
@@ -31,7 +32,7 @@ public class AddressRepository : IAddressRepository
         return ignoreQueryFilters ? source.IgnoreQueryFilters() : source;
     }
 
-    public AddressRepository(IDbContextFactory<MySqlDbContext> factory, IMapper mapper)
+    public AddressRepository(IDbContextFactory<SqlServerDbContext> factory, IMapper mapper)
     {
         _factory = factory;
         _mapper = mapper;

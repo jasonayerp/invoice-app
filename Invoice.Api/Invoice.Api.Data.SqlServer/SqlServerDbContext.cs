@@ -1,9 +1,9 @@
 ﻿using Invoice.Api.Data.Entities;
 using Microsoft.EntityFrameworkCore;
 
-namespace Invoice.Api.Data;
+namespace Invoice.Api.Data.SqlServer;
 
-public class SqlDbContext : DbContext
+public class SqlServerDbContext : DbContext
 {
     public DbSet<AddressEntity> Addresses { get; set; }
     public DbSet<ClientEntity> Clients { get; set; }

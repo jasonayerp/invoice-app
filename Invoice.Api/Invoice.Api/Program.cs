@@ -1,4 +1,4 @@
-using Invoice.Api.Data;
+using Invoice.Api.Data.SqlServer;
 using Invoice.Api.Extensions.DependencyInjection;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -11,7 +11,7 @@ builder.Services.AddControllers()
         options.JsonSerializerOptions.PropertyNamingPolicy = System.Text.Json.JsonNamingPolicy.CamelCase;
     });
 builder.Services.AddConfigurationReader();
-builder.Services.AddDbContextFactory<MySqlDbContext>(options =>
+builder.Services.AddDbContextFactory<SqlServerDbContext>(options =>
 {
     var connectionString = Environment.GetEnvironmentVariable("ConnectionString");
 
