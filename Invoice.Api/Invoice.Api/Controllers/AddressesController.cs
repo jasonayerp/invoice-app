@@ -65,6 +65,7 @@ namespace Invoice.Api.Controllers
 
             if (address.UtcDeletedDate != null)
                 addressObject.DeletedDate = TimeZoneHelper.ToLocalTime((DateTime)address.UtcDeletedDate, "America/Chicago");
+
             return addressObject;
         }
 

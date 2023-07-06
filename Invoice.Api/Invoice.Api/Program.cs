@@ -37,6 +37,20 @@ builder.Services.AddCors(options =>
     {
         builder.SetIsOriginAllowed(origin => new Uri(origin).Host == "localhost");
     });
+
+    options.AddPolicy("Policy", builder =>
+    {
+        var allowedOrigins = Environment.GetEnvironmentVariable("AllowedOrigins");
+
+        if (string.IsNullOrEmpty(allowedOrigins))
+        {
+            allowedOrigins = configuration.GetValue("Configuration:AllowedOrigins", "");
+        }
+
+        string[] allowed = allowedOrigins.Split(',').ToArray();
+
+        builder.SetIsOriginAllowed(origin => allowedOrigins.Contains(new Uri(origin).Host));
+    });
 });
 builder.Services.AddScoped<IMapper, JsonMapper>();
 builder.Services.AddScoped<IDateTimeService, DateTimeService>();
@@ -53,7 +67,7 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
-app.UseCors();
+app.UseCors("Policy");
 
 app.UseAuthorization();
 
