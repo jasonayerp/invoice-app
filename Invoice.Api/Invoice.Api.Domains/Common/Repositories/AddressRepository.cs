@@ -48,7 +48,7 @@ public class AddressRepository : IAddressRepository
 
             await context.SaveChangesAsync();
 
-            return _mapper.Map<AddressModel>(data);
+            return Map(data);
         }
     }
 
@@ -62,7 +62,7 @@ public class AddressRepository : IAddressRepository
 
             await context.SaveChangesAsync();
 
-            return data.Select(address => _mapper.Map<AddressModel>(data)).ToList();
+            return data.Select(Map).ToList();
         }
     }
 
@@ -94,7 +94,7 @@ public class AddressRepository : IAddressRepository
                 ? await context.Addresses.IgnoreQueryFilters().SingleOrDefaultAsync(e => e.AddressId == id)
                 : await context.Addresses.SingleOrDefaultAsync(e => e.AddressId == id);
 
-            return data != null ? _mapper.Map<AddressModel>(data) : null;
+            return data != null ? Map(data) : null;
         }
     }
 
@@ -138,7 +138,7 @@ public class AddressRepository : IAddressRepository
 
             var data = await query.ToListAsync();
 
-            return data.Select(address => _mapper.Map<AddressModel>(address)).ToList();
+            return data.Select(Map).ToList();
         }
     }
 
@@ -150,7 +150,7 @@ public class AddressRepository : IAddressRepository
 
             var data = await query.Skip((page - 1) * pageNumber).Take(pageNumber).ToListAsync();
 
-            return data.Select(address => _mapper.Map<AddressModel>(address)).ToList();
+            return data.Select(Map).ToList();
         }
     }
 
@@ -162,7 +162,7 @@ public class AddressRepository : IAddressRepository
 
             var data = await query.Take(count).ToListAsync();
 
-            return data.Select(address => _mapper.Map<AddressModel>(address)).ToList();
+            return data.Select(Map).ToList();
         }
     }
 
@@ -219,4 +219,18 @@ public class AddressRepository : IAddressRepository
             await context.SaveChangesAsync();
         }
     }
-}
+
+    private AddressModel Map(AddressEntity address)
+    {
+        var mapped = _mapper.Map<AddressModel>(address);
+        mapped.Id = address.AddressId;
+        return mapped;
+    }
+
+    private AddressEntity Map(AddressModel address)
+    {
+        var mapped = _mapper.Map<AddressEntity>(address);
+        mapped.AddressId = address.Id;
+        return mapped;
+    }
+}   

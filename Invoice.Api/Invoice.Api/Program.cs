@@ -1,5 +1,9 @@
 using Invoice.Api.Data.SqlServer;
+using Invoice.Api.Domains.Common.Mappers;
+using Invoice.Api.Domains.Common.Repositories;
+using Invoice.Api.Domains.Common.Services;
 using Invoice.Api.Extensions.DependencyInjection;
+using Invoice.System;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -20,7 +24,7 @@ builder.Services.AddDbContextFactory<SqlServerDbContext>(options =>
         connectionString = configuration.GetValue("Configuration:ConnectionString", "");
     }
 
-    options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString));
+    options.UseSqlServer(connectionString);
 });    
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
@@ -31,6 +35,11 @@ builder.Services.AddCors(options =>
         builder.SetIsOriginAllowed(origin => new Uri(origin).Host == "localhost");
     });
 });
+builder.Services.AddScoped<IMapper, JsonMapper>();
+builder.Services.AddScoped<IDateTimeService, DateTimeService>();
+//builder.Services.AddScoped<IAddressRepository, AddressRepository>();
+//builder.Services.AddScoped<IAddressService, AddressService>();
+builder.Services.AddDomain("Common");
 
 var app = builder.Build();
 

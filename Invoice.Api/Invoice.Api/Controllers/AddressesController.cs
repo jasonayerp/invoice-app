@@ -45,17 +45,31 @@ namespace Invoice.Api.Controllers
             return SuccessList(data.Select(Map).ToList());
         }
 
+        [HttpPost]
+        public async Task<IHttpResult<AddressObject>> CreateAsync([FromBody] AddressObject address)
+        {
+            var data = await _addressService.CreateAsync(Map(address));
+
+            return Success(Map(data));
+        }
+
         private AddressObject Map(AddressModel address)
         {
             var addressObject = _mapper.Map<AddressObject>(address);
-            addressObject.PublicId = Guid.NewGuid();
-            addressObject.Metadata = new Metadata
+            addressObject.PublicId = address.Guid;
+            addressObject.Meta = new Meta
             {
-                Id = address.Id,
                 UtcCreatedDate = address.UtcCreatedDate,
                 UtcUpdatedDate = address.UtcUpdatedDate,
                 UtcDeletedDate = address.UtcDeletedDate
             };
+            return addressObject;
+        }
+
+        private AddressModel Map(AddressObject address)
+        {
+            var addressObject = _mapper.Map<AddressModel>(address);
+            addressObject.Guid = address.PublicId;
             return addressObject;
         }
     }

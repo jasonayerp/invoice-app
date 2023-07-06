@@ -2,6 +2,6 @@
 {
     public class ObjectBase
     {
-        public Metadata Metadata { get; set; } = default!;
+        public Meta Meta { get; set; } = default!;
     }
 }

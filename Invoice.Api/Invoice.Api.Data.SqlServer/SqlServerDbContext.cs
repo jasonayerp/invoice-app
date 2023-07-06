@@ -1,4 +1,5 @@
 ﻿using Invoice.Api.Data.Entities;
+using Invoice.Configuration;
 using Microsoft.EntityFrameworkCore;
 
 namespace Invoice.Api.Data.SqlServer;
@@ -14,9 +15,10 @@ public class SqlServerDbContext : DbContext
     {
         if (!optionsBuilder.IsConfigured)
         {
-            var connectionString = "Server=localhost\\SQL2022;Database=Invoice;Trusted_Connection=True;";
-
-            optionsBuilder.UseSqlServer(connectionString);
+            optionsBuilder.UseSqlServer(@"Server=TEMPEST\SQL2022;Database=Invoice;Trusted_Connection=True;", options =>
+            {
+                options.MigrationsHistoryTable("__EFMigrationsHistory", "dbo");
+            });
         }
     }
 

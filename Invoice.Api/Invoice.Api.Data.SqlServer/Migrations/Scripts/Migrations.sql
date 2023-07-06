@@ -11,7 +11,7 @@ GO
 BEGIN TRANSACTION;
 GO
 
-IF NOT EXISTS(SELECT * FROM [__EFMigrationsHistory] WHERE [MigrationId] = N'20230706021713_InitialMigration')
+IF NOT EXISTS(SELECT * FROM [__EFMigrationsHistory] WHERE [MigrationId] = N'20230706052710_InitialMigration')
 BEGIN
     CREATE TABLE [dbo].[Addresses] (
         [AddressId] BIGINT NOT NULL IDENTITY,
@@ -32,7 +32,7 @@ BEGIN
 END;
 GO
 
-IF NOT EXISTS(SELECT * FROM [__EFMigrationsHistory] WHERE [MigrationId] = N'20230706021713_InitialMigration')
+IF NOT EXISTS(SELECT * FROM [__EFMigrationsHistory] WHERE [MigrationId] = N'20230706052710_InitialMigration')
 BEGIN
     CREATE TABLE [dbo].[Clients] (
         [ClientId] BIGINT NOT NULL IDENTITY,
@@ -48,7 +48,7 @@ BEGIN
 END;
 GO
 
-IF NOT EXISTS(SELECT * FROM [__EFMigrationsHistory] WHERE [MigrationId] = N'20230706021713_InitialMigration')
+IF NOT EXISTS(SELECT * FROM [__EFMigrationsHistory] WHERE [MigrationId] = N'20230706052710_InitialMigration')
 BEGIN
     CREATE TABLE [dbo].[Invoices] (
         [InvoiceId] BIGINT NOT NULL IDENTITY,
@@ -71,7 +71,7 @@ BEGIN
 END;
 GO
 
-IF NOT EXISTS(SELECT * FROM [__EFMigrationsHistory] WHERE [MigrationId] = N'20230706021713_InitialMigration')
+IF NOT EXISTS(SELECT * FROM [__EFMigrationsHistory] WHERE [MigrationId] = N'20230706052710_InitialMigration')
 BEGIN
     CREATE TABLE [dbo].[InvoiceItems] (
         [InvoiceItemId] BIGINT NOT NULL IDENTITY,
@@ -88,82 +88,82 @@ BEGIN
 END;
 GO
 
-IF NOT EXISTS(SELECT * FROM [__EFMigrationsHistory] WHERE [MigrationId] = N'20230706021713_InitialMigration')
+IF NOT EXISTS(SELECT * FROM [__EFMigrationsHistory] WHERE [MigrationId] = N'20230706052710_InitialMigration')
 BEGIN
     CREATE NONCLUSTERED INDEX [IX_Addresses_City] ON [dbo].[Addresses] ([City]);
 END;
 GO
 
-IF NOT EXISTS(SELECT * FROM [__EFMigrationsHistory] WHERE [MigrationId] = N'20230706021713_InitialMigration')
+IF NOT EXISTS(SELECT * FROM [__EFMigrationsHistory] WHERE [MigrationId] = N'20230706052710_InitialMigration')
 BEGIN
     CREATE NONCLUSTERED INDEX [IX_Addresses_CountryCode] ON [dbo].[Addresses] ([CountryCode]);
 END;
 GO
 
-IF NOT EXISTS(SELECT * FROM [__EFMigrationsHistory] WHERE [MigrationId] = N'20230706021713_InitialMigration')
+IF NOT EXISTS(SELECT * FROM [__EFMigrationsHistory] WHERE [MigrationId] = N'20230706052710_InitialMigration')
 BEGIN
     CREATE NONCLUSTERED INDEX [IX_Addresses_Region] ON [dbo].[Addresses] ([Region]);
 END;
 GO
 
-IF NOT EXISTS(SELECT * FROM [__EFMigrationsHistory] WHERE [MigrationId] = N'20230706021713_InitialMigration')
+IF NOT EXISTS(SELECT * FROM [__EFMigrationsHistory] WHERE [MigrationId] = N'20230706052710_InitialMigration')
 BEGIN
     CREATE UNIQUE NONCLUSTERED INDEX [UX_Addresses_Address] ON [dbo].[Addresses] ([AddressLine1], [City], [Region], [PostalCode], [CountryCode]);
 END;
 GO
 
-IF NOT EXISTS(SELECT * FROM [__EFMigrationsHistory] WHERE [MigrationId] = N'20230706021713_InitialMigration')
+IF NOT EXISTS(SELECT * FROM [__EFMigrationsHistory] WHERE [MigrationId] = N'20230706052710_InitialMigration')
 BEGIN
     CREATE NONCLUSTERED INDEX [IX_Client_Guid] ON [dbo].[Clients] ([Guid]);
 END;
 GO
 
-IF NOT EXISTS(SELECT * FROM [__EFMigrationsHistory] WHERE [MigrationId] = N'20230706021713_InitialMigration')
+IF NOT EXISTS(SELECT * FROM [__EFMigrationsHistory] WHERE [MigrationId] = N'20230706052710_InitialMigration')
 BEGIN
     CREATE UNIQUE NONCLUSTERED INDEX [UX_Client_Name] ON [dbo].[Clients] ([Name]);
 END;
 GO
 
-IF NOT EXISTS(SELECT * FROM [__EFMigrationsHistory] WHERE [MigrationId] = N'20230706021713_InitialMigration')
+IF NOT EXISTS(SELECT * FROM [__EFMigrationsHistory] WHERE [MigrationId] = N'20230706052710_InitialMigration')
 BEGIN
     CREATE INDEX [IX_InvoiceItems_InvoiceId] ON [dbo].[InvoiceItems] ([InvoiceId]);
 END;
 GO
 
-IF NOT EXISTS(SELECT * FROM [__EFMigrationsHistory] WHERE [MigrationId] = N'20230706021713_InitialMigration')
+IF NOT EXISTS(SELECT * FROM [__EFMigrationsHistory] WHERE [MigrationId] = N'20230706052710_InitialMigration')
 BEGIN
     CREATE UNIQUE NONCLUSTERED INDEX [UX_InvoiceItems_Description] ON [dbo].[InvoiceItems] ([Description]);
 END;
 GO
 
-IF NOT EXISTS(SELECT * FROM [__EFMigrationsHistory] WHERE [MigrationId] = N'20230706021713_InitialMigration')
+IF NOT EXISTS(SELECT * FROM [__EFMigrationsHistory] WHERE [MigrationId] = N'20230706052710_InitialMigration')
 BEGIN
     CREATE UNIQUE INDEX [IX_Invoices_BillFromAddressId] ON [dbo].[Invoices] ([BillFromAddressId]);
 END;
 GO
 
-IF NOT EXISTS(SELECT * FROM [__EFMigrationsHistory] WHERE [MigrationId] = N'20230706021713_InitialMigration')
+IF NOT EXISTS(SELECT * FROM [__EFMigrationsHistory] WHERE [MigrationId] = N'20230706052710_InitialMigration')
 BEGIN
     CREATE UNIQUE INDEX [IX_Invoices_BillToAddressId] ON [dbo].[Invoices] ([BillToAddressId]);
 END;
 GO
 
-IF NOT EXISTS(SELECT * FROM [__EFMigrationsHistory] WHERE [MigrationId] = N'20230706021713_InitialMigration')
+IF NOT EXISTS(SELECT * FROM [__EFMigrationsHistory] WHERE [MigrationId] = N'20230706052710_InitialMigration')
 BEGIN
     CREATE INDEX [IX_Invoices_ClientId] ON [dbo].[Invoices] ([ClientId]);
 END;
 GO
 
-IF NOT EXISTS(SELECT * FROM [__EFMigrationsHistory] WHERE [MigrationId] = N'20230706021713_InitialMigration')
+IF NOT EXISTS(SELECT * FROM [__EFMigrationsHistory] WHERE [MigrationId] = N'20230706052710_InitialMigration')
 BEGIN
     CREATE UNIQUE NONCLUSTERED INDEX [UX_Invoices_Number] ON [dbo].[Invoices] ([Number]);
 END;
 GO
 
-IF NOT EXISTS(SELECT * FROM [__EFMigrationsHistory] WHERE [MigrationId] = N'20230706021713_InitialMigration')
+IF NOT EXISTS(SELECT * FROM [__EFMigrationsHistory] WHERE [MigrationId] = N'20230706052710_InitialMigration')
 BEGIN
     INSERT INTO [__EFMigrationsHistory] ([MigrationId], [ProductVersion])
-    VALUES (N'20230706021713_InitialMigration', N'6.0.19');
+    VALUES (N'20230706052710_InitialMigration', N'6.0.19');
 END;
 GO
 
