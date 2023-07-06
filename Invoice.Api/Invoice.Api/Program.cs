@@ -1,19 +1,22 @@
 using Invoice.Api.Data.SqlServer;
 using Invoice.Api.Domains.Common.Mappers;
-using Invoice.Api.Domains.Common.Repositories;
-using Invoice.Api.Domains.Common.Services;
 using Invoice.Api.Extensions.DependencyInjection;
+using Invoice.Api.Mvc.Filters;
+using Invoice.Services;
 using Invoice.System;
 
 var builder = WebApplication.CreateBuilder(args);
 
 var configuration = builder.Configuration;
 
-builder.Services.AddControllers()
-    .AddJsonOptions(options =>
-    {
-        options.JsonSerializerOptions.PropertyNamingPolicy = System.Text.Json.JsonNamingPolicy.CamelCase;
-    });
+builder.Services.AddControllers(options =>
+{
+    options.Filters.Add<ControllerExceptionFilterAttribute>();
+})
+.AddJsonOptions(options =>
+{
+    options.JsonSerializerOptions.PropertyNamingPolicy = System.Text.Json.JsonNamingPolicy.CamelCase;
+});
 builder.Services.AddConfigurationReader();
 builder.Services.AddDbContextFactory<SqlServerDbContext>(options =>
 {
@@ -37,6 +40,7 @@ builder.Services.AddCors(options =>
 });
 builder.Services.AddScoped<IMapper, JsonMapper>();
 builder.Services.AddScoped<IDateTimeService, DateTimeService>();
+builder.Services.AddScoped<IModelService, ModelService>();
 builder.Services.AddScopedDomain("Common");
 
 var app = builder.Build();

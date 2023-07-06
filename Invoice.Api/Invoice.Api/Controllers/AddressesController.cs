@@ -1,5 +1,6 @@
 ﻿using Invoice.Api.Domains.Common.Mappers;
 using Invoice.Api.Domains.Common.Services;
+using Invoice.Api.Helpers;
 using Invoice.Api.Mvc;
 using Invoice.Api.Mvc.Filters;
 using Invoice.Api.Objects;
@@ -23,7 +24,7 @@ namespace Invoice.Api.Controllers
         }
 
         [HttpGet]
-        public async Task<IHttpListResult<AddressObject>> GetAllAsync([FromQuery] int page = 0, [FromQuery] int pageSize = 0, [FromQuery] int count = 0)
+        public async Task<IHttpCollectionResult<AddressObject>> GetAllAsync([FromQuery] int page = 0, [FromQuery] int pageSize = 0, [FromQuery] int count = 0)
         {
             var data = new List<AddressModel>();
 
@@ -57,12 +58,13 @@ namespace Invoice.Api.Controllers
         {
             var addressObject = _mapper.Map<AddressObject>(address);
             addressObject.PublicId = address.Guid;
-            addressObject.Meta = new Meta
-            {
-                UtcCreatedDate = address.UtcCreatedDate,
-                UtcUpdatedDate = address.UtcUpdatedDate,
-                UtcDeletedDate = address.UtcDeletedDate
-            };
+            addressObject.CreatedDate = TimeZoneHelper.ToLocalTime(address.UtcCreatedDate, "America/Chicago");
+
+            if (address.UtcUpdatedDate != null)
+                addressObject.UpdatedDate = TimeZoneHelper.ToLocalTime((DateTime)address.UtcUpdatedDate, "America/Chicago");
+
+            if (address.UtcDeletedDate != null)
+                addressObject.DeletedDate = TimeZoneHelper.ToLocalTime((DateTime)address.UtcDeletedDate, "America/Chicago");
             return addressObject;
         }
 

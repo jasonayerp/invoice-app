@@ -1,6 +1,7 @@
 ﻿using Invoice.Api.Domains.Common.Repositories;
 using Invoice.Domains.Common.Models;
 using Invoice.Domains.Common.Validators;
+using Invoice.Services;
 using Invoice.System;
 
 namespace Invoice.Api.Domains.Common.Services;
@@ -23,11 +24,13 @@ public class AddressService : IAddressService
 {
     private readonly IAddressRepository _addressRepository;
     private readonly IDateTimeService _dateTimeService;
+    private readonly IModelService _modelService;
 
-    public AddressService(IAddressRepository addressRepository, IDateTimeService dateTimeService)
+    public AddressService(IAddressRepository addressRepository, IDateTimeService dateTimeService, IModelService modelService)
     {
         _addressRepository = addressRepository;
         _dateTimeService = dateTimeService;
+        _modelService = modelService;
     }
 
     public async Task<AddressModel> CreateAsync(AddressModel address)
@@ -79,7 +82,9 @@ public class AddressService : IAddressService
 
     public async Task<List<AddressModel>> GetAllAsync()
     {
-        return await _addressRepository.ToListAsync();
+        var data = await _addressRepository.ToListAsync();
+
+        return data.Select(Configure).ToList();
     }
 
     public async Task<List<AddressModel>> GetPaginatedAsync(int page, int pageNumber)
@@ -115,5 +120,10 @@ public class AddressService : IAddressService
         await _addressRepository.UpdateAsync(data);
 
         return data;
+    }
+
+    private AddressModel Configure(AddressModel address)
+    {
+        return _modelService.GlobalConfigureModel(address);
     }
 }
