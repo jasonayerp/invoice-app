@@ -3,8 +3,8 @@ using Invoice.Api.Domains.Common.Services;
 using Invoice.Api.Helpers;
 using Invoice.Api.Mvc;
 using Invoice.Api.Mvc.Filters;
-using Invoice.Api.Objects;
 using Invoice.Domains.Common.Models;
+using Invoice.Domains.Common.Objects;
 using Invoice.Mvc;
 
 namespace Invoice.Api.Controllers
@@ -58,14 +58,6 @@ namespace Invoice.Api.Controllers
         {
             var addressObject = _mapper.Map<AddressObject>(address);
             addressObject.PublicId = address.Guid;
-            addressObject.CreatedDate = TimeZoneHelper.ToLocalTime(address.UtcCreatedDate, "America/Chicago");
-
-            if (address.UtcUpdatedDate != null)
-                addressObject.UpdatedDate = TimeZoneHelper.ToLocalTime((DateTime)address.UtcUpdatedDate, "America/Chicago");
-
-            if (address.UtcDeletedDate != null)
-                addressObject.DeletedDate = TimeZoneHelper.ToLocalTime((DateTime)address.UtcDeletedDate, "America/Chicago");
-
             return addressObject;
         }
 

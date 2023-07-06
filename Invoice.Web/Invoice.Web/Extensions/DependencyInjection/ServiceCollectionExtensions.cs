@@ -13,9 +13,9 @@ public static class ServiceCollectionExtensions
 
     public static void AddScopedDomain(this IServiceCollection services, string domainNamespace)
     {
-        Assembly assembly = Assembly.Load(Assembly.GetExecutingAssembly().GetReferencedAssemblies().First(e => e.FullName.Contains("Invoice.Api.Domains")));
+        Assembly assembly = Assembly.Load(Assembly.GetExecutingAssembly().GetReferencedAssemblies().First(e => e.FullName.Contains("Invoice.Web.Domains")));
 
-        Type[] implementationTypes = assembly.GetTypes().Where(e => e.FullName.StartsWith($"Invoice.Api.Domains.{domainNamespace}.Services") || e.FullName.StartsWith($"Invoice.Api.Domains.{domainNamespace}.Repositories")).ToArray();
+        Type[] implementationTypes = assembly.GetTypes().Where(e => e.FullName.StartsWith($"Invoice.Web.Domains.{domainNamespace}.Services") || e.FullName.StartsWith($"Invoice.Web.Domains.{domainNamespace}.Repositories")).ToArray();
 
         foreach (Type implementationType in implementationTypes)
         {
@@ -30,9 +30,9 @@ public static class ServiceCollectionExtensions
 
     public static void AddTransientdDomain(this IServiceCollection services, string domainNamespace)
     {
-        Assembly assembly = Assembly.Load(Assembly.GetExecutingAssembly().GetReferencedAssemblies().First(e => e.FullName.Contains("Invoice.Api.Domains")));
+        Assembly assembly = Assembly.Load(Assembly.GetExecutingAssembly().GetReferencedAssemblies().First(e => e.FullName.Contains("Invoice.Web.Domains")));
 
-        Type[] implementationTypes = assembly.GetTypes().Where(e => e.FullName.StartsWith($"Invoice.Api.Domains.{domainNamespace}.Services") || e.FullName.StartsWith($"Invoice.Api.Domains.{domainNamespace}.Repositories")).ToArray();
+        Type[] implementationTypes = assembly.GetTypes().Where(e => e.FullName.StartsWith($"Invoice.Web.Domains.{domainNamespace}.Services") || e.FullName.StartsWith($"Invoice.Web.Domains.{domainNamespace}.Repositories")).ToArray();
 
         foreach (Type implementationType in implementationTypes)
         {
@@ -47,9 +47,9 @@ public static class ServiceCollectionExtensions
 
     public static void AddSingletonDomain(this IServiceCollection services, string domainNamespace)
     {
-        Assembly assembly = Assembly.Load(Assembly.GetExecutingAssembly().GetReferencedAssemblies().First(e => e.FullName.Contains("Invoice.Api.Domains")));
+        Assembly assembly = Assembly.Load(Assembly.GetExecutingAssembly().GetReferencedAssemblies().First(e => e.FullName.Contains("Invoice.Web.Domains")));
 
-        Type[] implementationTypes = assembly.GetTypes().Where(e => e.FullName.StartsWith($"Invoice.Api.Domains.{domainNamespace}.Services") || e.FullName.StartsWith($"Invoice.Api.Domains.{domainNamespace}.Repositories")).ToArray();
+        Type[] implementationTypes = assembly.GetTypes().Where(e => e.FullName.StartsWith($"Invoice.Web.Domains.{domainNamespace}.Services") || e.FullName.StartsWith($"Invoice.Web.Domains.{domainNamespace}.Repositories")).ToArray();
 
         foreach (Type implementationType in implementationTypes)
         {

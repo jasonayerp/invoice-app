@@ -1,8 +1,8 @@
 ﻿using TimeZoneConverter;
 
-namespace Invoice.Api.Helpers;
+namespace Invoice.Globalization.TimeZone;
 
-public static class TimeZoneHelper
+public class TimeZoneHelper
 {
     public static DateTime ToLocalTime(DateTime utcDateTime, string timeZone)
     {

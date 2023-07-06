@@ -16,6 +16,7 @@ builder.Services.AddAuthentication(options =>
     options.Audience = "https://dev-identity.jasonayer.com/api";
 });
 builder.Services.AddConfigurationReader();
+builder.Services.AddScopedDomain("Common");
 
 var app = builder.Build();
 
