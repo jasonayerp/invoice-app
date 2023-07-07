@@ -1,13 +1,12 @@
-﻿using Invoice.Authentication;
-using Invoice.Configuration;
-using Invoice.Domains.Common.Models;
+﻿using Invoice.Domains.Common.Models;
 using Invoice.Domains.Common.Objects;
 using Invoice.Mvc;
-using Newtonsoft.Json;
+using Invoice.Web.Core.Caching;
+using Invoice.Web.Domains.Common.Repositories;
 
-namespace Invoice.Web.Domains.Common.Repositories;
+namespace Invoice.Web.Domains.Common.Services;
 
-public interface IAddressRepository
+public interface IAddressService
 {
     Task<IHttpCollectionResult<AddressObject>> GetAllAsync();
     Task<IHttpCollectionResult<AddressObject>> GetPaginatedAsync(int page, int pageNumber);
@@ -21,17 +20,13 @@ public interface IAddressRepository
     Task<IHttpResult> SoftDeleteAsync(AddressModel address);
 }
 
-public class AddressRepository : IAddressRepository
+public class AddressService : IAddressService
 {
-    private readonly IHttpClientFactory _httpClientFactory;
-    private readonly ITokenProvider _tokenProvider;
-    private readonly IConfigurationReader _configurationReader;
+    private readonly IAddressRepository _addressRepository;
 
-    public AddressRepository(IHttpClientFactory httpClientFactory, ITokenProvider tokenProvider, IConfigurationReader configurationReader)
+    public AddressService(IAddressRepository addressRepository)
     {
-        _httpClientFactory = httpClientFactory;
-        _tokenProvider = tokenProvider;
-        _configurationReader = configurationReader;
+        _addressRepository = addressRepository;
     }
 
     public async Task<IHttpResult<int>> CountAsync()
@@ -56,22 +51,7 @@ public class AddressRepository : IAddressRepository
 
     public async Task<IHttpCollectionResult<AddressObject>> GetAllAsync()
     {
-        using (HttpClient client = _httpClientFactory.CreateClient())
-        {
-            string? baseUri = _configurationReader.GetValue("ApiBaseUri");
-
-            if (string.IsNullOrEmpty(baseUri)) throw new ArgumentNullException("ApiBaseUri cannot be null or empty.");
-
-            client.BaseAddress = new Uri(baseUri.TrimEnd('/'));
-
-            HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Get, "/api/Addresses");
-
-            HttpResponseMessage response = await client.SendAsync(request);
-
-            if (!response.IsSuccessStatusCode) throw new Exception(response.StatusCode.ToString());
-
-            return JsonConvert.DeserializeObject<IHttpCollectionResult<AddressObject>>(await response.Content.ReadAsStringAsync());
-        }
+        return await _addressRepository.GetAllAsync();
     }
 
     public async Task<IHttpResult<AddressObject?>> GetByIdAsync(int id)

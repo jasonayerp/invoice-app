@@ -1,4 +1,4 @@
-﻿namespace Invoice.System;
+﻿namespace Invoice.Services;
 
 public interface IDateTimeService
 {

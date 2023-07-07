@@ -1,10 +1,15 @@
 using Invoice.Web.Data;
+using Invoice.Web.Domains.Common.Repositories;
+using Invoice.Web.Domains.Common.Services;
 using Invoice.Web.Extensions.DependencyInjection;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();
+builder.Services.AddHttpClient();
+builder.Services.AddConfigurationReader();
+builder.Services.AddTokenProvider();
 builder.Services.AddSingleton<WeatherForecastService>();
 builder.Services.AddAuthentication(options =>
 {
@@ -15,8 +20,10 @@ builder.Services.AddAuthentication(options =>
     options.Authority = "https://dev-mhnefndh2y2ivp3b.us.auth0.com/";
     options.Audience = "https://dev-identity.jasonayer.com/api";
 });
-builder.Services.AddConfigurationReader();
-builder.Services.AddScopedDomain("Common");
+
+//builder.Services.AddScopedDomain("Common");
+builder.Services.AddScoped<IAddressRepository, AddressRepository>();
+builder.Services.AddScoped<IAddressService, AddressService>();
 
 var app = builder.Build();
 

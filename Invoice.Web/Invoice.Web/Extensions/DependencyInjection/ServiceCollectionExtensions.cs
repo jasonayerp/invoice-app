@@ -1,4 +1,6 @@
-﻿using Invoice.Configuration;
+﻿using Invoice.Authentication;
+using Invoice.Configuration;
+using Invoice.Web.Authentication;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using System.Reflection;
 
@@ -6,6 +8,11 @@ namespace Invoice.Web.Extensions.DependencyInjection;
 
 public static class ServiceCollectionExtensions
 {
+    public static void AddTokenProvider(this IServiceCollection services)
+    {
+        services.AddScoped<ITokenProvider, Auth0TokenProvider>();
+    }
+
     public static void AddConfigurationReader(this IServiceCollection services)
     {
         services.AddScoped<IConfigurationReader, NetCoreConfigurationReader>();

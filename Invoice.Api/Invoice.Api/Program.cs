@@ -3,7 +3,6 @@ using Invoice.Api.Domains.Common.Mappers;
 using Invoice.Api.Extensions.DependencyInjection;
 using Invoice.Api.Mvc.Filters;
 using Invoice.Services;
-using Invoice.System;
 
 var builder = WebApplication.CreateBuilder(args);
 
