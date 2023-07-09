@@ -3,13 +3,16 @@
 <PageTitle>Weather forecast</PageTitle>
 
 @using Invoice.Web.Data
+@using BlazorQuery
+@using Microsoft.Extensions.Caching.Memory
 @inject WeatherForecastService ForecastService
+@inject IMemoryCache MemoryCache
 
 <h1>Weather forecast</h1>
 
 <p>This component demonstrates fetching data from a service.</p>
 
-@if (forecasts == null)
+@if (WeatherForecasts == null)
 {
     <p><em>Loading...</em></p>
 }
@@ -25,7 +28,7 @@ else
             </tr>
         </thead>
         <tbody>
-            @foreach (var forecast in forecasts)
+            @foreach (var forecast in WeatherForecasts)
             {
                 <tr>
                     <td>@forecast.Date.ToShortDateString()</td>
@@ -39,10 +42,57 @@ else
 }
 
 @code {
-    private WeatherForecast[]? forecasts;
+    protected List<WeatherForecast>? WeatherForecasts { get; set; }
+    protected Mutation<WeatherForecast> CreateMutation { get; set; } = default!;
+    protected Mutation<WeatherForecast> UpdateMutation { get; set; } = default!;
 
-    protected override async Task OnInitializedAsync()
+    protected override async Task OnParametersSetAsync()
     {
-        forecasts = await ForecastService.GetForecastAsync(DateTime.Now);
+        await GetWeatherForecastAsync();
+
+        CreateMutation = BlazorQuery.UseMutation<WeatherForecast>(CreateWeatherForecastAsync, options =>
+            options.OnSuccess(async () =>
+            {
+                MemoryCache.Remove("weatherforecasts");
+
+                await GetWeatherForecastAsync();
+            }));
+
+        UpdateMutation = BlazorQuery.UseMutation<WeatherForecast>(UpdateWeatherForecastAsync, options =>
+            options.OnSuccess(async () =>
+            {
+                MemoryCache.Remove("weatherforecasts");
+
+                await GetWeatherForecastAsync();
+            }));
+    }
+
+    protected async Task GetWeatherForecastAsync()
+    {
+        WeatherForecasts = await MemoryCache.GetOrCreateAsync("weatherforecasts", async (options) =>
+        {
+            return await ForecastService.GetForecastAsync(DateTime.Now);
+        });
+    }
+
+    protected async Task HandleCreateWeatherForeCastClick()
+    {
+        var data = new WeatherForecast();
+
+        await CreateWeatherForecastAsync(data);
+    }
+
+    protected async Task CreateWeatherForecastAsync(WeatherForecast weatherForecast)
+    {
+        await Task.CompletedTask;
+
+        CreateMutation.Mutate(weatherForecast);
+    }
+
+    protected async Task UpdateWeatherForecastAsync(WeatherForecast weatherForecast)
+    {
+        await Task.CompletedTask;
+
+        CreateMutation.Mutate(weatherForecast);
     }
 }

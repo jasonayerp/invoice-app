@@ -15,6 +15,7 @@ public class ControllerExceptionFilterAttribute : ExceptionFilterAttribute
             {
                 new ErrorDetail
                 {
+                    Source = exception.Source ?? "",
                     Reason = exception.GetType().Name,
                     Message = exception.Message
                 }
