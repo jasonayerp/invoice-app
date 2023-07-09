@@ -1,0 +1,61 @@
+﻿@page "/invoices"
+
+@inject IAddressService AddressService
+
+@if (Addresses == null)
+{
+    <p>Loading...</p>
+}
+else
+{
+    <div class="table-responsive">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Address Line 1</th>
+                    <th>Address Line 2</th>
+                    <th>City</th>
+                    <th>State</th>
+                    <th>Zip</th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (Addresses.Count() == 0)
+                {
+                    <tr>
+                        <td colspan="5">
+                            No invoices
+                        </td>
+                    </tr>
+                }
+                else
+                {
+                    @foreach (AddressObject address in Addresses)
+                    {
+                        <tr>
+                            <td>@address.AddressLine1</td>
+                            <td>@(address.AddressLine2 ?? "")</td>
+                            <td>@address.City</td>
+                            <td>@address.Region</td>
+                            <td>@address.PostalCode</td>
+                        </tr>
+                    }
+                }
+            </tbody>
+        </table>
+    </div>
+}
+
+@code {
+    protected List<AddressObject>? Addresses { get; set; }
+
+    protected override async Task OnParametersSetAsync()
+    {
+        await GetAddressesAsync();
+    }
+
+    protected async Task GetAddressesAsync()
+    {
+        Addresses = await AddressService.GetAllAsync();
+    }
+}

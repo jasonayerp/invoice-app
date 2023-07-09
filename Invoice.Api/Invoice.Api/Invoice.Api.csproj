@@ -9,6 +9,7 @@
   <ItemGroup>
     <PackageReference Include="Invoice" Version="1.1.8" />
     <PackageReference Include="Invoice.Domains" Version="1.1.5" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="6.0.19" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0" />
     <PackageReference Include="TimeZoneConverter" Version="6.1.0" />
   </ItemGroup>

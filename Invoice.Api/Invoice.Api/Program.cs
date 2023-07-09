@@ -16,6 +16,16 @@ builder.Services.AddControllers(options =>
 {
     options.JsonSerializerOptions.PropertyNamingPolicy = System.Text.Json.JsonNamingPolicy.CamelCase;
 });
+builder.Services.AddAuthentication(options =>
+{
+    options.DefaultAuthenticateScheme = Microsoft.AspNetCore.Authentication.JwtBearer.JwtBearerDefaults.AuthenticationScheme;
+    options.DefaultChallengeScheme = Microsoft.AspNetCore.Authentication.JwtBearer.JwtBearerDefaults.AuthenticationScheme;
+}).AddJwtBearer(options =>
+{
+    options.Authority = "https://dev-mhnefndh2y2ivp3b.us.auth0.com/";
+    options.Audience = "https://dev-identity.jasonayer.com/api";
+});
+
 builder.Services.AddConfigurationReader();
 builder.Services.AddDbContextFactory<SqlServerDbContext>(options =>
 {
@@ -67,6 +77,8 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 
 app.UseCors("Policy");
+
+app.UseAuthentication();
 
 app.UseAuthorization();
 

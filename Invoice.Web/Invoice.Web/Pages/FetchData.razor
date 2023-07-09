@@ -3,7 +3,6 @@
 <PageTitle>Weather forecast</PageTitle>
 
 @using Invoice.Web.Data
-@using BlazorQuery
 @using Microsoft.Extensions.Caching.Memory
 @inject WeatherForecastService ForecastService
 @inject IMemoryCache MemoryCache
@@ -43,28 +42,11 @@ else
 
 @code {
     protected List<WeatherForecast>? WeatherForecasts { get; set; }
-    protected Mutation<WeatherForecast> CreateMutation { get; set; } = default!;
-    protected Mutation<WeatherForecast> UpdateMutation { get; set; } = default!;
 
     protected override async Task OnParametersSetAsync()
     {
         await GetWeatherForecastAsync();
 
-        CreateMutation = BlazorQuery.UseMutation<WeatherForecast>(CreateWeatherForecastAsync, options =>
-            options.OnSuccess(async () =>
-            {
-                MemoryCache.Remove("weatherforecasts");
-
-                await GetWeatherForecastAsync();
-            }));
-
-        UpdateMutation = BlazorQuery.UseMutation<WeatherForecast>(UpdateWeatherForecastAsync, options =>
-            options.OnSuccess(async () =>
-            {
-                MemoryCache.Remove("weatherforecasts");
-
-                await GetWeatherForecastAsync();
-            }));
     }
 
     protected async Task GetWeatherForecastAsync()
@@ -73,26 +55,5 @@ else
         {
             return await ForecastService.GetForecastAsync(DateTime.Now);
         });
-    }
-
-    protected async Task HandleCreateWeatherForeCastClick()
-    {
-        var data = new WeatherForecast();
-
-        await CreateWeatherForecastAsync(data);
-    }
-
-    protected async Task CreateWeatherForecastAsync(WeatherForecast weatherForecast)
-    {
-        await Task.CompletedTask;
-
-        CreateMutation.Mutate(weatherForecast);
-    }
-
-    protected async Task UpdateWeatherForecastAsync(WeatherForecast weatherForecast)
-    {
-        await Task.CompletedTask;
-
-        CreateMutation.Mutate(weatherForecast);
     }
 }

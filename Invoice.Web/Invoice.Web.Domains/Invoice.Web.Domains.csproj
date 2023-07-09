@@ -18,6 +18,7 @@
     <PackageReference Include="Invoice" Version="1.1.8" />
     <PackageReference Include="Invoice.Domains" Version="1.1.5" />
     <PackageReference Include="Microsoft.Extensions.Http" Version="6.0.0" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
   </ItemGroup>
 
   <ItemGroup>

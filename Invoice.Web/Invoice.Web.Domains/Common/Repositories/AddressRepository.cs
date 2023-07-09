@@ -3,13 +3,13 @@ using Invoice.Configuration;
 using Invoice.Domains.Common.Models;
 using Invoice.Domains.Common.Objects;
 using Invoice.Mvc;
-using Newtonsoft.Json;
+using Invoice.Web.Core;
 
 namespace Invoice.Web.Domains.Common.Repositories;
 
 public interface IAddressRepository
 {
-    Task<IHttpCollectionResult<AddressObject>> GetAllAsync();
+    Task<List<AddressObject>> GetAllAsync();
     Task<IHttpCollectionResult<AddressObject>> GetPaginatedAsync(int page, int pageNumber);
     Task<IHttpCollectionResult<AddressObject>> GetTopAsync(int count);
     Task<IHttpResult<bool>> ExistsAsync();
@@ -41,7 +41,22 @@ public class AddressRepository : IAddressRepository
 
     public async Task<IHttpResult<AddressObject>> CreateAsync(AddressModel address)
     {
-        throw new NotImplementedException();
+        using (HttpClient client = _httpClientFactory.CreateClient())
+        {
+            string? baseUri = _configurationReader.GetValue("ApiBaseUri");
+
+            if (string.IsNullOrEmpty(baseUri)) throw new ArgumentNullException("ApiBaseUri cannot be null or empty.");
+
+            client.BaseAddress = new Uri(baseUri.TrimEnd('/'));
+
+            HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Post, "/api/Addresses");
+
+            HttpResponseMessage response = await client.SendAsync(request);
+
+            if (!response.IsSuccessStatusCode) throw new Exception(response.StatusCode.ToString());
+
+            return JsonConvert.DeserializeObject<IHttpResult<AddressObject>>(await response.Content.ReadAsStringAsync());
+        }
     }
 
     public async Task<IHttpResult> DeleteAsync(AddressModel address)
@@ -54,7 +69,7 @@ public class AddressRepository : IAddressRepository
         throw new NotImplementedException();
     }
 
-    public async Task<IHttpCollectionResult<AddressObject>> GetAllAsync()
+    public async Task<List<AddressObject>> GetAllAsync()
     {
         using (HttpClient client = _httpClientFactory.CreateClient())
         {
@@ -70,7 +85,9 @@ public class AddressRepository : IAddressRepository
 
             if (!response.IsSuccessStatusCode) throw new Exception(response.StatusCode.ToString());
 
-            return JsonConvert.DeserializeObject<IHttpCollectionResult<AddressObject>>(await response.Content.ReadAsStringAsync());
+            var data = JsonConvert.DeserializeObject<CollectionResult<AddressObject>>(await response.Content.ReadAsStringAsync());
+
+            return data.Data.ToList();
         }
     }
 

@@ -6,6 +6,7 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
     <PackageOutputPath>D:\Users\jason\source\repos\invoice-app\nuget</PackageOutputPath>
+    <Version>1.0.1</Version>
   </PropertyGroup>
 
 
