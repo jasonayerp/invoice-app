@@ -15,8 +15,7 @@ public interface IAddressService
     Task<AddressModel?> GetByIdAsync(int id);
     Task<AddressModel> CreateAsync(AddressModel address);
     Task<AddressModel> UpdateAsync(AddressModel address);
-    Task DeleteAsync(AddressModel address);
-    Task SoftDeleteAsync(AddressModel address);
+    Task DeleteAsync(AddressModel address, bool softDelete = true);
 }
 
 public class AddressService : IAddressService
@@ -69,14 +68,18 @@ public class AddressService : IAddressService
         return await _addressRepository.GetByIdAsync(id);
     }
 
-    public async Task DeleteAsync(AddressModel address)
+    public async Task DeleteAsync(AddressModel address, bool softDelete = true)
     {
-        await _addressRepository.RemoveAsync(address);
-    }
+        if (softDelete)
+        {
+            address.UtcDeletedDate = _dateTimeService.UtcNow;
 
-    public async Task SoftDeleteAsync(AddressModel address)
-    {
-        await _addressRepository.RemoveAsync(address);
+            await _addressRepository.UpdateAsync(address);
+        }
+        else
+        {
+            await _addressRepository.RemoveAsync(address);
+        }
     }
 
     public async Task<List<AddressModel>> GetAllAsync()

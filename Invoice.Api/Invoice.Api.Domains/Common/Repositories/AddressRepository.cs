@@ -1,5 +1,4 @@
-﻿using Invoice.Api.Data;
-using Invoice.Api.Data.Entities;
+﻿using Invoice.Api.Data.Entities;
 using Invoice.Api.Data.SqlServer;
 using Invoice.Api.Domains.Common.Mappers;
 using Invoice.Domains.Common.Models;
@@ -8,12 +7,13 @@ namespace Invoice.Api.Domains.Common.Repositories;
 
 public interface IAddressRepository
 {
-    Task<List<AddressModel>> ToListAsync(bool ignoreQueryFilters = false);
-    Task<List<AddressModel>> ToListAsync(int page, int pageNumber, bool ignoreQueryFilters = false);
-    Task<List<AddressModel>> ToListAsync(int count, bool ignoreQueryFilters = false);
-    Task<bool> ExistsAsync(bool ignoreQueryFilters = false);
-    Task<int> CountAsync(bool ignoreQueryFilters = false);
-    Task<AddressModel?> GetByIdAsync(int id, bool ignoreQueryFilters = false);
+    void IgnoreQueryFilters();
+    Task<List<AddressModel>> ToListAsync();
+    Task<List<AddressModel>> ToListAsync(int page, int pageNumber);
+    Task<List<AddressModel>> ToListAsync(int count);
+    Task<bool> ExistsAsync();
+    Task<int> CountAsync();
+    Task<AddressModel?> GetByIdAsync(int id);
     Task<AddressModel> AddAsync(AddressModel address);
     Task<List<AddressModel>> AddRangeAsync(IEnumerable<AddressModel> addresses);
     Task UpdateAsync(AddressModel address);
@@ -26,6 +26,7 @@ public class AddressRepository : IAddressRepository
 {
     private readonly IDbContextFactory<SqlServerDbContext> _factory;
     private readonly IMapper _mapper;
+    private bool _ignoreQueryFilters = false;
 
     private IQueryable<AddressEntity> SetQueryFilters(IQueryable<AddressEntity> source, bool ignoreQueryFilters)
     {
@@ -36,6 +37,11 @@ public class AddressRepository : IAddressRepository
     {
         _factory = factory;
         _mapper = mapper;
+    }
+
+    public void IgnoreQueryFilters()
+    {
+        _ignoreQueryFilters = true;
     }
 
     public async Task<AddressModel> AddAsync(AddressModel address)
@@ -66,31 +72,31 @@ public class AddressRepository : IAddressRepository
         }
     }
 
-    public async Task<int> CountAsync(bool ignoreQueryFilters = false)
+    public async Task<int> CountAsync()
     {
         using (var context = _factory.CreateDbContext())
         {
-            var query = SetQueryFilters(context.Addresses.AsQueryable(), ignoreQueryFilters);
+            var query = SetQueryFilters(context.Addresses.AsQueryable(), _ignoreQueryFilters);
 
             return await query.CountAsync();
         }
     }
 
-    public async Task<bool> ExistsAsync(bool ignoreQueryFilters = false)
+    public async Task<bool> ExistsAsync()
     {
         using (var context = _factory.CreateDbContext())
         {
-            var query = SetQueryFilters(context.Addresses.AsQueryable(), ignoreQueryFilters);
+            var query = SetQueryFilters(context.Addresses.AsQueryable(), _ignoreQueryFilters);
 
             return await query.AnyAsync();
         }
     }
 
-    public async Task<AddressModel?> GetByIdAsync(int id, bool ignoreQueryFilters = false)
+    public async Task<AddressModel?> GetByIdAsync(int id)
     {
         using (var context = _factory.CreateDbContext())
         {
-            var data = ignoreQueryFilters
+            var data = _ignoreQueryFilters
                 ? await context.Addresses.IgnoreQueryFilters().SingleOrDefaultAsync(e => e.AddressId == id)
                 : await context.Addresses.SingleOrDefaultAsync(e => e.AddressId == id);
 
@@ -130,11 +136,11 @@ public class AddressRepository : IAddressRepository
         }
     }
 
-    public async Task<List<AddressModel>> ToListAsync(bool ignoreQueryFilters = false)
+    public async Task<List<AddressModel>> ToListAsync()
     {
         using (var context = _factory.CreateDbContext())
         {
-            var query = SetQueryFilters(context.Addresses.AsQueryable(), ignoreQueryFilters);
+            var query = SetQueryFilters(context.Addresses.AsQueryable(), _ignoreQueryFilters);
 
             var data = await query.ToListAsync();
 
@@ -142,11 +148,11 @@ public class AddressRepository : IAddressRepository
         }
     }
 
-    public async Task<List<AddressModel>> ToListAsync(int page, int pageNumber, bool ignoreQueryFilters = false)
+    public async Task<List<AddressModel>> ToListAsync(int page, int pageNumber)
     {
         using (var context = _factory.CreateDbContext())
         {
-            var query = SetQueryFilters(context.Addresses.AsQueryable(), ignoreQueryFilters);
+            var query = SetQueryFilters(context.Addresses.AsQueryable(), _ignoreQueryFilters);
 
             var data = await query.Skip((page - 1) * pageNumber).Take(pageNumber).ToListAsync();
 
@@ -154,11 +160,11 @@ public class AddressRepository : IAddressRepository
         }
     }
 
-    public async Task<List<AddressModel>> ToListAsync(int count, bool ignoreQueryFilters = false)
+    public async Task<List<AddressModel>> ToListAsync(int count)
     {
         using (var context = _factory.CreateDbContext())
         {
-            var query = SetQueryFilters(context.Addresses.AsQueryable(), ignoreQueryFilters);
+            var query = SetQueryFilters(context.Addresses.AsQueryable(), _ignoreQueryFilters);
 
             var data = await query.Take(count).ToListAsync();
 

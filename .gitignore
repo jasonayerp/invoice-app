@@ -8,6 +8,10 @@
 # AppSettings
 **/appSettings.Development.json
 
+# Node
+**/package.json
+**/dist/
+
 # User-specific files (MonoDevelop/Xamarin Studio)
 **/*.userprefs
 

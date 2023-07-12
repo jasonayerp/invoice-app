@@ -8,7 +8,7 @@ using Invoice.Mvc;
 
 namespace Invoice.Api.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/v1")]
     [ApiController]
     [ControllerExceptionFilter]
     public class AddressesController : ApiControllerBase
@@ -22,8 +22,18 @@ namespace Invoice.Api.Controllers
             _mapper = mapper;
         }
 
+        [HttpPost]
+        [Route("addresses")]
+        public async Task<IHttpResult<AddressObject>> CreateAsync([FromBody] AddressObject address)
+        {
+            var data = await _addressService.CreateAsync(Map(address));
+
+            return Success(Map(data));
+        }
+
         [HttpGet]
-        public async Task<IHttpCollectionResult<AddressObject>> GetAllAsync([FromQuery] int page = 0, [FromQuery] int pageSize = 0, [FromQuery] int count = 0)
+        [Route("addresses")]
+        public async Task<IHttpCollectionResult<AddressObject>> ReadAsync([FromQuery] int page = 0, [FromQuery] int pageSize = 0, [FromQuery] int count = 0)
         {
             var data = new List<AddressModel>();
 
@@ -45,12 +55,36 @@ namespace Invoice.Api.Controllers
             return SuccessList(data.Select(Map).ToList());
         }
 
-        [HttpPost]
-        public async Task<IHttpResult<AddressObject>> CreateAsync([FromBody] AddressObject address)
+        [HttpGet]
+        [Route("addresses/{id}")]
+        public async Task<IHttpResult<AddressObject>> ReadAsync([FromRoute] int id)
         {
-            var data = await _addressService.CreateAsync(Map(address));
+            var data = await _addressService.GetByIdAsync(id);
+
+            return Success(data != null ? Map(data) : null);
+        }
+
+        [HttpPatch]
+        [Route("addresses")]
+        public async Task<IHttpResult<AddressObject>> UpdateAsync([FromBody] AddressObject address)
+        {
+            var data = await _addressService.UpdateAsync(Map(address));
 
             return Success(Map(data));
+        }
+
+        [HttpDelete]
+        [Route("addresses/{id}")]
+        public async Task<IHttpResult<bool>> DeleteAsync([FromRoute] int id)
+        {
+            var address = await _addressService.GetByIdAsync(id);
+
+            if (address != null)
+            {
+                await _addressService.DeleteAsync(address);
+            }
+
+            return Success(address != null);
         }
 
         private AddressObject Map(AddressModel address)

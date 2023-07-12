@@ -10,6 +10,7 @@ public class SqlServerDbContext : DbContext
     public DbSet<ClientEntity> Clients { get; set; }
     public DbSet<InvoiceEntity> Invoices { get; set; }
     public DbSet<InvoiceItemEntity> InvoicesItems { get; set; }
+    public DbSet<VwInvoiceSummaryEntity> InvoiceSummaries { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
@@ -119,6 +120,11 @@ public class SqlServerDbContext : DbContext
             entity.HasOne(e => e.Invoice).WithMany(e => e.InvoiceItems).HasForeignKey(e => e.InvoiceId).HasConstraintName("FK_InvoiceItem_Invoice_InvoiceId").OnDelete(DeleteBehavior.Cascade);
 
             entity.HasQueryFilter(e => e.UtcDeletedDate == null);
+        });
+
+        modelBuilder.Entity<VwInvoiceSummaryEntity>(entity =>
+        {
+            entity.ToView("vw_InvoiceSummary");
         });
     }
 }
