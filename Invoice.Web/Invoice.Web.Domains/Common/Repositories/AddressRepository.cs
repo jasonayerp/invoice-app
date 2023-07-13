@@ -4,6 +4,7 @@ using Invoice.Domains.Common.Models;
 using Invoice.Domains.Common.Objects;
 using Invoice.Mvc;
 using Invoice.Web.Core;
+using Invoice.Web.Core.Factories;
 
 namespace Invoice.Web.Domains.Common.Repositories;
 
@@ -23,13 +24,13 @@ public interface IAddressRepository
 
 public class AddressRepository : IAddressRepository
 {
-    private readonly IHttpClientFactory _httpClientFactory;
+    private readonly IInvoiceHttpClientFactory _factory;
     private readonly ITokenProvider _tokenProvider;
     private readonly IConfigurationReader _configurationReader;
 
-    public AddressRepository(IHttpClientFactory httpClientFactory, ITokenProvider tokenProvider, IConfigurationReader configurationReader)
+    public AddressRepository(IInvoiceHttpClientFactory factory, ITokenProvider tokenProvider, IConfigurationReader configurationReader)
     {
-        _httpClientFactory = httpClientFactory;
+        _factory = factory;
         _tokenProvider = tokenProvider;
         _configurationReader = configurationReader;
     }
@@ -41,18 +42,9 @@ public class AddressRepository : IAddressRepository
 
     public async Task<IHttpResult<AddressObject>> CreateAsync(AddressModel address)
     {
-        using (HttpClient client = _httpClientFactory.CreateClient())
+        using (HttpClient client = _factory.CreateClient())
         {
-            var token = await _tokenProvider.GetTokenAsync();
-
-            string? baseUri = _configurationReader.GetValue("ApiBaseUri");
-
-            if (string.IsNullOrEmpty(baseUri)) throw new ArgumentNullException("ApiBaseUri cannot be null or empty.");
-
-            client.BaseAddress = new Uri(baseUri.TrimEnd('/'));
-
-            HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Post, "/api/addresses/create");
-            request.Headers.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token.AccessToken);
+            HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Post, "api/addresses/create");
 
             HttpResponseMessage response = await client.SendAsync(request);
 
@@ -74,18 +66,9 @@ public class AddressRepository : IAddressRepository
 
     public async Task<List<AddressObject>> GetAllAsync()
     {
-        using (HttpClient client = _httpClientFactory.CreateClient())
+        using (HttpClient client = _factory.CreateClient())
         {
-            var token = await _tokenProvider.GetTokenAsync();
-
-            string? baseUri = _configurationReader.GetValue("ApiBaseUri");
-
-            if (string.IsNullOrEmpty(baseUri)) throw new ArgumentNullException("ApiBaseUri cannot be null or empty.");
-
-            client.BaseAddress = new Uri(baseUri.TrimEnd('/'));
-
-            HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Get, "/api/v1/addresses/read");
-            request.Headers.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue(token.TokenType, token.AccessToken);
+            HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Get, "api/v1/addresses/read");
 
             HttpResponseMessage response = await client.SendAsync(request);
 

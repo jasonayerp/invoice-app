@@ -1,6 +1,7 @@
 ﻿using Invoice.Authorization;
 using Invoice.Configuration;
 using Invoice.Web.Authorization;
+using Invoice.Web.Core.Factories;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using System.Reflection;
 
@@ -8,6 +9,11 @@ namespace Invoice.Web.Extensions.DependencyInjection;
 
 public static class ServiceCollectionExtensions
 {
+    public static void AddInvoiceHttpClient(this IServiceCollection services)
+    {
+        services.AddScoped<IInvoiceHttpClientFactory, InvoiceHttpClientFactory>();
+    }
+
     public static void AddTokenProvider(this IServiceCollection services)
     {
         services.AddScoped<ITokenProvider, Auth0TokenProvider>();
