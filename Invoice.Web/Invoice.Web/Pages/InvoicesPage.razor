@@ -1,7 +1,5 @@
 ﻿@page "/invoices"
 
-@inject IAddressService AddressService
-
 @if (Addresses == null)
 {
     <p>Loading...</p>
@@ -30,7 +28,7 @@ else
                 }
                 else
                 {
-                    @foreach (AddressObject address in Addresses)
+                    @foreach (var address in Addresses)
                     {
                         <tr>
                             <td>@address.AddressLine1</td>
@@ -46,16 +44,16 @@ else
     </div>
 }
 
+@using Invoice.Domains.Common.Models
+
+@inject IAddressService AddressService
+@inject ICacheProvider CacheProvider
+
 @code {
-    protected List<AddressObject>? Addresses { get; set; }
+    protected List<AddressModel>? Addresses { get; set; }
 
     protected override async Task OnParametersSetAsync()
     {
-        await GetAddressesAsync();
-    }
-
-    protected async Task GetAddressesAsync()
-    {
-        Addresses = await AddressService.GetAllAsync();
+        Addresses = await CacheProvider.GetOrCreateItemAsync("addresses", async () => await AddressService.GetAllAsync());
     }
 }
