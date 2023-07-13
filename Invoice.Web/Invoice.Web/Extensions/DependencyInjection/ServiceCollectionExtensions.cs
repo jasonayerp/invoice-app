@@ -1,6 +1,6 @@
-﻿using Invoice.Authentication;
+﻿using Invoice.Authorization;
 using Invoice.Configuration;
-using Invoice.Web.Authentication;
+using Invoice.Web.Authorization;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using System.Reflection;
 

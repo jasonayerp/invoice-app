@@ -5,12 +5,15 @@ using Invoice.Api.Mvc.Filters;
 using Invoice.Domains.Common.Models;
 using Invoice.Domains.Common.Objects;
 using Invoice.Mvc;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Invoice.Api.Controllers
 {
-    [Route("api/v1")]
+    [Route("api/v1/addresses")]
     [ApiController]
     [ControllerExceptionFilter]
+    [ProducesResponseType(typeof(Error), StatusCodes.Status500InternalServerError)]
+    [ProducesResponseType(typeof(Error), StatusCodes.Status401Unauthorized)]
     public class AddressesController : ApiControllerBase
     {
         private readonly IAddressService _addressService;
@@ -22,18 +25,20 @@ namespace Invoice.Api.Controllers
             _mapper = mapper;
         }
 
-        [HttpPost]
-        [Route("addresses")]
-        public async Task<IHttpResult<AddressObject>> CreateAsync([FromBody] AddressObject address)
+        [HttpPost("create")]
+        [Authorize("create:addresses")]
+        [ProducesResponseType(typeof(AddressObject), StatusCodes.Status201Created)]
+        public async Task<AddressObject> CreateAsync([FromBody] AddressObject address)
         {
             var data = await _addressService.CreateAsync(Map(address));
 
-            return Success(Map(data));
+            return Map(data);
         }
 
-        [HttpGet]
-        [Route("addresses")]
-        public async Task<IHttpCollectionResult<AddressObject>> ReadAsync([FromQuery] int page = 0, [FromQuery] int pageSize = 0, [FromQuery] int count = 0)
+        [HttpGet("read")]
+        [Authorize("read:addresses")]
+        [ProducesResponseType(typeof(IEnumerable<AddressObject>), StatusCodes.Status200OK)]
+        public async Task<IEnumerable<AddressObject>> ReadAsync([FromQuery] int page = 0, [FromQuery] int pageSize = 0, [FromQuery] int count = 0)
         {
             var data = new List<AddressModel>();
 
@@ -52,30 +57,32 @@ namespace Invoice.Api.Controllers
                 data = await _addressService.GetAllAsync();
             }
 
-            return SuccessList(data.Select(Map).ToList());
+            return data.Select(Map);
         }
 
-        [HttpGet]
-        [Route("addresses/{id}")]
-        public async Task<IHttpResult<AddressObject>> ReadAsync([FromRoute] int id)
+        [HttpGet("read/{id}")]
+        [Authorize("read:addresses")]
+        [ProducesResponseType(typeof(AddressObject), StatusCodes.Status200OK)]
+        public async Task<AddressObject?> ReadAsync([FromRoute] int id)
         {
             var data = await _addressService.GetByIdAsync(id);
 
-            return Success(data != null ? Map(data) : null);
+            return data != null ? Map(data) : null;
         }
 
-        [HttpPatch]
-        [Route("addresses")]
-        public async Task<IHttpResult<AddressObject>> UpdateAsync([FromBody] AddressObject address)
+        [HttpPut("update")]
+        [Authorize("update:addresses")]
+        [ProducesResponseType(typeof(AddressObject), StatusCodes.Status200OK)]
+        public async Task<AddressObject> UpdateAsync([FromBody] AddressObject address)
         {
             var data = await _addressService.UpdateAsync(Map(address));
 
-            return Success(Map(data));
+            return Map(data);
         }
 
-        [HttpDelete]
-        [Route("addresses/{id}")]
-        public async Task<IHttpResult<bool>> DeleteAsync([FromRoute] int id)
+        [HttpDelete("delete/{id}")]
+        [Authorize("delete:addresses")]
+        public async Task<bool> DeleteAsync([FromRoute] int id)
         {
             var address = await _addressService.GetByIdAsync(id);
 
@@ -84,7 +91,7 @@ namespace Invoice.Api.Controllers
                 await _addressService.DeleteAsync(address);
             }
 
-            return Success(address != null);
+            return address != null;
         }
 
         private AddressObject Map(AddressModel address)

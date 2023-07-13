@@ -22,6 +22,6 @@ public class ControllerExceptionFilterAttribute : ExceptionFilterAttribute
             }
         };
 
-        context.Result = new ObjectResult(new HttpResult(error));
+        context.Result = new ObjectResult(error);
     }
 }

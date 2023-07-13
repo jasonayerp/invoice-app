@@ -1,8 +1,8 @@
+using Invoice.Configuration;
 using Invoice.Web.Data;
 using Invoice.Web.Domains.Common.Repositories;
 using Invoice.Web.Domains.Common.Services;
 using Invoice.Web.Extensions.DependencyInjection;
-using Microsoft.AspNetCore.Authentication.Cookies;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -11,11 +11,13 @@ builder.Services.AddServerSideBlazor();
 builder.Services.AddHttpClient();
 builder.Services.AddConfigurationReader();
 builder.Services.AddTokenProvider();
+builder.Services.AddMemoryCache();
 builder.Services.AddSingleton<WeatherForecastService>();
 
 // builder.Services.AddScopedDomain("Common");
 builder.Services.AddScoped<IAddressRepository, AddressRepository>();
 builder.Services.AddScoped<IAddressService, AddressService>();
+builder.Services.AddScoped<IConfigurationReader, NetCoreConfigurationReader>();
 
 var app = builder.Build();
 

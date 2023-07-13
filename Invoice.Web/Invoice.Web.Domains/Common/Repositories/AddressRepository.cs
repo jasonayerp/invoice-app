@@ -1,4 +1,4 @@
-﻿using Invoice.Authentication;
+﻿using Invoice.Authorization;
 using Invoice.Configuration;
 using Invoice.Domains.Common.Models;
 using Invoice.Domains.Common.Objects;
@@ -43,13 +43,16 @@ public class AddressRepository : IAddressRepository
     {
         using (HttpClient client = _httpClientFactory.CreateClient())
         {
+            var token = await _tokenProvider.GetTokenAsync();
+
             string? baseUri = _configurationReader.GetValue("ApiBaseUri");
 
             if (string.IsNullOrEmpty(baseUri)) throw new ArgumentNullException("ApiBaseUri cannot be null or empty.");
 
             client.BaseAddress = new Uri(baseUri.TrimEnd('/'));
 
-            HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Post, "/api/Addresses");
+            HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Post, "/api/addresses/create");
+            request.Headers.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token.AccessToken);
 
             HttpResponseMessage response = await client.SendAsync(request);
 
@@ -73,21 +76,28 @@ public class AddressRepository : IAddressRepository
     {
         using (HttpClient client = _httpClientFactory.CreateClient())
         {
+            var token = await _tokenProvider.GetTokenAsync();
+
             string? baseUri = _configurationReader.GetValue("ApiBaseUri");
 
             if (string.IsNullOrEmpty(baseUri)) throw new ArgumentNullException("ApiBaseUri cannot be null or empty.");
 
             client.BaseAddress = new Uri(baseUri.TrimEnd('/'));
 
-            HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Get, "/api/Addresses");
+            HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Get, "/api/v1/addresses/read");
+            request.Headers.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue(token.TokenType, token.AccessToken);
 
             HttpResponseMessage response = await client.SendAsync(request);
 
-            if (!response.IsSuccessStatusCode) throw new Exception(response.StatusCode.ToString());
+            if (!response.IsSuccessStatusCode)
+            {
+                var message = $"Http status code: {(int)response.StatusCode} - {response.StatusCode}";
+                throw new Exception(message);
+            }
 
-            var data = JsonConvert.DeserializeObject<CollectionResult<AddressObject>>(await response.Content.ReadAsStringAsync());
+            var data = JsonConvert.DeserializeObject<List<AddressObject>>(await response.Content.ReadAsStringAsync());
 
-            return data.Data.ToList();
+            return data;
         }
     }
 

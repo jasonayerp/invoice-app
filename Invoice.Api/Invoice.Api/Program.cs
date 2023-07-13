@@ -1,12 +1,18 @@
+using Invoice.Api.Authorization;
 using Invoice.Api.Data.SqlServer;
 using Invoice.Api.Domains.Common.Mappers;
 using Invoice.Api.Extensions.DependencyInjection;
 using Invoice.Api.Mvc.Filters;
 using Invoice.Services;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.IdentityModel.Tokens;
+using System.Security.Claims;
 
 var builder = WebApplication.CreateBuilder(args);
 
 var configuration = builder.Configuration;
+var domain = $"https://{configuration["Configuration:Auth0Domain"]}/";
 
 builder.Services.AddControllers(options =>
 {
@@ -16,16 +22,6 @@ builder.Services.AddControllers(options =>
 {
     options.JsonSerializerOptions.PropertyNamingPolicy = System.Text.Json.JsonNamingPolicy.CamelCase;
 });
-builder.Services.AddAuthentication(options =>
-{
-    options.DefaultAuthenticateScheme = Microsoft.AspNetCore.Authentication.JwtBearer.JwtBearerDefaults.AuthenticationScheme;
-    options.DefaultChallengeScheme = Microsoft.AspNetCore.Authentication.JwtBearer.JwtBearerDefaults.AuthenticationScheme;
-}).AddJwtBearer(options =>
-{
-    options.Authority = "https://dev-mhnefndh2y2ivp3b.us.auth0.com/";
-    options.Audience = "https://dev-identity.jasonayer.com/api";
-});
-
 builder.Services.AddConfigurationReader();
 builder.Services.AddDbContextFactory<SqlServerDbContext>(options =>
 {
@@ -46,21 +42,27 @@ builder.Services.AddCors(options =>
     {
         builder.SetIsOriginAllowed(origin => new Uri(origin).Host == "localhost");
     });
-
-    //options.AddPolicy("Policy", builder =>
-    //{
-    //    var allowedOrigins = Environment.GetEnvironmentVariable("AllowedOrigins");
-
-    //    if (string.IsNullOrEmpty(allowedOrigins))
-    //    {
-    //        allowedOrigins = configuration.GetValue("Configuration:AllowedOrigins", "");
-    //    }
-
-    //    string[] allowed = allowedOrigins.Split(',').ToArray();
-
-    //    builder.SetIsOriginAllowed(origin => allowedOrigins.Contains(new Uri(origin).Host));
-    //});
 });
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+.AddJwtBearer(options =>
+{
+    options.Authority = domain;
+    options.Audience = configuration["Configuration:Auth0Audience"];
+    options.TokenValidationParameters = new TokenValidationParameters
+    {
+        NameClaimType = ClaimTypes.NameIdentifier
+    };
+});
+builder.Services.AddAuthorization(options =>
+{
+    var scopes = configuration["Configuration:Auth0Scopes"].Split(' ');
+
+    foreach (var scope in scopes)
+    {
+        options.AddPolicy(scope, policy => policy.Requirements.Add(new HasScopeRequirement(scope, domain)));
+    }
+});
+builder.Services.AddSingleton<IAuthorizationHandler, HasScopeHandler>();
 builder.Services.AddScoped<IMapper, JsonMapper>();
 builder.Services.AddScoped<IDateTimeService, DateTimeService>();
 builder.Services.AddScoped<IModelService, ModelService>();

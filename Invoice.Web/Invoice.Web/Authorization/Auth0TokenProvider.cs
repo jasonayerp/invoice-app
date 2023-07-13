@@ -1,10 +1,10 @@
 ﻿using Invoice.Auth0;
-using Invoice.Authentication;
+using Invoice.Authorization;
 using Invoice.Configuration;
 using Microsoft.Extensions.Caching.Memory;
 using Newtonsoft.Json;
 
-namespace Invoice.Web.Authentication;
+namespace Invoice.Web.Authorization;
 
 public class Auth0TokenProvider : ITokenProvider
 {
@@ -21,6 +21,8 @@ public class Auth0TokenProvider : ITokenProvider
 
     public async Task<Token> GetTokenAsync()
     {
+        _memoryCache.Remove("token");
+
         var cacheItem = await _memoryCache.GetOrCreateAsync("token", async (cacheOptions) =>
         {
             using (HttpClient client = _httpClientFactory.CreateClient())
@@ -37,22 +39,16 @@ public class Auth0TokenProvider : ITokenProvider
                 if (string.IsNullOrEmpty(audience)) throw new ArgumentNullException("Audience cannot be null or empty.");
                 if (string.IsNullOrEmpty(grantType)) throw new ArgumentNullException("GrantType cannot be null or empty.");
 
-                List<KeyValuePair<string, string>> nameValueCollection = new List<KeyValuePair<string, string>>
-                {
-                    new KeyValuePair<string, string>("client_id", clientId),
-                    new KeyValuePair<string, string>("ClientSecret", clientSecret),
-                    new KeyValuePair<string, string>("audience", audience),
-                    new KeyValuePair<string, string>("grant_type", grantType)
-                };
+                var bodyContent = new Auth0TokenRequest { ClientId = clientId, ClientSecret = clientSecret, Audience = audience, GrantType = grantType };
 
                 HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Post, endpoint);
-                request.Content = new FormUrlEncodedContent(nameValueCollection);
+                request.Content = new StringContent(JsonConvert.SerializeObject(bodyContent), Encoding.UTF8, "application/json");
 
                 HttpResponseMessage response = await client.SendAsync(request);
 
                 if (!response.IsSuccessStatusCode) throw new Exception(response.StatusCode.ToString());
 
-                JsonWebToken? result = JsonConvert.DeserializeObject<JsonWebToken>(await response.Content.ReadAsStringAsync());
+                Auth0TokenResponse? result = JsonConvert.DeserializeObject<Auth0TokenResponse>(await response.Content.ReadAsStringAsync());
 
                 if (result == null) throw new ArgumentNullException("JsonWebToken cannot be null.");
 
@@ -64,7 +60,7 @@ public class Auth0TokenProvider : ITokenProvider
                     ExpiresIn = result.ExpiresIn
                 };
 
-                cacheOptions.AbsoluteExpirationRelativeToNow = TimeSpan.FromSeconds(token.ExpiresIn - 300);
+                cacheOptions.AbsoluteExpiration = DateTimeOffset.UtcNow.AddSeconds(token.ExpiresIn - 300);
 
                 return JsonConvert.SerializeObject(token);
             }
@@ -72,4 +68,17 @@ public class Auth0TokenProvider : ITokenProvider
 
         return JsonConvert.DeserializeObject<Token>(cacheItem);
     }
+}
+
+[JsonObject]
+public class Auth0TokenRequest
+{
+    [JsonProperty("client_id")]
+    public string ClientId { get; set; } = "";
+    [JsonProperty("client_secret")]
+    public string ClientSecret { get; set; } = "";
+    [JsonProperty("audience")]
+    public string Audience { get; set; } = "";
+    [JsonProperty("grant_type")]
+    public string GrantType { get; set; } = "";
 }

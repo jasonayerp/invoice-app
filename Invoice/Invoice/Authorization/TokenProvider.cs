@@ -1,4 +1,4 @@
-﻿namespace Invoice.Authentication;
+﻿namespace Invoice.Authorization;
 
 public interface ITokenProvider
 {

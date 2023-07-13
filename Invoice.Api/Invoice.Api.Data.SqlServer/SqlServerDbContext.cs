@@ -125,6 +125,8 @@ public class SqlServerDbContext : DbContext
         modelBuilder.Entity<VwInvoiceSummaryEntity>(entity =>
         {
             entity.ToView("vw_InvoiceSummary");
+
+            entity.HasNoKey();
         });
     }
 }
