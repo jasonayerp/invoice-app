@@ -9,8 +9,8 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace Invoice.Api.Controllers
 {
-    [Route("api/v1/addresses")]
     [ApiController]
+    [Route("api/v1/addresses")]
     [ControllerExceptionFilter]
     [ProducesResponseType(typeof(Error), StatusCodes.Status500InternalServerError)]
     [ProducesResponseType(typeof(Error), StatusCodes.Status401Unauthorized)]
@@ -82,6 +82,7 @@ namespace Invoice.Api.Controllers
 
         [HttpDelete("delete/{id}")]
         [Authorize("delete:addresses")]
+        [ProducesResponseType(typeof(bool), StatusCodes.Status200OK)]
         public async Task<bool> DeleteAsync([FromRoute] int id)
         {
             var address = await _addressService.GetByIdAsync(id);

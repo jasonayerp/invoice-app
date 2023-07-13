@@ -22,14 +22,10 @@ public interface IAddressRepository
 public class AddressRepository : IAddressRepository
 {
     private readonly IInvoiceHttpClientFactory _factory;
-    private readonly ITokenProvider _tokenProvider;
-    private readonly IConfigurationReader _configurationReader;
 
     public AddressRepository(IInvoiceHttpClientFactory factory, ITokenProvider tokenProvider, IConfigurationReader configurationReader)
     {
         _factory = factory;
-        _tokenProvider = tokenProvider;
-        _configurationReader = configurationReader;
     }
 
     public async Task<int> CountAsync()
@@ -60,8 +56,7 @@ public class AddressRepository : IAddressRepository
 
             if (!response.IsSuccessStatusCode)
             {
-                var message = $"Http status code: {(int)response.StatusCode} - {response.StatusCode}";
-                throw new Exception(message);
+                throw new Exception($"Http status code: {(int)response.StatusCode} - {response.StatusCode}");
             }
 
             var data = JsonConvert.DeserializeObject<List<AddressObject>>(await response.Content.ReadAsStringAsync());

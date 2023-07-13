@@ -1,6 +1,8 @@
 ﻿using Invoice.Authorization;
+using Invoice.Caching;
 using Invoice.Configuration;
 using Invoice.Web.Authorization;
+using Invoice.Web.Core.Caching;
 using Invoice.Web.Core.Factories;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using System.Reflection;
@@ -9,6 +11,11 @@ namespace Invoice.Web.Extensions.DependencyInjection;
 
 public static class ServiceCollectionExtensions
 {
+    public static void AddCacheProvider(this IServiceCollection services)
+    {
+        services.AddScoped<ICacheProvider, MemoryCacheProvider>();
+    }
+
     public static void AddInvoiceHttpClient(this IServiceCollection services)
     {
         services.AddScoped<IInvoiceHttpClientFactory, InvoiceHttpClientFactory>();

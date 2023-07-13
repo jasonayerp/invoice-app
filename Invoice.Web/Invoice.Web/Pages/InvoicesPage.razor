@@ -54,6 +54,7 @@ else
 
     protected override async Task OnParametersSetAsync()
     {
-        Addresses = await CacheProvider.GetOrCreateItemAsync("addresses", async () => await AddressService.GetAllAsync());
+        // Addresses = await CacheProvider.GetOrCreateItemAsync("addresses", async () => await AddressService.GetAllAsync());
+        Addresses = await AddressService.GetAllAsync();
     }
 }

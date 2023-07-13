@@ -15,6 +15,9 @@ builder.Services.AddTokenProvider();
 builder.Services.AddMemoryCache();
 builder.Services.AddSingleton<WeatherForecastService>();
 
+// custom extensions
+builder.Services.AddCacheProvider();
+
 // builder.Services.AddScopedDomain("Common");
 builder.Services.AddScoped<IAddressRepository, AddressRepository>();
 builder.Services.AddScoped<IAddressService, AddressService>();
@@ -32,7 +35,6 @@ if (!app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 
 app.UseStaticFiles();
-
 
 app.UseRouting();
 
