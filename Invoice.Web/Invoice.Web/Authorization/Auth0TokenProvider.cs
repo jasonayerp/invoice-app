@@ -27,11 +27,11 @@ public class Auth0TokenProvider : ITokenProvider
         {
             using (HttpClient client = _httpClientFactory.CreateClient())
             {
-                string? endpoint = _configurationReader.GetValue("Endpoint");
-                string? clientId = _configurationReader.GetValue("ClientId");
-                string? clientSecret = _configurationReader.GetValue("ClientSecret");
-                string? audience = _configurationReader.GetValue("Audience");
-                string? grantType = _configurationReader.GetValue("GrantType");
+                string? endpoint = _configurationReader.GetValue("Auth0Endpoint");
+                string? clientId = _configurationReader.GetValue("Auth0ClientId");
+                string? clientSecret = _configurationReader.GetValue("Auth0ClientSecret");
+                string? audience = _configurationReader.GetValue("Auth0Audience");
+                string? grantType = _configurationReader.GetValue("Auth0GrantType");
 
                 if (string.IsNullOrEmpty(endpoint)) throw new ArgumentNullException("Endpoint cannot be null or empty.");
                 if (string.IsNullOrEmpty(clientId)) throw new ArgumentNullException("ClientId cannot be null or empty.");
