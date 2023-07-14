@@ -1,5 +1,10 @@
 ﻿@page "/invoices"
 
+@if (Exception != null)
+{
+    <h1>@Exception.Message</h1>
+}
+
 @if (Addresses == null)
 {
     <p>Loading...</p>
@@ -44,17 +49,87 @@ else
     </div>
 }
 
+<h3>Address:</h3>
+@if (SuggestedAddress != null)
+{
+    <div>
+        <input type="radio" name="address" checked="@(!UseSuggestedAddress)" @onchange="@((args) => UseSuggestedAddress = false)" />
+        <label>Use address</label>
+        <p>
+            @Address.AddressLine1
+            <br />
+            @if (!string.IsNullOrEmpty(Address.AddressLine2))
+            {
+                @Address.AddressLine2
+                <br />
+            }
+            @($"{Address.City}, {Address.Region} {Address.PostalCode}")
+        </p>
+    </div>
+    <div>
+        <div>
+            <input type="radio" name="address" checked="@(UseSuggestedAddress)" @onchange="@((args) => UseSuggestedAddress = true)" />
+            <label>Use suggested address</label>
+        </div>
+        <p>
+            @SuggestedAddress.AddressLine1
+            <br />
+            @if (!string.IsNullOrEmpty(SuggestedAddress.AddressLine2))
+            {
+                @SuggestedAddress.AddressLine2
+                <br />
+            }
+            @($"{SuggestedAddress.City}, {SuggestedAddress.Region} {SuggestedAddress.PostalCode}")
+        </p>
+    </div>
+}
+else
+{
+    <p>Address Line 1:</p>
+    <input type="text" @bind="Address.AddressLine1" @bind:event="oninput" />
+    <p>Address Line 2:</p>
+    <input type="text" @bind="Address.AddressLine2" @bind:event="oninput" />
+    <p>City:</p>
+    <input type="text" @bind="Address.City" @bind:event="oninput" />
+    <p>State:</p>
+    <input type="text" @bind="Address.Region" @bind:event="oninput" />
+    <p>Zip:</p>
+    <input type="text" @bind="Address.PostalCode" @bind:event="oninput" />
+}
+
+<button @onclick="@(() => HandleCreateAddressClick())">
+    Verify
+</button>
+
 @using Invoice.Domains.Common.Models
 
 @inject IAddressService AddressService
+@inject IAddressVerificationService AddressVerificationService
 @inject ICacheProvider CacheProvider
 
 @code {
     protected List<AddressModel>? Addresses { get; set; }
+    protected Exception? Exception { get; set; }
+    protected AddressModel Address { get; set; } = new AddressModel();
+    protected AddressModel? SuggestedAddress { get; set; }
+    protected bool UseSuggestedAddress { get; set; } = false;
 
     protected override async Task OnParametersSetAsync()
     {
-        // Addresses = await CacheProvider.GetOrCreateItemAsync("addresses", async () => await AddressService.GetAllAsync());
-        Addresses = await AddressService.GetAllAsync();
+        try
+        {
+            Addresses = await CacheProvider.GetOrCreateItemAsync("addresses", async () => await AddressService.GetAllAsync());
+        }
+        catch(Exception ex)
+        {
+            Exception = ex;
+        }
+
+        StateHasChanged();
+    }
+
+    protected async Task HandleCreateAddressClick()
+    {
+        SuggestedAddress = await AddressVerificationService.VerifyAddressAsync(Address);
     }
 }

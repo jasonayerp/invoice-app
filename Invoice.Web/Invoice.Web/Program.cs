@@ -22,6 +22,7 @@ builder.Services.AddCacheProvider();
 builder.Services.AddScoped<IAddressRepository, AddressRepository>();
 builder.Services.AddScoped<IAddressService, AddressService>();
 builder.Services.AddScoped<IConfigurationReader, NetCoreConfigurationReader>();
+builder.Services.AddScoped<IAddressVerificationService, SmartyAddressVerificationService>();
 
 var app = builder.Build();
 

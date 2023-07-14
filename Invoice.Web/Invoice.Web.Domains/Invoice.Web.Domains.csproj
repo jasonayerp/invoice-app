@@ -19,6 +19,7 @@
     <PackageReference Include="Invoice.Domains" Version="1.1.7" />
     <PackageReference Include="Microsoft.Extensions.Http" Version="6.0.0" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+    <PackageReference Include="smartystreets-dotnet-sdk" Version="8.14.0" />
   </ItemGroup>
 
   <ItemGroup>
