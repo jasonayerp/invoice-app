@@ -20,13 +20,11 @@ public interface IInvoiceSummaryRepository
 public class InvoiceSummaryRepository : IInvoiceSummaryRepository
 {
     private readonly IDbContextFactory<SqlServerDbContext> _factory;
-    private readonly IMapper _mapper;
     private bool _ignoreQueryFilters = false;
 
-    public InvoiceSummaryRepository(IDbContextFactory<SqlServerDbContext> factory, IMapper maper)
+    public InvoiceSummaryRepository(IDbContextFactory<SqlServerDbContext> factory)
     {
         _factory = factory;
-        _mapper = maper;
     }
 
     private IQueryable<VwInvoiceSummaryEntity> Filter(IQueryable<VwInvoiceSummaryEntity> source)
@@ -105,8 +103,8 @@ public class InvoiceSummaryRepository : IInvoiceSummaryRepository
 
     private InvoiceSummaryModel Map(VwInvoiceSummaryEntity entity)
     {
-        var model = _mapper.Map<InvoiceSummaryModel>(entity);
-        model.Id = entity.InvoiceId;
-        return model;
+        var mapper = new InvoiceSummaryMapper();
+
+        return mapper.Map<InvoiceSummaryModel>(entity);
     }
 }

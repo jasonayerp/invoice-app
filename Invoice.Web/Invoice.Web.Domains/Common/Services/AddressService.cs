@@ -32,7 +32,19 @@ public class AddressService : IAddressService
 
     public async Task<AddressModel> CreateAsync(AddressModel address)
     {
-        throw new NotImplementedException();
+        var data = new AddressModel
+        {
+            AddressLine1 = address.AddressLine1,
+            AddressLine2 = address.AddressLine2,
+            AddressLine3 = address.AddressLine3,
+            AddressLine4 = address.AddressLine4,
+            City = address.City,
+            Region = address.Region,
+            PostalCode = address.PostalCode,
+            CountryCode = address.CountryCode
+        };
+
+        return await _addressRepository.CreateAsync(data);
     }
 
     public async Task DeleteAsync(AddressModel address)

@@ -12,16 +12,18 @@ public class SqlServerDbContext : DbContext
     public DbSet<InvoiceItemEntity> InvoicesItems { get; set; }
     public DbSet<VwInvoiceSummaryEntity> InvoiceSummaries { get; set; }
 
-    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-    {
-        if (!optionsBuilder.IsConfigured)
-        {
-            optionsBuilder.UseSqlServer(@"Server=TEMPEST\SQL2022;Database=Invoice;Trusted_Connection=True;", options =>
-            {
-                options.MigrationsHistoryTable("__EFMigrationsHistory", "dbo");
-            });
-        }
-    }
+    public SqlServerDbContext(DbContextOptions<SqlServerDbContext> options) : base(options) { }
+
+    //protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+    //{
+    //    if (!optionsBuilder.IsConfigured)
+    //    {
+    //        optionsBuilder.UseSqlServer(@"Server=TEMPEST\SQL2022;Database=Invoice;Trusted_Connection=True;", options =>
+    //        {
+    //            options.MigrationsHistoryTable("__EFMigrationsHistory", "dbo");
+    //        });
+    //    }
+    //}
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

@@ -4,4 +4,8 @@ global using System.Linq;
 global using System.Text;
 global using System.Threading.Tasks;
 global using Microsoft.AspNetCore.Mvc;
+global using Microsoft.AspNetCore.Authorization;
 global using Microsoft.EntityFrameworkCore;
+global using Invoice.Mvc;
+global using Invoice.Api.Mvc;
+global using Invoice.Api.Mvc.Filters;

@@ -2,10 +2,8 @@ using Invoice.Api.Authorization;
 using Invoice.Api.Data.SqlServer;
 using Invoice.Api.Domains.Common.Mappers;
 using Invoice.Api.Extensions.DependencyInjection;
-using Invoice.Api.Mvc.Filters;
 using Invoice.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.IdentityModel.Tokens;
 using System.Security.Claims;
 using System.Text.Json;
@@ -73,7 +71,6 @@ builder.Services.AddScopedDomain("Common");
 
 // explicit service registration
 builder.Services.AddSingleton<IAuthorizationHandler, HasScopeHandler>();
-builder.Services.AddScoped<IMapper, JsonMapper>();
 builder.Services.AddScoped<IDateTimeService, DateTimeService>();
 builder.Services.AddScoped<IModelService, ModelService>();
 

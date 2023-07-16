@@ -35,7 +35,17 @@ public class AddressRepository : IAddressRepository
 
     public async Task<AddressModel> CreateAsync(AddressModel address)
     {
-        throw new NotImplementedException();
+        using (HttpClient client = _factory.CreateClient())
+        {
+            var response = await client.PostAsync("api/v1/address/create", new StringContent(JsonConvert.SerializeObject(address), Encoding.UTF8, "application/json"));
+
+            if (!response.IsSuccessStatusCode)
+            {
+                throw new Exception();
+            }
+
+            return Map(JsonConvert.DeserializeObject<AddressObject>(await response.Content.ReadAsStringAsync()));
+        }
     }
 
     public async Task DeleteAsync(AddressModel address)

@@ -25,7 +25,6 @@ public interface IAddressRepository
 public class AddressRepository : IAddressRepository
 {
     private readonly IDbContextFactory<SqlServerDbContext> _factory;
-    private readonly IMapper _mapper;
     private bool _ignoreQueryFilters = false;
 
     private IQueryable<AddressEntity> SetQueryFilters(IQueryable<AddressEntity> source, bool ignoreQueryFilters)
@@ -33,10 +32,9 @@ public class AddressRepository : IAddressRepository
         return ignoreQueryFilters ? source.IgnoreQueryFilters() : source;
     }
 
-    public AddressRepository(IDbContextFactory<SqlServerDbContext> factory, IMapper mapper)
+    public AddressRepository(IDbContextFactory<SqlServerDbContext> factory)
     {
         _factory = factory;
-        _mapper = mapper;
     }
 
     public void IgnoreQueryFilters()
@@ -46,7 +44,7 @@ public class AddressRepository : IAddressRepository
 
     public async Task<AddressModel> AddAsync(AddressModel address)
     {
-        var data = _mapper.Map<AddressEntity>(address);
+        var data = Map<AddressEntity>(address);
 
         using (var context = _factory.CreateDbContext())
         {
@@ -54,13 +52,13 @@ public class AddressRepository : IAddressRepository
 
             await context.SaveChangesAsync();
 
-            return Map(data);
+            return Map<AddressModel>(data);
         }
     }
 
     public async Task<List<AddressModel>> AddRangeAsync(IEnumerable<AddressModel> addresses)
     {
-        var data = addresses.Select(address => _mapper.Map<AddressEntity>(address));
+        var data = addresses.Select(e => Map<AddressEntity>(e));
 
         using (var context = _factory.CreateDbContext())
         {
@@ -68,7 +66,7 @@ public class AddressRepository : IAddressRepository
 
             await context.SaveChangesAsync();
 
-            return data.Select(Map).ToList();
+            return data.Select(e => Map<AddressModel>(e)).ToList();
         }
     }
 
@@ -100,7 +98,7 @@ public class AddressRepository : IAddressRepository
                 ? await context.Addresses.IgnoreQueryFilters().SingleOrDefaultAsync(e => e.AddressId == id)
                 : await context.Addresses.SingleOrDefaultAsync(e => e.AddressId == id);
 
-            return data != null ? Map(data) : null;
+            return data != null ? Map<AddressModel>(data) : null;
         }
     }
 
@@ -144,7 +142,7 @@ public class AddressRepository : IAddressRepository
 
             var data = await query.ToListAsync();
 
-            return data.Select(Map).ToList();
+            return data.Select(e => Map<AddressModel>(e)).ToList();
         }
     }
 
@@ -156,7 +154,7 @@ public class AddressRepository : IAddressRepository
 
             var data = await query.Skip((page - 1) * pageNumber).Take(pageNumber).ToListAsync();
 
-            return data.Select(Map).ToList();
+            return data.Select(e => Map<AddressModel>(e)).ToList();
         }
     }
 
@@ -168,7 +166,7 @@ public class AddressRepository : IAddressRepository
 
             var data = await query.Take(count).ToListAsync();
 
-            return data.Select(Map).ToList();
+            return data.Select(e => Map<AddressModel>(e)).ToList();
         }
     }
 
@@ -226,17 +224,10 @@ public class AddressRepository : IAddressRepository
         }
     }
 
-    private AddressModel Map(AddressEntity address)
+    private T Map<T>(object address)
     {
-        var mapped = _mapper.Map<AddressModel>(address);
-        mapped.Id = address.AddressId;
-        return mapped;
-    }
+        var mapper = new AddressMapper();
 
-    private AddressEntity Map(AddressModel address)
-    {
-        var mapped = _mapper.Map<AddressEntity>(address);
-        mapped.AddressId = address.Id;
-        return mapped;
+        return mapper.Map<T>(address);
     }
 }   
