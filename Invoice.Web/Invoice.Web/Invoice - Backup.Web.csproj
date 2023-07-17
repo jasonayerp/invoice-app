@@ -7,9 +7,9 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Globalization" Version="1.0.3" />
+    <PackageReference Include="Globalization" Version="1.0.0" />
     <PackageReference Include="Invoice" Version="1.2.3" />
-    <PackageReference Include="Invoice.UI" Version="1.0.2" />
+    <PackageReference Include="Invoice.UI" Version="1.0.1" />
     <PackageReference Include="MudBlazor" Version="6.7.0" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
   </ItemGroup>

@@ -86,22 +86,30 @@ else
 else
 {
     <p>Address Line 1:</p>
-    <input type="text" @bind="Address.AddressLine1" @bind:event="oninput" />
+    <input type="text" @bind="Address.AddressLine1" @bind:event="oninput" class="form-control" />
     <p>Address Line 2:</p>
-    <input type="text" @bind="Address.AddressLine2" @bind:event="oninput" />
+    <input type="text" @bind="Address.AddressLine2" @bind:event="oninput" class="form-control" />
     <p>City:</p>
-    <input type="text" @bind="Address.City" @bind:event="oninput" />
+    <input type="text" @bind="Address.City" @bind:event="oninput" class="form-control" />
     <p>State:</p>
-    <input type="text" @bind="Address.Region" @bind:event="oninput" />
+    @if (Regions != null)
+    {
+        <select @bind="@Address.Region" @bind:event="oninput" class="form-control">
+            <option value=""></option>
+            @foreach (Region region in Regions)
+            {
+                <option value="@region.Code">@region.Name</option>
+            }
+        </select>
+    }
     <p>Zip:</p>
-    <input type="text" @bind="Address.PostalCode" @bind:event="oninput" />
+    <input type="text" @bind="Address.PostalCode" @bind:event="oninput" class="form-control" />
 }
 
-<button @onclick="@(() => HandleCreateAddressClick())">
-    Verify
-</button>
+<MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="HandleCreateAddressClick">Verify</MudButton>
 
 @using Invoice.Domains.Common.Models
+@using Globalization.Mail
 
 @inject IAddressService AddressService
 @inject IAddressVerificationService AddressVerificationService
@@ -113,6 +121,7 @@ else
     protected AddressModel Address { get; set; } = new AddressModel();
     protected AddressModel? SuggestedAddress { get; set; }
     protected bool UseSuggestedAddress { get; set; } = false;
+    protected List<Region>? Regions { get; set; }
 
     protected override async Task OnParametersSetAsync()
     {
@@ -124,6 +133,8 @@ else
         {
             Exception = ex;
         }
+
+        Regions = MailHelper.GetRegions(CountryCode.US);
 
         StateHasChanged();
     }

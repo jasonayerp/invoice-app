@@ -6,7 +6,7 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
     <PackageOutputPath>D:\Users\jason\source\repos\invoice-app\nuget</PackageOutputPath>
-    <Version>1.0.1</Version>
+    <Version>1.0.2</Version>
   </PropertyGroup>
 
 
@@ -15,7 +15,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="6.0.15" />
+    <PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="6.0.20" />
+    <PackageReference Include="MudBlazor" Version="6.7.0" />
   </ItemGroup>
 
 </Project>

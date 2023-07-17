@@ -2,12 +2,13 @@
 using Invoice.Domains.Common.Models;
 using Invoice.Domains.Common.Validators;
 using Invoice.Services;
+using System.Reflection;
 
 namespace Invoice.Api.Domains.Common.Services;
 
 public interface IAddressService
 {
-    Task<List<AddressModel>> GetAllAsync();
+    Task<List<AddressModel>> GetAllAsync(Expression<Func<AddressModel, bool>>? predicate = null);
     Task<List<AddressModel>> GetPaginatedAsync(int page, int pageNumber);
     Task<List<AddressModel>> GetTopAsync(int count);
     Task<bool> ExistsAsync();
@@ -18,17 +19,15 @@ public interface IAddressService
     Task DeleteAsync(AddressModel address, bool softDelete = true);
 }
 
-public class AddressService : IAddressService
+internal sealed class AddressService : IAddressService
 {
     private readonly IAddressRepository _addressRepository;
     private readonly IDateTimeService _dateTimeService;
-    private readonly IModelService _modelService;
 
-    public AddressService(IAddressRepository addressRepository, IDateTimeService dateTimeService, IModelService modelService)
+    public AddressService(IAddressRepository addressRepository, IDateTimeService dateTimeService)
     {
         _addressRepository = addressRepository;
         _dateTimeService = dateTimeService;
-        _modelService = modelService;
     }
 
     public async Task<AddressModel> CreateAsync(AddressModel address)
@@ -50,7 +49,9 @@ public class AddressService : IAddressService
 
         validator.ValidateAndThrow(data);
 
-        return await _addressRepository.AddAsync(data);
+        var result = await _addressRepository.AddAsync(data);
+
+        return Configure(result);
     }
 
     public async Task<int> CountAsync()
@@ -65,7 +66,9 @@ public class AddressService : IAddressService
 
     public async Task<AddressModel?> GetByIdAsync(int id)
     {
-        return await _addressRepository.GetByIdAsync(id);
+        var data = await _addressRepository.GetByIdAsync(id);
+
+        return data != null ? Configure(data) : null;
     }
 
     public async Task DeleteAsync(AddressModel address, bool softDelete = true)
@@ -82,21 +85,25 @@ public class AddressService : IAddressService
         }
     }
 
-    public async Task<List<AddressModel>> GetAllAsync()
+    public async Task<List<AddressModel>> GetAllAsync(Expression<Func<AddressModel, bool>>? predicate = null)
     {
-        var data = await _addressRepository.ToListAsync();
+        var data = await _addressRepository.ToListAsync(predicate);
 
         return data.Select(Configure).ToList();
     }
 
     public async Task<List<AddressModel>> GetPaginatedAsync(int page, int pageNumber)
     {
-        return await _addressRepository.ToListAsync(page, pageNumber);
+        var data = await _addressRepository.ToListAsync(page, pageNumber);
+
+        return data.Select(Configure).ToList();
     }
 
     public async Task<List<AddressModel>> GetTopAsync(int count)
     {
-        return await _addressRepository.ToListAsync(count);
+        var data = await _addressRepository.ToListAsync(count);
+
+        return data.Select(Configure).ToList();
     }
 
     public async Task<AddressModel> UpdateAsync(AddressModel address)
@@ -121,11 +128,31 @@ public class AddressService : IAddressService
 
         await _addressRepository.UpdateAsync(data);
 
-        return data;
+        return Configure(data);
     }
 
-    private AddressModel Configure(AddressModel address)
+    private AddressModel Configure(AddressModel obj)
     {
-        return _modelService.GlobalConfigureModel(address);
+        Type typeFromHandle = typeof(AddressModel);
+        PropertyInfo[] properties = typeFromHandle.GetProperties();
+        foreach (PropertyInfo propertyInfo in properties)
+        {
+            if (propertyInfo.PropertyType == typeof(DateTime))
+            {
+                DateTime value = (DateTime)propertyInfo.GetValue(obj, null);
+                value = DateTime.SpecifyKind(value, DateTimeKind.Utc);
+                propertyInfo.SetValue(obj, value, null);
+            }
+            else if (propertyInfo.PropertyType == typeof(DateTime?))
+            {
+                DateTime? dateTime = (DateTime?)propertyInfo.GetValue(obj, null);
+                if (dateTime.HasValue)
+                {
+                    propertyInfo.SetValue(value: new DateTime?(DateTime.SpecifyKind(dateTime.Value, DateTimeKind.Utc)), obj: obj, index: null);
+                }
+            }
+        }
+
+        return obj;
     }
 }

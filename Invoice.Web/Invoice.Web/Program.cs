@@ -3,6 +3,7 @@ using Invoice.Web.Data;
 using Invoice.Web.Domains.Common.Repositories;
 using Invoice.Web.Domains.Common.Services;
 using Invoice.Web.Extensions.DependencyInjection;
+using MudBlazor.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -23,6 +24,8 @@ builder.Services.AddScoped<IAddressRepository, AddressRepository>();
 builder.Services.AddScoped<IAddressService, AddressService>();
 builder.Services.AddScoped<IConfigurationReader, NetCoreConfigurationReader>();
 builder.Services.AddScoped<IAddressVerificationService, SmartyAddressVerificationService>();
+
+builder.Services.AddMudServices();
 
 var app = builder.Build();
 

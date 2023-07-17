@@ -24,13 +24,13 @@ public class AddressController : ApiControllerBase
     [ProducesResponseType(typeof(AddressObject), StatusCodes.Status201Created)]
     public async Task<AddressObject> CreateAsync([FromBody] AddressObject address)
     {
-        var data = await _addressService.CreateAsync(Map<AddressModel>(address));
+        var data = await _addressService.CreateAsync(Map(address));
 
-        return Map<AddressObject>(data);
+        return Map(data);
     }
 
     [HttpGet("read")]
-    [Authorize("read:addresses")]
+    //Authorize("read:addresses")]
     [ProducesResponseType(typeof(IEnumerable<AddressObject>), StatusCodes.Status200OK)]
     public async Task<IEnumerable<AddressObject>> ReadAsync([FromQuery] int page = 0, [FromQuery] int pageSize = 0, [FromQuery] int count = 0)
     {
@@ -48,10 +48,10 @@ public class AddressController : ApiControllerBase
 
         else
         {
-            data = await _addressService.GetAllAsync();
+            data = await _addressService.GetAllAsync(e => e.Id > 0);
         }
 
-        return data.Select(e => Map<AddressObject>(e));
+        return data.Select(Map);
     }
 
     [HttpGet("read/{id}")]
@@ -61,7 +61,7 @@ public class AddressController : ApiControllerBase
     {
         var data = await _addressService.GetByIdAsync(id);
 
-        return data != null ? Map<AddressObject>(data) : null;
+        return data != null ? Map(data) : null;
     }
 
     [HttpPut("update")]
@@ -69,9 +69,9 @@ public class AddressController : ApiControllerBase
     [ProducesResponseType(typeof(AddressObject), StatusCodes.Status200OK)]
     public async Task<AddressObject> UpdateAsync([FromBody] AddressObject address)
     {
-        var data = await _addressService.UpdateAsync(Map<AddressModel>(address));
+        var data = await _addressService.UpdateAsync(Map(address));
 
-        return Map<AddressObject>(data);
+        return Map(data);
     }
 
     [HttpDelete("delete/{id}")]
@@ -89,10 +89,17 @@ public class AddressController : ApiControllerBase
         return address != null;
     }
 
-    private T Map<T>(object data)
+    private AddressModel Map(AddressObject address)
     {
         var mapper = new AddressMapper();
 
-        return mapper.Map<T>(data);
+        return mapper.Map<AddressModel>(address);
+    }
+
+    private AddressObject Map(AddressModel address)
+    {
+        var mapper = new AddressMapper();
+
+        return mapper.Map<AddressObject>(address);
     }
 }

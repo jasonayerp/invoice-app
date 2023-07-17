@@ -10,7 +10,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Invoice.Domains" Version="1.1.7" />
+    <PackageReference Include="Invoice" Version="1.2.3" />
+    <PackageReference Include="Invoice.Domains" Version="1.1.8" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.5.0" />
     <PackageReference Include="xunit" Version="2.4.2" />
     <PackageReference Include="xunit.runner.visualstudio" Version="2.4.5">

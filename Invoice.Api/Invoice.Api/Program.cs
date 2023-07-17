@@ -72,7 +72,6 @@ builder.Services.AddScopedDomain("Common");
 // explicit service registration
 builder.Services.AddSingleton<IAuthorizationHandler, HasScopeHandler>();
 builder.Services.AddScoped<IDateTimeService, DateTimeService>();
-builder.Services.AddScoped<IModelService, ModelService>();
 
 var app = builder.Build();
 
@@ -83,13 +82,8 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-
 app.UseCors();
-
 app.UseAuthentication();
-
 app.UseAuthorization();
-
 app.MapControllers();
-
 app.Run();

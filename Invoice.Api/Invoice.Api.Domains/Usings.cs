@@ -1,8 +1,13 @@
-﻿global using AutoMapper;
+﻿global using AutoMapper.Extensions.ExpressionMapping;
 global using FluentValidation;
 global using System;
 global using System.Collections.Generic;
 global using System.Linq;
+global using System.Linq.Expressions;
 global using System.Text;
 global using System.Threading.Tasks;
 global using Microsoft.EntityFrameworkCore;
+global using Invoice.Api.Data.Entities;
+global using Invoice.Api.Data.Cosmos;
+global using Invoice.Api.Data.MySql;
+global using Invoice.Api.Data.SqlServer;

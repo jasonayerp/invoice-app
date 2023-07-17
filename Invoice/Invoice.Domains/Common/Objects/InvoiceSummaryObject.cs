@@ -3,7 +3,7 @@
 public class InvoiceSummaryObject
 {
     public int Id { get; set; }
-    public Guid Guid { get; set; }
+    public Guid PublicId { get; set; }
     public string Number { get; set; }
     public DateTime UtcDate { get; set; }
     public int Status { get; set; }
