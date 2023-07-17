@@ -12,11 +12,19 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="6.0.20">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
     <PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="6.0.2" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\Invoice.Api.Data\Invoice.Api.Data.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Migrations\" />
   </ItemGroup>
 
 </Project>

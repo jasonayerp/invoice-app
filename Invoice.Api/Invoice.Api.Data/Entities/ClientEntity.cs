@@ -11,7 +11,6 @@ public class ClientEntity
     public DateTime? UtcUpdatedDate { get; set; }
     public DateTime? UtcDeletedDate { get; set; }
 
-    public ICollection<ClientPhoneEntity> Phones { get; set; } = new HashSet<ClientPhoneEntity>();
     public ICollection<ClientAddressEntity> Addresses { get; set; } = new HashSet<ClientAddressEntity>();
     public ICollection<InvoiceEntity> Invoices { get; set; } = new HashSet<InvoiceEntity>();
 }

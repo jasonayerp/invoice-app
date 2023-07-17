@@ -4,17 +4,18 @@ namespace Invoice.Domains.Common.Validators;
 
 public class InvoiceItemValidator : AbstractValidator<InvoiceItemModel>
 {
-    public InvoiceItemValidator(ValidationMode mode)
+    public InvoiceItemValidator(ValidationMode validationMode)
     {
-        RuleFor(e => e.InvoiceId).NotNull().GreaterThan(0);
-        RuleFor(e => e.Description).NotNull().NotEmpty().MaximumLength(50);
-        RuleFor(e => e.Quantity).NotNull().GreaterThan(0);
-        RuleFor(e => e.Amount).NotNull().GreaterThan(0);
-
-        // Conditional
-        When(e => mode == ValidationMode.Update || mode == ValidationMode.Delete, () =>
+        When(e => validationMode == ValidationMode.Update || validationMode == ValidationMode.Delete, () =>
         {
-            RuleFor(e => e.Id).NotNull().GreaterThan(0);
+            RuleFor(e => e.Id).GreaterThan(0);
+            When(e => validationMode == ValidationMode.Add || validationMode == ValidationMode.Update, () =>
+            {
+                RuleFor(e => e.InvoiceId).GreaterThan(0);
+                RuleFor(e => e.Description).NotEmpty().MaximumLength(50);
+                RuleFor(e => e.Quantity).GreaterThan(0);
+                RuleFor(e => e.Amount).GreaterThan(0);
+            });
         });
     }
 }

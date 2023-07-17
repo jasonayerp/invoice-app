@@ -32,7 +32,7 @@ public sealed class CosmosDbContext : DbContext
 
             entity.HasData(new OrganizationDocument
             {
-                Name = "FrontendMentor.io",
+                Name = "Invoice App",
                 AddressLine1 = "19 Union Terrace",
                 City = "London",
                 PostalCode = "E1 3EZ",

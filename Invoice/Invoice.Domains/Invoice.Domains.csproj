@@ -6,13 +6,14 @@
     <Nullable>enable</Nullable>
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
     <PackageOutputPath>D:\Users\jason\source\repos\invoice-app\nuget</PackageOutputPath>
-    <Version>1.1.8</Version>
+    <Version>1.1.9</Version>
   </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="FluentValidation" Version="11.5.2" />
     <PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="11.5.2" />
-    <PackageReference Include="Invoice" Version="1.1.6" />
+    <PackageReference Include="Globalization" Version="1.0.4" />
+    <PackageReference Include="Invoice" Version="1.2.3" />
   </ItemGroup>
 
 </Project>
