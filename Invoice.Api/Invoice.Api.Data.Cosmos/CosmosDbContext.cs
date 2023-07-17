@@ -12,22 +12,33 @@ public sealed class CosmosDbContext : DbContext
     {
         modelBuilder.Entity<OrganizationDocument>(entity =>
         {
-            entity.ToContainer("Organizations");
+            entity.ToContainer("organizations");
 
-            entity.Property(e => e.Id).ToJsonProperty("organizationId");
+            entity.Property(e => e.Id).ToJsonProperty("_id");
             entity.Property(e => e.Guid).ToJsonProperty("guid");
             entity.Property(e => e.Name).ToJsonProperty("name");
-            entity.Property(e => e.AddressLine1).ToJsonProperty("AddressLine1");
-            entity.Property(e => e.AddressLine2).ToJsonProperty("AddressLine2");
-            entity.Property(e => e.AddressLine3).ToJsonProperty("AddressLine3");
-            entity.Property(e => e.AddressLine4).ToJsonProperty("AddressLine4");
-            entity.Property(e => e.City).ToJsonProperty("City");
-            entity.Property(e => e.Region).ToJsonProperty("Region");
-            entity.Property(e => e.PostalCode).ToJsonProperty("PostalCode");
-            entity.Property(e => e.CountryCode).ToJsonProperty("CountryCode");
-            entity.Property(e => e.UtcCreatedDate).ToJsonProperty("utcCreatedDate");
-            entity.Property(e => e.UtcUpdatedDate).ToJsonProperty("utcDeletedDate");
-            entity.Property(e => e.Attributes).ToJsonProperty("attributes");
+            entity.Property(e => e.AddressLine1).ToJsonProperty("address_line_1");
+            entity.Property(e => e.AddressLine2).ToJsonProperty("address_line_2");
+            entity.Property(e => e.AddressLine3).ToJsonProperty("address_line_3");
+            entity.Property(e => e.AddressLine4).ToJsonProperty("address_line_4");
+            entity.Property(e => e.City).ToJsonProperty("city");
+            entity.Property(e => e.Region).ToJsonProperty("region");
+            entity.Property(e => e.PostalCode).ToJsonProperty("postal_code");
+            entity.Property(e => e.CountryCode).ToJsonProperty("country_code");
+            entity.Property(e => e.DefaultPaymentTerm).ToJsonProperty("default_payment_term");
+            entity.Property(e => e.UtcCreatedDate).ToJsonProperty("utc_created_date");
+            entity.Property(e => e.UtcUpdatedDate).ToJsonProperty("utc_updated_date");
+            entity.Property(e => e.UtcDeletedDate).ToJsonProperty("utc_deleted_date");
+
+            entity.HasData(new OrganizationDocument
+            {
+                Name = "FrontendMentor.io",
+                AddressLine1 = "19 Union Terrace",
+                City = "London",
+                PostalCode = "E1 3EZ",
+                CountryCode = "UK",
+                DefaultPaymentTerm = 4
+            });
         });
     }
 }
