@@ -2,37 +2,38 @@
 using Invoice.Domains.Common.Models;
 using Invoice.Domains.Common.Validators;
 using Invoice.Services;
+using Invoice.Validation;
 using System.Reflection;
 
 namespace Invoice.Api.Domains.Common.Services;
 
-public interface IAddressService
+public interface IClientAddressService
 {
-    Task<List<AddressModel>> GetAllAsync(Expression<Func<AddressModel, bool>>? predicate = null);
-    Task<List<AddressModel>> GetPaginatedAsync(int page, int pageNumber);
-    Task<List<AddressModel>> GetTopAsync(int count);
+    Task<List<ClientAddressModel>> GetAllAsync(Expression<Func<ClientAddressModel, bool>>? predicate = null);
+    Task<List<ClientAddressModel>> GetPaginatedAsync(int page, int pageNumber);
+    Task<List<ClientAddressModel>> GetTopAsync(int count);
     Task<bool> ExistsAsync();
     Task<int> CountAsync();
-    Task<AddressModel?> GetByIdAsync(int id);
-    Task<AddressModel> CreateAsync(AddressModel address);
-    Task<AddressModel> UpdateAsync(AddressModel address);
-    Task DeleteAsync(AddressModel address, bool softDelete = true);
+    Task<ClientAddressModel?> GetByIdAsync(int id);
+    Task<ClientAddressModel> CreateAsync(ClientAddressModel address);
+    Task<ClientAddressModel> UpdateAsync(ClientAddressModel address);
+    Task DeleteAsync(ClientAddressModel address, bool softDelete = true);
 }
 
-internal sealed class AddressService : IAddressService
+internal sealed class ClientAddressService : IClientAddressService
 {
-    private readonly IAddressRepository _addressRepository;
+    private readonly IClientAddressRepository _addressRepository;
     private readonly IDateTimeService _dateTimeService;
 
-    public AddressService(IAddressRepository addressRepository, IDateTimeService dateTimeService)
+    public ClientAddressService(IClientAddressRepository addressRepository, IDateTimeService dateTimeService)
     {
         _addressRepository = addressRepository;
         _dateTimeService = dateTimeService;
     }
 
-    public async Task<AddressModel> CreateAsync(AddressModel address)
+    public async Task<ClientAddressModel> CreateAsync(ClientAddressModel address)
     {
-        var data = new AddressModel
+        var data = new ClientAddressModel
         {
             AddressLine1 = address.AddressLine1,
             AddressLine2 = address.AddressLine2,
@@ -45,7 +46,7 @@ internal sealed class AddressService : IAddressService
             UtcCreatedDate = _dateTimeService.UtcNow
         };
 
-        var validator = new AddressValidator(Validation.ValidationMode.Add);
+        var validator = new ClientAddressValidator(ValidationMode.Add);
 
         validator.ValidateAndThrow(data);
 
@@ -64,14 +65,14 @@ internal sealed class AddressService : IAddressService
         return await _addressRepository.ExistsAsync();
     }
 
-    public async Task<AddressModel?> GetByIdAsync(int id)
+    public async Task<ClientAddressModel?> GetByIdAsync(int id)
     {
         var data = await _addressRepository.GetByIdAsync(id);
 
         return data != null ? Configure(data) : null;
     }
 
-    public async Task DeleteAsync(AddressModel address, bool softDelete = true)
+    public async Task DeleteAsync(ClientAddressModel address, bool softDelete = true)
     {
         if (softDelete)
         {
@@ -85,30 +86,30 @@ internal sealed class AddressService : IAddressService
         }
     }
 
-    public async Task<List<AddressModel>> GetAllAsync(Expression<Func<AddressModel, bool>>? predicate = null)
+    public async Task<List<ClientAddressModel>> GetAllAsync(Expression<Func<ClientAddressModel, bool>>? predicate = null)
     {
         var data = await _addressRepository.ToListAsync(predicate);
 
         return data.Select(Configure).ToList();
     }
 
-    public async Task<List<AddressModel>> GetPaginatedAsync(int page, int pageNumber)
+    public async Task<List<ClientAddressModel>> GetPaginatedAsync(int page, int pageNumber)
     {
         var data = await _addressRepository.ToListAsync(page, pageNumber);
 
         return data.Select(Configure).ToList();
     }
 
-    public async Task<List<AddressModel>> GetTopAsync(int count)
+    public async Task<List<ClientAddressModel>> GetTopAsync(int count)
     {
         var data = await _addressRepository.ToListAsync(count);
 
         return data.Select(Configure).ToList();
     }
 
-    public async Task<AddressModel> UpdateAsync(AddressModel address)
+    public async Task<ClientAddressModel> UpdateAsync(ClientAddressModel address)
     {
-        var data = new AddressModel
+        var data = new ClientAddressModel
         {
             AddressLine1 = address.AddressLine1,
             AddressLine2 = address.AddressLine2,
@@ -122,7 +123,7 @@ internal sealed class AddressService : IAddressService
             UtcUpdatedDate = _dateTimeService.UtcNow
         };
 
-        var validator = new AddressValidator(Validation.ValidationMode.Update);
+        var validator = new ClientAddressValidator(ValidationMode.Update);
 
         validator.ValidateAndThrow(data);
 
@@ -131,9 +132,9 @@ internal sealed class AddressService : IAddressService
         return Configure(data);
     }
 
-    private AddressModel Configure(AddressModel obj)
+    private ClientAddressModel Configure(ClientAddressModel obj)
     {
-        Type typeFromHandle = typeof(AddressModel);
+        Type typeFromHandle = typeof(ClientAddressModel);
         PropertyInfo[] properties = typeFromHandle.GetProperties();
         foreach (PropertyInfo propertyInfo in properties)
         {

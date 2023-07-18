@@ -1,6 +1,4 @@
-﻿using Invoice.Api.Data.Documents;
-
-namespace Invoice.Api.Data.Entities;
+﻿namespace Invoice.Api.Data.Entities;
 
 public sealed class InvoiceEntity
 {
@@ -12,7 +10,7 @@ public sealed class InvoiceEntity
     public DateTime UtcDate { get; set; }
     public DateTime UtcDueDate { get; set; }
     public int Status { get; set; }
-    public int PaymentTerm { get; set; }    
+    public int NetPaymentTermDays { get; set; }    
     public DateTime UtcCreatedDate { get; set; }
     public DateTime? UtcUpdatedDate { get; set; }
     public DateTime? UtcDeletedDate { get; set; }

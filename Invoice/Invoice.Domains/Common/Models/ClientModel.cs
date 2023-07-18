@@ -10,6 +10,7 @@ public class ClientModel
     public DateTime? UtcUpdatedDate { get; set; }
     public DateTime? UtcDeletedDate { get; set; }
 
+    public ClientAddressModel? PrimaryAddress => Addresses.SingleOrDefault(e => e.IsActive && e.IsPrimary);
     public List<ClientAddressModel> Addresses { get; set; } = new List<ClientAddressModel>();
     public List<InvoiceModel> Invoices { get; set; } = new List<InvoiceModel>();
 }

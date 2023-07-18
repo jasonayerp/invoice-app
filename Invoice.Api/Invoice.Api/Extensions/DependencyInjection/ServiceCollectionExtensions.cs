@@ -1,6 +1,5 @@
 ﻿using Invoice.Configuration;
 using Microsoft.Extensions.DependencyInjection.Extensions;
-using System.Linq;
 using System.Reflection;
 
 namespace Invoice.Api.Extensions.DependencyInjection;

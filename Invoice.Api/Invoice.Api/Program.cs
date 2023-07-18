@@ -1,5 +1,8 @@
 using Invoice.Api.Authorization;
+using Invoice.Api.Data.Cosmos;
+using Invoice.Api.Data.MySql;
 using Invoice.Api.Data.SqlServer;
+using Invoice.Api.Domains.Common.Contexts;
 using Invoice.Api.Domains.Common.Mappers;
 using Invoice.Api.Extensions.DependencyInjection;
 using Invoice.Services;
@@ -29,13 +32,22 @@ builder.Services.AddControllers(options =>
         options.JsonSerializerOptions.PropertyNamingPolicy = JsonNamingPolicy.CamelCase;
     });
 
-// entityframework
+// databases
 builder.Services.AddDbContextFactory<SqlServerDbContext>(options =>
     {
         var connectionString = Environment.GetEnvironmentVariable("SqlServerConnectionString") ?? configuration.GetValue<string>("Configuration:SqlServerConnectionString");
 
         options.UseSqlServer(connectionString);
-    });    
+    });
+builder.Services.AddDbContextFactory<CosmosDbContext>(options =>
+{
+    var connectionString = Environment.GetEnvironmentVariable("CosmosConnectionString") ?? configuration.GetValue<string>("Configuration:CosmosConnectionString");
+    var values = connectionString.Split(';').Select(e => e.Split('=').Last());
+    var accountEndpoint = values.ElementAt(0);
+    var accountKey = values.ElementAt(1);
+    var databaseName = values.ElementAt(2);
+    options.UseCosmos(accountEndpoint, accountKey, databaseName);
+});
 
 // cors
 builder.Services.AddCors(options =>

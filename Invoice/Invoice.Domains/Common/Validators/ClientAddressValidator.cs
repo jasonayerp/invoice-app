@@ -15,6 +15,7 @@ public class ClientAddressValidator : AbstractValidator<ClientAddressModel>
                 RuleFor(e => e.AddressLine1).NotEmpty().MaximumLength(64);
                 RuleFor(e => e.City).NotEmpty().MaximumLength(64);
                 RuleFor(e => e.PostalCode).NotEmpty().MaximumLength(64);
+                RuleFor(e => e.CountryCode).IsInEnum();
                 When(e => e.AddressLine2 != null, () =>
                 {
                     RuleFor(e => e.AddressLine2).NotEmpty().MaximumLength(64);
@@ -30,10 +31,6 @@ public class ClientAddressValidator : AbstractValidator<ClientAddressModel>
                 When(e => e.Region != null, () =>
                 {
                     RuleFor(e => e.Region).NotEmpty().MaximumLength(64);
-                });
-                When(e => validationMode == ValidationMode.Update, () =>
-                {
-                    RuleFor(e => e.Id).GreaterThan(0);
                 });
             });
         });

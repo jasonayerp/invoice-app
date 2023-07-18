@@ -18,6 +18,7 @@ public class ClientValidator : AbstractValidator<ClientModel>
                 {
                     RuleFor(e => e.Email).NotEmpty().MaximumLength(128);
                 });
+                RuleForEach(e => e.Addresses).SetValidator(new ClientAddressValidator(validationMode));
             });
         });
     }

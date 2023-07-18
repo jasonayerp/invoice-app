@@ -77,7 +77,7 @@ public class SqlServerDbContext : DbContext
             entity.Property(e => e.UtcDate).HasColumnName("UtcDate").HasColumnType("DATE").IsRequired();
             entity.Property(e => e.UtcDueDate).HasColumnName("UtcDueDate").HasColumnType("DATE").IsRequired();
             entity.Property(e => e.Status).HasColumnName("Status").HasColumnType("SMALLINT").IsRequired();
-            entity.Property(e => e.PaymentTerm).HasColumnName("PaymentTerm").HasColumnType("SMALLINT").IsRequired();
+            entity.Property(e => e.NetPaymentTermDays).HasColumnName("NetPaymentTermDays").HasColumnType("SMALLINT").IsRequired();
             entity.Property(e => e.UtcCreatedDate).HasColumnName("UtcCreatedDate").HasColumnType("DATETIME2").IsRequired();
             entity.Property(e => e.UtcUpdatedDate).HasColumnName("UtcUpdatedDate").HasColumnType("DATETIME2").IsRequired(false).HasDefaultValueSql("(NULL)");
             entity.Property(e => e.UtcDeletedDate).HasColumnName("UtcDeletedDate").HasColumnType("DATETIME2").IsRequired(false).HasDefaultValueSql("(NULL)");

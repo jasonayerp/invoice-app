@@ -9,8 +9,8 @@ public interface IClientRepository
     Task<List<ClientModel>> ToListAsync(Expression<Func<ClientModel, bool>>? predicate = null);
     Task<List<ClientModel>> ToListAsync(int page, int pageNumber);
     Task<List<ClientModel>> ToListAsync(int count);
-    Task<bool> ExistsAsync();
-    Task<int> CountAsync();
+    Task<bool> ExistsAsync(Expression<Func<ClientModel, bool>>? predicate = null);
+    Task<int> CountAsync(Expression<Func<ClientModel, bool>>? predicate = null);
     Task<ClientModel?> GetByIdAsync(int id);
     Task<ClientModel> AddAsync(ClientModel address);
     Task<List<ClientModel>> AddRangeAsync(IEnumerable<ClientModel> clients);
@@ -68,7 +68,7 @@ internal sealed class SqlServerClientRepository : IClientRepository
         }
     }
 
-    public async Task<int> CountAsync()
+    public async Task<int> CountAsync(Expression<Func<ClientModel, bool>>? predicate = null)
     {
         using (var context = _factory.CreateDbContext())
         {
@@ -78,7 +78,7 @@ internal sealed class SqlServerClientRepository : IClientRepository
         }
     }
 
-    public async Task<bool> ExistsAsync()
+    public async Task<bool> ExistsAsync(Expression<Func<ClientModel, bool>>? predicate = null)
     {
         using (var context = _factory.CreateDbContext())
         {
@@ -119,11 +119,11 @@ internal sealed class SqlServerClientRepository : IClientRepository
     {
         using (var context = _factory.CreateDbContext())
         {
-            var data = await context.ClientAddresses.Where(e => clients.Select(address => address.Id).Contains(e.ClientAddressId)).ToListAsync();
+            var data = await context.Clients.Where(e => clients.Select(address => address.Id).Contains(e.ClientAddressId)).ToListAsync();
 
             if (data.Count > 0)
             {
-                context.ClientAddresses.RemoveRange(data);
+                context.Clients.RemoveRange(data);
 
                 await context.SaveChangesAsync();
             }
@@ -134,7 +134,7 @@ internal sealed class SqlServerClientRepository : IClientRepository
     {
         using (var context = _factory.CreateDbContext())
         {
-            var query = SetQueryFilters(context.ClientAddresses.AsQueryable(), _ignoreQueryFilters);
+            var query = SetQueryFilters(context.Clients.AsQueryable(), _ignoreQueryFilters);
 
             if (predicate != null)
             {
@@ -153,7 +153,7 @@ internal sealed class SqlServerClientRepository : IClientRepository
     {
         using (var context = _factory.CreateDbContext())
         {
-            var query = SetQueryFilters(context.ClientAddresses.AsQueryable(), _ignoreQueryFilters);
+            var query = SetQueryFilters(context.Clients.AsQueryable(), _ignoreQueryFilters);
 
             var data = await query.Skip((page - 1) * pageNumber).Take(pageNumber).ToListAsync();
 
@@ -165,7 +165,7 @@ internal sealed class SqlServerClientRepository : IClientRepository
     {
         using (var context = _factory.CreateDbContext())
         {
-            var query = SetQueryFilters(context.ClientAddresses.AsQueryable(), _ignoreQueryFilters);
+            var query = SetQueryFilters(context.Clients.AsQueryable(), _ignoreQueryFilters);
 
             var data = await query.Take(count).ToListAsync();
 
@@ -177,18 +177,11 @@ internal sealed class SqlServerClientRepository : IClientRepository
     {
         using (var context = _factory.CreateDbContext())
         {
-            var entity = await context.ClientAddresses.SingleOrDefaultAsync(e => e.ClientAddressId == address.Id);
+            var entity = await context.Clients.SingleOrDefaultAsync(e => e.ClientAddressId == address.Id);
 
             if (entity != null)
             {
-                entity.AddressLine1 = address.AddressLine1;
-                entity.AddressLine2 = address.AddressLine2;
-                entity.AddressLine3 = address.AddressLine3;
-                entity.AddressLine4 = address.AddressLine4;
-                entity.City = address.City;
-                entity.Region = address.Region;
-                entity.PostalCode = address.PostalCode;
-                entity.CountryCode = Enum.GetName(address.CountryCode) ?? "";
+                entity.
                 entity.UtcCreatedDate = address.UtcCreatedDate;
                 entity.UtcUpdatedDate = address.UtcUpdatedDate;
                 entity.UtcDeletedDate = address.UtcDeletedDate;
@@ -204,7 +197,7 @@ internal sealed class SqlServerClientRepository : IClientRepository
 
         using (var context = _factory.CreateDbContext())
         {
-            var data = await context.ClientAddresses.Where(e => ids.Contains(e.ClientAddressId)).ToListAsync();
+            var data = await context.Clients.Where(e => ids.Contains(e.ClientAddressId)).ToListAsync();
 
             data.ForEach(entity =>
             {
