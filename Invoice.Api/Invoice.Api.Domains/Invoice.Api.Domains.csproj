@@ -16,7 +16,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Invoice.Api.Data.Cosmos\Invoice.Api.Data.Cosmos.csproj" />
     <ProjectReference Include="..\Invoice.Api.Data.SqlServer\Invoice.Api.Data.SqlServer.csproj" />
     <ProjectReference Include="..\Invoice.Api.Data\Invoice.Api.Data.csproj" />
   </ItemGroup>
