@@ -11,13 +11,12 @@
     <PackageReference Include="AutoMapper.Extensions.ExpressionMapping" Version="6.0.4" />
     <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="12.0.1" />
     <PackageReference Include="Invoice" Version="1.2.3" />
-    <PackageReference Include="Invoice.Domains" Version="1.1.8" />
+    <PackageReference Include="Invoice.Domains" Version="1.2.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="6.0.20" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\Invoice.Api.Data.Cosmos\Invoice.Api.Data.Cosmos.csproj" />
-    <ProjectReference Include="..\Invoice.Api.Data.MySql\Invoice.Api.Data.MySql.csproj" />
     <ProjectReference Include="..\Invoice.Api.Data.SqlServer\Invoice.Api.Data.SqlServer.csproj" />
     <ProjectReference Include="..\Invoice.Api.Data\Invoice.Api.Data.csproj" />
   </ItemGroup>

@@ -21,8 +21,8 @@ public class SqlServerDbContext : DbContext
 
             entity.Property(e => e.ClientId).HasColumnName("ClientId").HasColumnType("BIGINT").UseIdentityColumn();
             entity.Property(e => e.Guid).HasColumnName("Guid").HasColumnType("UNIQUEIDENTIFIER").IsRequired().HasDefaultValueSql("(NEWID())").ValueGeneratedOnAdd();
-            entity.Property(e => e.Name).HasColumnName("Name").HasColumnType("NVARCHAR(50)").IsRequired();
-            entity.Property(e => e.Email).HasColumnName("Email").HasColumnType("NVARCHAR(50)").IsRequired(false).HasDefaultValueSql("(NULL)");
+            entity.Property(e => e.Name).HasColumnName("Name").HasColumnType("NVARCHAR(56)").IsRequired();
+            entity.Property(e => e.Email).HasColumnName("Email").HasColumnType("NVARCHAR(128)").IsRequired(false).HasDefaultValueSql("(NULL)");
             entity.Property(e => e.UtcCreatedDate).HasColumnName("UtcCreatedDate").HasColumnType("DATETIME2").IsRequired();
             entity.Property(e => e.UtcUpdatedDate).HasColumnName("UtcUpdatedDate").HasColumnType("DATETIME2").IsRequired(false).HasDefaultValueSql("(NULL)");
             entity.Property(e => e.UtcDeletedDate).HasColumnName("UtcDeletedDate").HasColumnType("DATETIME2").IsRequired(false).HasDefaultValueSql("(NULL)");
@@ -44,9 +44,9 @@ public class SqlServerDbContext : DbContext
             entity.Property(e => e.AddressLine2).HasColumnName("AddressLine2").HasColumnType("NVARCHAR(128)").IsRequired(false).HasDefaultValueSql("(NULL)");
             entity.Property(e => e.AddressLine3).HasColumnName("AddressLine3").HasColumnType("NVARCHAR(128)").IsRequired(false).HasDefaultValueSql("(NULL)");
             entity.Property(e => e.AddressLine4).HasColumnName("AddressLine4").HasColumnType("NVARCHAR(128)").IsRequired(false).HasDefaultValueSql("(NULL)");
-            entity.Property(e => e.City).HasColumnName("City").HasColumnType("NVARCHAR(128)").IsRequired();
-            entity.Property(e => e.Region).HasColumnName("Region").HasColumnType("NVARCHAR(128)").IsRequired(false).HasDefaultValueSql("(NULL)");
-            entity.Property(e => e.PostalCode).HasColumnName("PostalCode").HasColumnType("NVARCHAR(128)").IsRequired();
+            entity.Property(e => e.City).HasColumnName("City").HasColumnType("NVARCHAR(96)").IsRequired();
+            entity.Property(e => e.Region).HasColumnName("Region").HasColumnType("NVARCHAR(96)").IsRequired(false).HasDefaultValueSql("(NULL)");
+            entity.Property(e => e.PostalCode).HasColumnName("PostalCode").HasColumnType("NVARCHAR(8)").IsRequired();
             entity.Property(e => e.CountryCode).HasColumnName("CountryCode").HasColumnType("NCHAR(2)").IsRequired();
             entity.Property(e => e.IsActive).HasColumnName("IsActive").HasColumnType("BIT").IsRequired();
             entity.Property(e => e.IsPrimary).HasColumnName("IsPrimary").HasColumnType("BIT").IsRequired();
@@ -72,12 +72,12 @@ public class SqlServerDbContext : DbContext
             entity.Property(e => e.InvoiceId).HasColumnName("InvoiceId").HasColumnType("BIGINT").UseIdentityColumn();
             entity.Property(e => e.Guid).HasColumnName("Guid").HasColumnType("UNIQUEIDENTIFIER").IsRequired().HasDefaultValueSql("(NEWID())").ValueGeneratedOnAdd();
             entity.Property(e => e.ClientId).HasColumnName("ClientId").HasColumnType("BIGINT").IsRequired();
-            entity.Property(e => e.Number).HasColumnName("Number").HasColumnType("NVARCHAR(30)").IsRequired();
+            entity.Property(e => e.Number).HasColumnName("Number").HasColumnType("NVARCHAR(8)").IsRequired();
             entity.Property(e => e.Description).HasColumnName("Description").HasColumnType("NVARCHAR(128)").IsRequired();
             entity.Property(e => e.UtcDate).HasColumnName("UtcDate").HasColumnType("DATE").IsRequired();
             entity.Property(e => e.UtcDueDate).HasColumnName("UtcDueDate").HasColumnType("DATE").IsRequired();
             entity.Property(e => e.Status).HasColumnName("Status").HasColumnType("SMALLINT").IsRequired();
-            entity.Property(e => e.NetPaymentTermDays).HasColumnName("NetPaymentTermDays").HasColumnType("SMALLINT").IsRequired();
+            entity.Property(e => e.PaymentTermDays).HasColumnName("PaymentTermDays").HasColumnType("SMALLINT").IsRequired();
             entity.Property(e => e.UtcCreatedDate).HasColumnName("UtcCreatedDate").HasColumnType("DATETIME2").IsRequired();
             entity.Property(e => e.UtcUpdatedDate).HasColumnName("UtcUpdatedDate").HasColumnType("DATETIME2").IsRequired(false).HasDefaultValueSql("(NULL)");
             entity.Property(e => e.UtcDeletedDate).HasColumnName("UtcDeletedDate").HasColumnType("DATETIME2").IsRequired(false).HasDefaultValueSql("(NULL)");
