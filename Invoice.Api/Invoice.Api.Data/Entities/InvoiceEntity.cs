@@ -10,7 +10,7 @@ public sealed class InvoiceEntity
     public DateTime UtcDate { get; set; }
     public DateTime UtcDueDate { get; set; }
     public int Status { get; set; }
-    public int NetPaymentTermDays { get; set; }    
+    public int PaymentTermDays { get; set; }    
     public DateTime UtcCreatedDate { get; set; }
     public DateTime? UtcUpdatedDate { get; set; }
     public DateTime? UtcDeletedDate { get; set; }
