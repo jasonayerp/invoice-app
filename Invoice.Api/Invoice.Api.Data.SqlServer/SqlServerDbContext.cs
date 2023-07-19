@@ -1,4 +1,5 @@
-﻿using Invoice.Api.Data.Entities;
+﻿using Microsoft.EntityFrameworkCore;
+using Invoice.Api.Data.Entities;
 
 namespace Invoice.Api.Data.SqlServer;
 
@@ -39,7 +40,7 @@ public class SqlServerDbContext : DbContext
             entity.ToTable("ClientAddresses");
 
             entity.Property(e => e.ClientAddressId).HasColumnName("ClientAddressId").HasColumnType("BIGINT").UseIdentityColumn();
-            entity.Property(e => e.ClientId).HasColumnName("ClientId").HasColumnType("BIGINTT").IsRequired();
+            entity.Property(e => e.ClientId).HasColumnName("ClientId").HasColumnType("BIGINT").IsRequired();
             entity.Property(e => e.AddressLine1).HasColumnName("AddressLine1").HasColumnType("NVARCHAR(128)").IsRequired();
             entity.Property(e => e.AddressLine2).HasColumnName("AddressLine2").HasColumnType("NVARCHAR(128)").IsRequired(false).HasDefaultValueSql("(NULL)");
             entity.Property(e => e.AddressLine3).HasColumnName("AddressLine3").HasColumnType("NVARCHAR(128)").IsRequired(false).HasDefaultValueSql("(NULL)");
