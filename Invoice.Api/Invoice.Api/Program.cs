@@ -1,9 +1,6 @@
 using Invoice.Api.Authorization;
 using Invoice.Api.Data.Cosmos;
-using Invoice.Api.Data.MySql;
 using Invoice.Api.Data.SqlServer;
-using Invoice.Api.Domains.Common.Contexts;
-using Invoice.Api.Domains.Common.Mappers;
 using Invoice.Api.Extensions.DependencyInjection;
 using Invoice.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;

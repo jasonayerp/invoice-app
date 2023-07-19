@@ -5,24 +5,20 @@ using Invoice.Mapper;
 
 namespace Invoice.Api.Domains.Common.Mappers;
 
-public sealed class AddressMapper : AbstractMapper<AddressModel>
+public sealed class AddressMapper : AbstractMapper<ClientAddressModel>
 {
     public AddressMapper()
     {
         CreateMap(config =>
         {
-            config.CreateMap<AddressModel, AddressEntity>()
+            config.CreateMap<ClientAddressModel, ClientAddressEntity>()
                 .ReverseMap();
 
-            config.CreateMap<AddressModel, AddressEntity>()
-                .ForMember((dest) => dest.AddressId, (options) => options.MapFrom((src) => src.Id))
+            config.CreateMap<ClientAddressModel, ClientAddressEntity>()
+                .ForMember((dest) => dest.ClientAddressId, (options) => options.MapFrom((src) => src.Id))
                 .ReverseMap();
 
-            config.CreateMap<AddressModel, AddressObject>()
-                .ReverseMap();
-
-            config.CreateMap<AddressModel, AddressObject>()
-                .ForMember((dest) => dest.PublicId, (options) => options.MapFrom((src) => src.Guid))
+            config.CreateMap<ClientAddressModel, ClientAddressObject>()
                 .ReverseMap();
         });
     }

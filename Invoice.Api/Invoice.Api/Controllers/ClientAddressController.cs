@@ -10,19 +10,19 @@ namespace Invoice.Api.Controllers;
 [ControllerExceptionFilter]
 [ProducesResponseType(typeof(Error), StatusCodes.Status500InternalServerError)]
 [ProducesResponseType(typeof(Error), StatusCodes.Status401Unauthorized)]
-public class AddressController : ApiControllerBase
+public class ClientAddressController : ApiControllerBase
 {
-    private readonly IAddressService _addressService;
+    private readonly IClientAddressService _addressService;
 
-    public AddressController(IAddressService addressService)
+    public ClientAddressController(IClientAddressService addressService)
     {
         _addressService = addressService;
     }
 
     [HttpPost("create")]
     [Authorize("create:addresses")]
-    [ProducesResponseType(typeof(AddressObject), StatusCodes.Status201Created)]
-    public async Task<AddressObject> CreateAsync([FromBody] AddressObject address)
+    [ProducesResponseType(typeof(ClientAddressObject), StatusCodes.Status201Created)]
+    public async Task<ClientAddressObject> CreateAsync([FromBody] ClientAddressObject address)
     {
         var data = await _addressService.CreateAsync(Map(address));
 
@@ -31,10 +31,10 @@ public class AddressController : ApiControllerBase
 
     [HttpGet("read")]
     //Authorize("read:addresses")]
-    [ProducesResponseType(typeof(IEnumerable<AddressObject>), StatusCodes.Status200OK)]
-    public async Task<IEnumerable<AddressObject>> ReadAsync([FromQuery] int page = 0, [FromQuery] int pageSize = 0, [FromQuery] int count = 0)
+    [ProducesResponseType(typeof(IEnumerable<ClientAddressObject>), StatusCodes.Status200OK)]
+    public async Task<IEnumerable<ClientAddressObject>> ReadAsync([FromQuery] int page = 0, [FromQuery] int pageSize = 0, [FromQuery] int count = 0)
     {
-        var data = new List<AddressModel>();
+        var data = new List<ClientAddressModel>();
 
         if (page > 0 && pageSize > 0)
         {
@@ -56,8 +56,8 @@ public class AddressController : ApiControllerBase
 
     [HttpGet("read/{id}")]
     [Authorize("read:addresses")]
-    [ProducesResponseType(typeof(AddressObject), StatusCodes.Status200OK)]
-    public async Task<AddressObject?> ReadAsync([FromRoute] int id)
+    [ProducesResponseType(typeof(ClientAddressObject), StatusCodes.Status200OK)]
+    public async Task<ClientAddressObject?> ReadAsync([FromRoute] int id)
     {
         var data = await _addressService.GetByIdAsync(id);
 
@@ -66,8 +66,8 @@ public class AddressController : ApiControllerBase
 
     [HttpPut("update")]
     [Authorize("update:addresses")]
-    [ProducesResponseType(typeof(AddressObject), StatusCodes.Status200OK)]
-    public async Task<AddressObject> UpdateAsync([FromBody] AddressObject address)
+    [ProducesResponseType(typeof(ClientAddressObject), StatusCodes.Status200OK)]
+    public async Task<ClientAddressObject> UpdateAsync([FromBody] ClientAddressObject address)
     {
         var data = await _addressService.UpdateAsync(Map(address));
 
@@ -89,17 +89,17 @@ public class AddressController : ApiControllerBase
         return address != null;
     }
 
-    private AddressModel Map(AddressObject address)
+    private ClientAddressModel Map(ClientAddressObject address)
     {
         var mapper = new AddressMapper();
 
-        return mapper.Map<AddressModel>(address);
+        return mapper.Map<ClientAddressModel>(address);
     }
 
-    private AddressObject Map(AddressModel address)
+    private ClientAddressObject Map(ClientAddressModel address)
     {
         var mapper = new AddressMapper();
 
-        return mapper.Map<AddressObject>(address);
+        return mapper.Map<ClientAddressObject>(address);
     }
 }

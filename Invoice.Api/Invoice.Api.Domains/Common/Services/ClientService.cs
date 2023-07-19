@@ -11,7 +11,8 @@ public interface IClientService
     Task<List<ClientModel>> GetTopAsync(int count, Expression<Func<ClientModel, bool>>? predicate = null);
     Task<bool> ExistsAsync(Expression<Func<ClientModel, bool>>? predicate = null);
     Task<int> CountAsync(Expression<Func<ClientModel, bool>>? predicate = null);
-    Task<ClientModel?> GetByIdAsync(int id);
+    Task<ClientModel?> GetByClientIdAsync(int clientId);
+    Task<ClientModel?> GetByGuidAsync(Guid guid);
     Task<ClientModel> CreateAsync(ClientModel clientModel);
     Task<ClientModel> UpdateAsync(ClientModel clientModel);
     Task DeleteAsync(ClientModel clientModel, bool softDelete = true);
@@ -57,7 +58,12 @@ public sealed class ClientService : IClientService
         throw new NotImplementedException();
     }
 
-    public async Task<ClientModel?> GetByIdAsync(int id)
+    public async Task<ClientModel?> GetByClientIdAsync(int clientId)
+    {
+        throw new NotImplementedException();
+    }
+
+    public async Task<ClientModel?> GetByGuidAsync(Guid guid)
     {
         throw new NotImplementedException();
     }
