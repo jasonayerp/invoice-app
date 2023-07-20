@@ -203,7 +203,6 @@ internal sealed class SqlServerClientRepository : IClientRepository
 
             if (entity != null)
             {
-                entity.OrganizationId = client.OrganizationId;
                 entity.Name = client.Name;
                 entity.Email = client.Email;
                 entity.UtcCreatedDate = client.UtcCreatedDate;
@@ -227,7 +226,6 @@ internal sealed class SqlServerClientRepository : IClientRepository
             {
                 var client = clients.Single(e => e.Id == entity.ClientId);
 
-                entity.OrganizationId = client.OrganizationId;
                 entity.Name = client.Name;
                 entity.Email = client.Email;
                 entity.UtcCreatedDate = client.UtcCreatedDate;

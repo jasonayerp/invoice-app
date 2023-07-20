@@ -6,7 +6,7 @@ public class InvoiceItemEntity
     public int InvoiceId { get; set; } 
     public string Description { get; set; }
     public int Quantity { get; set; }
-    public decimal Amount { get; set; }
+    public decimal Price { get; set; }
     public DateTime UtcCreatedDate { get; set; }
     public DateTime? UtcUpdatedDate { get; set; }
     public DateTime? UtcDeletedDate { get; set; }
