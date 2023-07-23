@@ -2,7 +2,7 @@
 
 public sealed class InvoiceEntity
 {
-    public int InvoiceId { get; set; }
+    public int Id { get; set; }
     public Guid Guid { get; set; }
     public int ClientId { get; set; }
     public string Number { get; set; }

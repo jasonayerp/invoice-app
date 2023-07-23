@@ -5,4 +5,5 @@ global using System.Text;
 global using System.Threading.Tasks;
 global using Invoice.Api.Data.Entities;
 global using Microsoft.EntityFrameworkCore;
+global using Microsoft.EntityFrameworkCore.Metadata.Builders;
 global using Invoice.Api.Data.SqlServer.Extensions;
