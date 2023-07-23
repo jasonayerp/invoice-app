@@ -11,7 +11,7 @@ internal sealed class InvoiceItemConfiguration : IEntityTypeConfiguration<Invoic
         builder.Property(e => e.Description).HasColumnName("Description").HasColumnType("NVARCHAR(128)");
         builder.Property(e => e.Quantity).HasColumnName("Quantity").HasColumnType("INT").IsRequired();
         builder.Property(e => e.UnitPrice).HasColumnName("UnitPrice").HasColumnType("DECIMAL(19, 4)").HasPrecision(19, 4);
-        builder.Property(e => e.TotalPrice).HasColumnName("TotalPrice").HasComputedColumnSql("[Quantity] * [UnitPrice]");
+        builder.Property(e => e.TotalPrice).HasColumnName("TotalPrice").HasComputedColumnSql("([Quantity] * [UnitPrice])");
         builder.Property(e => e.CreatedAt).HasColumnName("CreatedAt").HasColumnType("DATETIMEOFFSET(7)");
         builder.Property(e => e.UpdatedAt).HasColumnName("UpdatedAt").HasColumnType("DATETIMEOFFSET(7)").IsRequired(false).HasDefaultValueSql("NULL");
         builder.Property(e => e.DeletedAt).HasColumnName("DeletedAt").HasColumnType("DATETIMEOFFSET(7)").IsRequired(false).HasDefaultValueSql("NULL");
