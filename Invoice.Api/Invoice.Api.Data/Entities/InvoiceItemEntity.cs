@@ -7,7 +7,7 @@ public class InvoiceItemEntity
     public string Description { get; set; }
     public int Quantity { get; set; }
     public decimal UnitPrice { get; set; }
-    public decimal TotalPrice => Quantity * UnitPrice;
+    public decimal TotalPrice { get; private set; }
     public DateTimeOffset CreatedAt { get; set; }
     public DateTimeOffset? UpdatedAt { get; set; }
     public DateTimeOffset? DeletedAt { get; set; }

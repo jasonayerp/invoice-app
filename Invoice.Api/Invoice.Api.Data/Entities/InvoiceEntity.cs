@@ -7,8 +7,8 @@ public sealed class InvoiceEntity
     public int ClientId { get; set; }
     public string Number { get; set; }
     public string Description { get; set; }
-    public DateOnly Date { get; set; }
-    public DateOnly DueDate { get; set; }
+    public DateTime Date { get; set; }
+    public DateTime DueDate { get; set; }
     public int Status { get; set; }
     public int PaymentTermDays { get; set; }    
     public DateTimeOffset CreatedAt { get; set; }

@@ -1,5 +1,4 @@
-﻿using Invoice.Api.Data.Entities;
-using Invoice.Domains.Common.Models;
+﻿using Invoice.Domains.Common.Models;
 using Invoice.Domains.Common.Objects;
 using Invoice.Mapper;
 
