@@ -14,9 +14,9 @@ public class InvoiceValidator : AbstractValidator<InvoiceModel>
             {
                 RuleFor(e => e.Number).NotEmpty().MaximumLength(8);
                 RuleFor(e => e.Description).NotEmpty().MaximumLength(128);
-                RuleFor(e => e.UtcDate).NotNull().GreaterThanOrEqualTo(DateTime.MinValue);
-                RuleFor(e => e.UtcDueDate).NotNull().GreaterThanOrEqualTo(e => e.UtcDate);
-                RuleFor(e => e.NetPaymentTermDays).GreaterThan(0);
+                RuleFor(e => e.Date).NotNull().GreaterThanOrEqualTo(DateOnly.MinValue).LessThanOrEqualTo(DateOnly.MaxValue);
+                RuleFor(e => e.DueDate).NotNull().GreaterThanOrEqualTo(e => e.Date);
+                RuleFor(e => e.PaymentTermDays).GreaterThan(0);
                 RuleForEach(e => e.InvoiceItems).SetValidator(new InvoiceItemValidator(validationMode));
             });
         });

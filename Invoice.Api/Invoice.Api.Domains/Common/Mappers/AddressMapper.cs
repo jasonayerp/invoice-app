@@ -14,10 +14,6 @@ public sealed class AddressMapper : AbstractMapper<ClientAddressModel>
             config.CreateMap<ClientAddressModel, ClientAddressEntity>()
                 .ReverseMap();
 
-            config.CreateMap<ClientAddressModel, ClientAddressEntity>()
-                .ForMember((dest) => dest.ClientAddressId, (options) => options.MapFrom((src) => src.Id))
-                .ReverseMap();
-
             config.CreateMap<ClientAddressModel, ClientAddressObject>()
                 .ReverseMap();
         });

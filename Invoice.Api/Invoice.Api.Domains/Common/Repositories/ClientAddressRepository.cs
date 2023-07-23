@@ -12,6 +12,7 @@ public interface IClientAddressRepository
     Task<bool> ExistsAsync(Expression<Func<ClientAddressModel, bool>>? predicate = null);
     Task<int> CountAsync(Expression<Func<ClientAddressModel, bool>>? predicate = null);
     Task<ClientAddressModel?> GetByIdAsync(int id);
+    Task<ClientAddressModel?> GetDefaultByClientIdAsync(int clientId);
     Task<ClientAddressModel> AddAsync(ClientAddressModel clientAddress);
     Task<List<ClientAddressModel>> AddRangeAsync(IEnumerable<ClientAddressModel> clientAddresses);
     Task UpdateAsync(ClientAddressModel clientAddress);
@@ -93,8 +94,8 @@ internal sealed class SqlServerClientAddressRepository : IClientAddressRepositor
         using (var context = _factory.CreateDbContext())
         {
             var data = _ignoreQueryFilters
-                ? await context.ClientAddresses.IgnoreQueryFilters().SingleOrDefaultAsync(e => e.ClientAddressId == id)
-                : await context.ClientAddresses.SingleOrDefaultAsync(e => e.ClientAddressId == id);
+                ? await context.ClientAddresses.IgnoreQueryFilters().SingleOrDefaultAsync(e => e.Id == id)
+                : await context.ClientAddresses.SingleOrDefaultAsync(e => e.Id == id);
 
             return data != null ? Map(data) : null;
         }
@@ -104,7 +105,7 @@ internal sealed class SqlServerClientAddressRepository : IClientAddressRepositor
     {
         using (var context = _factory.CreateDbContext())
         {
-            var data = await context.ClientAddresses.SingleOrDefaultAsync(e => e.ClientAddressId == model.Id);
+            var data = await context.ClientAddresses.SingleOrDefaultAsync(e => e.Id == model.Id);
 
             if (data != null)
             {
@@ -119,7 +120,7 @@ internal sealed class SqlServerClientAddressRepository : IClientAddressRepositor
     {
         using (var context = _factory.CreateDbContext())
         {
-            var data = await context.ClientAddresses.Where(e => clientAddresses.Select(clientAddress => clientAddress.Id).Contains(e.ClientAddressId)).ToListAsync();
+            var data = await context.ClientAddresses.Where(e => clientAddresses.Select(clientAddress => clientAddress.Id).Contains(e.Id)).ToListAsync();
 
             if (data.Count > 0)
             {
@@ -177,14 +178,14 @@ internal sealed class SqlServerClientAddressRepository : IClientAddressRepositor
     {
         using (var context = _factory.CreateDbContext())
         {
-            var entity = await context.ClientAddresses.SingleOrDefaultAsync(e => e.ClientAddressId == clientAddress.Id);
+            var entity = await context.ClientAddresses.SingleOrDefaultAsync(e => e.Id == clientAddress.Id);
 
             if (entity != null)
             {
-                entity.AddressLine1 = clientAddress.AddressLine1;
-                entity.AddressLine2 = clientAddress.AddressLine2;
-                entity.AddressLine3 = clientAddress.AddressLine3;
-                entity.AddressLine4 = clientAddress.AddressLine4;
+                entity.Line1 = clientAddress.Line1;
+                entity.Line2 = clientAddress.Line2;
+                entity.Line3 = clientAddress.Line3;
+                entity.Line4 = clientAddress.Line4;
                 entity.City = clientAddress.City;
                 entity.Region = clientAddress.Region;
                 entity.PostalCode = clientAddress.PostalCode;
@@ -204,16 +205,16 @@ internal sealed class SqlServerClientAddressRepository : IClientAddressRepositor
 
         using (var context = _factory.CreateDbContext())
         {
-            var data = await context.ClientAddresses.Where(e => ids.Contains(e.ClientAddressId)).ToListAsync();
+            var data = await context.ClientAddresses.Where(e => ids.Contains(e.Id)).ToListAsync();
 
             data.ForEach(entity =>
             {
-                var clientAddress = clientAddresses.Single(e => e.Id == entity.ClientAddressId);
+                var clientAddress = clientAddresses.Single(e => e.Id == entity.Id);
 
-                entity.AddressLine1 = clientAddress.AddressLine1;
-                entity.AddressLine2 = clientAddress.AddressLine2;
-                entity.AddressLine3 = clientAddress.AddressLine3;
-                entity.AddressLine4 = clientAddress.AddressLine4;
+                entity.Line1 = clientAddress.Line1;
+                entity.Line2 = clientAddress.Line2;
+                entity.Line3 = clientAddress.Line3;
+                entity.Line4 = clientAddress.Line4;
                 entity.City = clientAddress.City;
                 entity.Region = clientAddress.Region;
                 entity.PostalCode = clientAddress.PostalCode;
@@ -246,5 +247,15 @@ internal sealed class SqlServerClientAddressRepository : IClientAddressRepositor
         var mapper = new AddressMapper();
 
         return mapper.Map<ClientAddressEntity>(clientAddress);
+    }
+
+    public async Task<ClientAddressModel?> GetDefaultByClientIdAsync(int clientId)
+    {
+       using (var context = _factory.CreateDbContext())
+       {
+            var result = await context.ClientAddresses.FirstAsync(x => x.ClientId == clientId && x.IsDefault);
+
+            return Map(result);
+       }
     }
 }

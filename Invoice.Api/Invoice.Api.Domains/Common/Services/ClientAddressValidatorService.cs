@@ -12,10 +12,12 @@ public interface IClientAddressValidatorService
 
 public sealed class ClientAddressValidatorService : IClientAddressValidatorService
 {
+    private readonly IClientRepository _clientRepository;
     private readonly IClientAddressRepository _clientAddressRepository;
 
-    public ClientAddressValidatorService(IClientAddressRepository clientAddressRepository)
+    public ClientAddressValidatorService(IClientRepository clientRepository, IClientAddressRepository clientAddressRepository)
     {
+        _clientRepository = clientRepository;
         _clientAddressRepository = clientAddressRepository;
     }
 
@@ -25,16 +27,21 @@ public sealed class ClientAddressValidatorService : IClientAddressValidatorServi
 
         await validator.ValidateAndThrowAsync(clientAddressModel);
 
+        if (!await _clientRepository.ExistsAsync(e => e.Id == clientAddressModel.ClientId))
+        {
+            throw new Exception($"No client found for with ClientId '{clientAddressModel.ClientId}'");
+        }
+
         if (await _clientAddressRepository.ExistsAsync(e => e.ClientId == clientAddressModel.ClientId
-            && e.AddressLine1 == clientAddressModel.AddressLine1
-            && e.AddressLine2 == clientAddressModel.AddressLine2
-            && e.AddressLine3 == clientAddressModel.AddressLine3
-            && e.AddressLine4 == clientAddressModel.AddressLine4
+            && e.Line1 == clientAddressModel.Line1
+            && e.Line2 == clientAddressModel.Line2
+            && e.Line3 == clientAddressModel.Line3
+            && e.Line4 == clientAddressModel.Line4
             && e.City == clientAddressModel.City
             && e.Region == clientAddressModel.Region
             && e.PostalCode == clientAddressModel.PostalCode))
         {
-            throw new Exception($"Cannot create duplicate address for ClientId '{clientAddressModel.ClientId}' with AddressLine1 '{clientAddressModel.AddressLine1}'.");
+            throw new Exception($"Cannot create duplicate address for ClientId '{clientAddressModel.ClientId}' with Line1 '{clientAddressModel.Line1}'.");
         }
     }
 }

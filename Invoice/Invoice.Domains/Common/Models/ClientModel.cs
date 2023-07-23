@@ -4,14 +4,13 @@ public class ClientModel
 {
     public int Id { get; set; } = 0;
     public Guid Guid { get; set; } = Guid.Empty;
-    public int OrganizationId { get; set; } = 0;
     public string Name { get; set; } = string.Empty;
     public string? Email { get; set; }
-    public DateTime UtcCreatedDate { get; set; } = DateTime.UtcNow;
-    public DateTime? UtcUpdatedDate { get; set; }
-    public DateTime? UtcDeletedDate { get; set; }
+    public DateTimeOffset CreatedAt { get; set; } = DateTimeOffset.UtcNow;
+    public DateTimeOffset? UpdatedAt { get; set; }
+    public DateTimeOffset? DeletedAt { get; set; }
 
-    public ClientAddressModel? PrimaryAddress => Addresses.SingleOrDefault(e => e.IsActive && e.IsPrimary);
+    public ClientAddressModel? DefaultAddress => Addresses.SingleOrDefault(e => e.IsDefault);
     public List<ClientAddressModel> Addresses { get; set; } = new List<ClientAddressModel>();
     public List<InvoiceModel> Invoices { get; set; } = new List<InvoiceModel>();
 }

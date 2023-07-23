@@ -2,12 +2,12 @@
 
 public interface IDateTimeService
 {
-    DateTime Now { get; }
-    DateTime UtcNow { get; }
+    DateTimeOffset Now { get; }
+    DateTimeOffset UtcNow { get; }
 }
 
 public class DateTimeService : IDateTimeService
 {
-    public DateTime Now => DateTime.Now;
-    public DateTime UtcNow => DateTime.UtcNow;
+    public DateTimeOffset Now => DateTimeOffset.Now;
+    public DateTimeOffset UtcNow => DateTimeOffset.UtcNow;
 }

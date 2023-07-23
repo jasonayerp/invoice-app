@@ -8,7 +8,7 @@ public class InvoiceItemModel
     public int Quantity { get; set; } = 0;
     public decimal Amount { get; set; } = 0m;
     public decimal TotalAmount => Quantity * Amount;
-    public DateTime UtcCreatedDate { get; set; } = DateTime.UtcNow;
-    public DateTime? UtcUpdatedDate { get; set; }
-    public DateTime? UtcDeletedDate { get; set; }
+    public DateTimeOffset CreatedAt { get; set; } = DateTimeOffset.UtcNow;
+    public DateTimeOffset? UpdatedAt { get; set; }
+    public DateTimeOffset? DeletedAt { get; set; }
 }
