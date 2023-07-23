@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Invoice.Api.Data.Entities;
+using System.Reflection;
 
 namespace Invoice.Api.Data.SqlServer;
 
@@ -16,93 +17,95 @@ public class SqlServerDbContext : DbContext
     {
         modelBuilder.HasDefaultSchema("dbo");
 
+        modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
+
         modelBuilder.Entity<ClientEntity>(entity =>
         {
             entity.ToTable("Clients");
 
-            entity.Property(e => e.ClientId).HasColumnName("ClientId").HasColumnType("BIGINT").UseIdentityColumn();
+            entity.Property(e => e.Id).HasColumnName("Id").HasColumnType("BIGINT").UseIdentityColumn();
             entity.Property(e => e.Guid).HasColumnName("Guid").HasColumnType("UNIQUEIDENTIFIER").IsRequired().HasDefaultValueSql("NEWID()").ValueGeneratedOnAdd();
             entity.Property(e => e.Name).HasColumnName("Name").HasColumnType("NVARCHAR(56)").IsRequired();
             entity.Property(e => e.Email).HasColumnName("Email").HasColumnType("NVARCHAR(128)").IsRequired(false).HasDefaultValueSql("NULL");
-            entity.Property(e => e.UtcCreatedDate).HasColumnName("UtcCreatedDate").HasColumnType("DATETIME2").IsRequired();
-            entity.Property(e => e.UtcUpdatedDate).HasColumnName("UtcUpdatedDate").HasColumnType("DATETIME2").IsRequired(false).HasDefaultValueSql("NULL");
-            entity.Property(e => e.UtcDeletedDate).HasColumnName("UtcDeletedDate").HasColumnType("DATETIME2").IsRequired(false).HasDefaultValueSql("NULL");
+            entity.Property(e => e.CreatedAt).HasColumnName("CreatedAt").HasColumnType("DATETIMEOFFSET(7)").IsRequired();
+            entity.Property(e => e.UpdatedAt).HasColumnName("UpdatedAt").HasColumnType("DATETIMEOFFSET(7)").IsRequired(false).HasDefaultValueSql("NULL");
+            entity.Property(e => e.DeletedAt).HasColumnName("DeletedAt").HasColumnType("DATETIMEOFFSET(7)").IsRequired(false).HasDefaultValueSql("NULL");
 
-            entity.HasKey(e => e.ClientId).HasName("PK_Clients");
+            entity.HasKey(e => e.Id).HasName("PK_Clients");
             entity.HasIndex(e => e.Name).IsClustered(false).IsUnique().HasDatabaseName("UX_Client_Name");
 
-            entity.HasQueryFilter(e => e.UtcDeletedDate == null);
+            entity.HasQueryFilter(e => e.DeletedAt == null);
 
             IEnumerable<ClientEntity> data = Enumerable.Empty<ClientEntity>();
             data.Append(new ClientEntity
             {
-                ClientId = 1,
+                Id = 1,
                 Guid = Guid.NewGuid(),
                 Name = "Jensen Huang",
                 Email = "jensenh@mail.com",
-                UtcCreatedDate = DateTime.UtcNow,
-                UtcUpdatedDate = null,
-                UtcDeletedDate = null
+                CreatedAt = DateTimeOffset.Now,
+                UpdatedAt = null,
+                DeletedAt = null
             });
             data.Append(new ClientEntity
             {
-                ClientId = 2,
+                Id = 2,
                 Guid = Guid.NewGuid(),
                 Name = "Alex Grim",
                 Email = "alexgrim@mail.com",
-                UtcCreatedDate = DateTime.UtcNow,
-                UtcUpdatedDate = null,
-                UtcDeletedDate = null
+                CreatedAt = DateTimeOffset.Now,
+                UpdatedAt = null,
+                DeletedAt = null
             });
             data.Append(new ClientEntity
             {
-                ClientId = 3,
+                Id = 3,
                 Guid = Guid.NewGuid(),
                 Name = "John Morrison",
                 Email = "jm@myco.com",
-                UtcCreatedDate = DateTime.UtcNow,
-                UtcUpdatedDate = null,
-                UtcDeletedDate = null
+                CreatedAt = DateTimeOffset.Now,
+                UpdatedAt = null,
+                DeletedAt = null
             });
             data.Append(new ClientEntity
             {
-                ClientId = 4,
+                Id = 4,
                 Guid = Guid.NewGuid(),
                 Name = "Alysa Werner",
                 Email = "alysa@email.co.uk",
-                UtcCreatedDate = DateTime.UtcNow,
-                UtcUpdatedDate = null,
-                UtcDeletedDate = null
+                CreatedAt = DateTime.Now,
+                UpdatedAt = null,
+                DeletedAt = null
             });
             data.Append(new ClientEntity
             {
-                ClientId = 5,
+                Id = 5,
                 Guid = Guid.NewGuid(),
                 Name = "Mellisa Clarke",
                 Email = "mellisa.clarke@example.com",
-                UtcCreatedDate = DateTime.UtcNow,
-                UtcUpdatedDate = null,
-                UtcDeletedDate = null
+                CreatedAt = DateTimeOffset.Now,
+                UpdatedAt = null,
+                DeletedAt = null
             });
             data.Append(new ClientEntity
             {
-                ClientId = 6,
+                Id = 6,
                 Guid = Guid.NewGuid(),
                 Name = "Thomas Wayne",
                 Email = "thomas@dc.com",
-                UtcCreatedDate = DateTime.UtcNow,
-                UtcUpdatedDate = null,
-                UtcDeletedDate = null
+                CreatedAt = DateTimeOffset.Now,
+                UpdatedAt = null,
+                DeletedAt = null
             });
             data.Append(new ClientEntity
             {
-                ClientId = 7,
+                Id = 7,
                 Guid = Guid.NewGuid(),
                 Name = "Anita Wainwright",
                 Email = null,
-                UtcCreatedDate = DateTime.UtcNow,
-                UtcUpdatedDate = null,
-                UtcDeletedDate = null
+                CreatedAt = DateTimeOffset.Now,
+                UpdatedAt = null,
+                DeletedAt = null
             });
 
             entity.HasData(data);
@@ -124,9 +127,9 @@ public class SqlServerDbContext : DbContext
             entity.Property(e => e.CountryCode).HasColumnName("CountryCode").HasColumnType("NCHAR(2)").IsRequired();
             entity.Property(e => e.IsActive).HasColumnName("IsActive").HasColumnType("BIT").IsRequired();
             entity.Property(e => e.IsPrimary).HasColumnName("IsPrimary").HasColumnType("BIT").IsRequired();
-            entity.Property(e => e.UtcCreatedDate).HasColumnName("UtcCreatedDate").HasColumnType("DATETIME2").IsRequired();
-            entity.Property(e => e.UtcUpdatedDate).HasColumnName("UtcUpdatedDate").HasColumnType("DATETIME2").IsRequired(false).HasDefaultValueSql("NULL");
-            entity.Property(e => e.UtcDeletedDate).HasColumnName("UtcDeletedDate").HasColumnType("DATETIME2").IsRequired(false).HasDefaultValueSql("NULL");
+            entity.Property(e => e.CreatedAt).HasColumnName("CreatedAt").HasColumnType("DATETIMEOFFSET(7)").IsRequired();
+            entity.Property(e => e.UpdatedAt).HasColumnName("UpdatedAt").HasColumnType("DATETIMEOFFSET(7)").IsRequired(false).HasDefaultValueSql("NULL");
+            entity.Property(e => e.DeletedAt).HasColumnName("DeletedAt").HasColumnType("DATETIMEOFFSET(7)").IsRequired(false).HasDefaultValueSql("NULL");
 
             entity.HasKey(e => e.ClientAddressId).HasName("PK_Addresses");
             entity.HasIndex(e => e.City).IsClustered(false).HasDatabaseName("IX_Addresses_City");
@@ -136,7 +139,7 @@ public class SqlServerDbContext : DbContext
 
             entity.HasOne(e => e.Client).WithMany(e => e.Addresses).HasForeignKey(e => e.ClientId).HasConstraintName("FK_ClientAddresses_Clients_ClientId").OnDelete(DeleteBehavior.Cascade);
 
-            entity.HasQueryFilter(e => e.UtcDeletedDate == null);
+            entity.HasQueryFilter(e => e.DeletedAt == null);
 
             IEnumerable < ClientAddressEntity> data = Enumerable.Empty<ClientAddressEntity>();
             data.Append(new ClientAddressEntity
@@ -151,9 +154,9 @@ public class SqlServerDbContext : DbContext
                 Region = null,
                 PostalCode = "NR24 5WQ",
                 CountryCode = "UK",
-                UtcCreatedDate = DateTime.UtcNow,
-                UtcUpdatedDate = null,
-                UtcDeletedDate = null
+                CreatedAt = DateTime.Now,
+                UpdatedAt = null,
+                DeletedAt = null
             });
             data.Append(new ClientAddressEntity
             {
@@ -167,9 +170,9 @@ public class SqlServerDbContext : DbContext
                 Region = null,
                 PostalCode = "BD1 9PB",
                 CountryCode = "UK",
-                UtcCreatedDate = DateTime.UtcNow,
-                UtcUpdatedDate = null,
-                UtcDeletedDate = null
+                CreatedAt = DateTime.Now,
+                UpdatedAt = null,
+                DeletedAt = null
             });
             data.Append(new ClientAddressEntity
             {
@@ -183,9 +186,9 @@ public class SqlServerDbContext : DbContext
                 Region = null,
                 PostalCode = "IP19 3PF",
                 CountryCode = "UK",
-                UtcCreatedDate = DateTime.UtcNow,
-                UtcUpdatedDate = null,
-                UtcDeletedDate = null
+                CreatedAt = DateTime.Now,
+                UpdatedAt = null,
+                DeletedAt = null
             });
             data.Append(new ClientAddressEntity
             {
@@ -199,9 +202,9 @@ public class SqlServerDbContext : DbContext
                 Region = null,
                 PostalCode = "CA20 2TG",
                 CountryCode = "UK",
-                UtcCreatedDate = DateTime.UtcNow,
-                UtcUpdatedDate = null,
-                UtcDeletedDate = null
+                CreatedAt = DateTime.Now,
+                UpdatedAt = null,
+                DeletedAt = null
             });
             data.Append(new ClientAddressEntity
             {
@@ -215,9 +218,9 @@ public class SqlServerDbContext : DbContext
                 Region = null,
                 PostalCode = "CB5 6EG",
                 CountryCode = "UK",
-                UtcCreatedDate = DateTime.UtcNow,
-                UtcUpdatedDate = null,
-                UtcDeletedDate = null
+                CreatedAt = DateTime.Now,
+                UpdatedAt = null,
+                DeletedAt = null
             });
             data.Append(new ClientAddressEntity
             {
@@ -231,9 +234,9 @@ public class SqlServerDbContext : DbContext
                 Region = "NY",
                 PostalCode = "60457",
                 CountryCode = "US",
-                UtcCreatedDate = DateTime.UtcNow,
-                UtcUpdatedDate = null,
-                UtcDeletedDate = null
+                CreatedAt = DateTime.Now,
+                UpdatedAt = null,
+                DeletedAt = null
             });
             data.Append(new ClientAddressEntity
             {
@@ -247,9 +250,9 @@ public class SqlServerDbContext : DbContext
                 Region = "AL",
                 PostalCode = "60457",
                 CountryCode = "US",
-                UtcCreatedDate = DateTime.UtcNow,
-                UtcUpdatedDate = null,
-                UtcDeletedDate = null
+                CreatedAt = DateTime.Now,
+                UpdatedAt = null,
+                DeletedAt = null
             });
 
             entity.HasData(data);
@@ -264,22 +267,22 @@ public class SqlServerDbContext : DbContext
             entity.Property(e => e.ClientId).HasColumnName("ClientId").HasColumnType("BIGINT").IsRequired();
             entity.Property(e => e.Number).HasColumnName("Number").HasColumnType("NVARCHAR(8)").IsRequired();
             entity.Property(e => e.Description).HasColumnName("Description").HasColumnType("NVARCHAR(128)").IsRequired();
-            entity.Property(e => e.UtcDate).HasColumnName("UtcDate").HasColumnType("DATE").IsRequired();
-            entity.Property(e => e.UtcDueDate).HasColumnName("UtcDueDate").HasColumnType("DATE").IsRequired();
+            entity.Property(e => e.Date).HasColumnName("Date").HasColumnType("DATE").IsRequired();
+            entity.Property(e => e.DueDate).HasColumnName("DueDate").HasColumnType("DATE").IsRequired();
             entity.Property(e => e.Status).HasColumnName("Status").HasColumnType("SMALLINT").IsRequired();
             entity.Property(e => e.PaymentTermDays).HasColumnName("PaymentTermDays").HasColumnType("SMALLINT").IsRequired();
-            entity.Property(e => e.UtcCreatedDate).HasColumnName("UtcCreatedDate").HasColumnType("DATETIME2").IsRequired();
-            entity.Property(e => e.UtcUpdatedDate).HasColumnName("UtcUpdatedDate").HasColumnType("DATETIME2").IsRequired(false).HasDefaultValueSql("NULL");
-            entity.Property(e => e.UtcDeletedDate).HasColumnName("UtcDeletedDate").HasColumnType("DATETIME2").IsRequired(false).HasDefaultValueSql("NULL");
+            entity.Property(e => e.CreatedAt).HasColumnName("CreatedAt").HasColumnType("DATETIMEOFFSET(7)").IsRequired();
+            entity.Property(e => e.UpdatedAt).HasColumnName("UpdatedAt").HasColumnType("DATETIMEOFFSET(7)").IsRequired(false).HasDefaultValueSql("NULL");
+            entity.Property(e => e.DeletedAt).HasColumnName("DeletedAt").HasColumnType("DATETIMEOFFSET(7)").IsRequired(false).HasDefaultValueSql("NULL");
 
             entity.HasKey(e => e.InvoiceId).HasName("PK_Invoices");
             entity.HasIndex(e => new { e.ClientId, e.Number }).IsClustered(false).IsUnique().HasDatabaseName("UX_Invoices_ClientId_Number");
-            entity.HasIndex(e => e.UtcDate).IsClustered(false).HasDatabaseName("IX_Invoices_UtcDate");
-            entity.HasIndex(e => e.UtcDueDate).IsClustered(false).HasDatabaseName("IX_Invoices_UtcDueDate");
+            entity.HasIndex(e => e.Date).IsClustered(false).HasDatabaseName("IX_Invoices_Date");
+            entity.HasIndex(e => e.DueDate).IsClustered(false).HasDatabaseName("IX_Invoices_DueDate");
 
             entity.HasOne(e => e.Client).WithMany(e => e.Invoices).HasForeignKey(e => e.ClientId).HasConstraintName("FK_Invoices_Clients_ClientId").OnDelete(DeleteBehavior.Restrict);
 
-            entity.HasQueryFilter(e => e.UtcDeletedDate == null);
+            entity.HasQueryFilter(e => e.DeletedAt == null);
 
             IEnumerable<InvoiceEntity> data = Enumerable.Empty<InvoiceEntity>();
             data.Append(new InvoiceEntity
@@ -289,13 +292,13 @@ public class SqlServerDbContext : DbContext
                 ClientId = 1,
                 Number = "RT3080",
                 Description = "Re-branding",
-                UtcDate = new DateTime(2021, 8, 18),
-                UtcDueDate = new DateTime(2021, 8, 19),
+                Date = new DateTime(2021, 8, 18),
+                DueDate = new DateTime(2021, 8, 19),
                 Status = 1,
                 PaymentTermDays = 1,
-                UtcCreatedDate = DateTime.UtcNow,
-                UtcUpdatedDate = null,
-                UtcDeletedDate = null
+                CreatedAt = DateTime.Now,
+                UpdatedAt = null,
+                DeletedAt = null
             });
             data.Append(new InvoiceEntity
             {
@@ -304,13 +307,13 @@ public class SqlServerDbContext : DbContext
                 ClientId = 2,
                 Number = "XM9141",
                 Description = "Graphic Design",
-                UtcDate = new DateTime(2021, 8, 21),
-                UtcDueDate = new DateTime(2021, 9, 20),
+                Date = new DateOnly(2021, 8, 21),
+                DueDate = new DateOnly(2021, 9, 20),
                 Status = 2,
                 PaymentTermDays = 4,
-                UtcCreatedDate = DateTime.UtcNow,
-                UtcUpdatedDate = null,
-                UtcDeletedDate = null
+                CreatedAt = DateTime.Now,
+                UpdatedAt = null,
+                DeletedAt = null
             });
             data.Append(new InvoiceEntity
             {
@@ -319,13 +322,13 @@ public class SqlServerDbContext : DbContext
                 ClientId = 3,
                 Number = "RG0314",
                 Description = "Website Redesign",
-                UtcDate = new DateTime(2021, 9, 24),
-                UtcDueDate = new DateTime(2021, 10, 1),
+                Date = new DateOnly(2021, 9, 24),
+                DueDate = new DateOnly(2021, 10, 1),
                 Status = 1,
                 PaymentTermDays = 7,
-                UtcCreatedDate = DateTime.UtcNow,
-                UtcUpdatedDate = null,
-                UtcDeletedDate = null
+                CreatedAt = DateTime.Now,
+                UpdatedAt = null,
+                DeletedAt = null
             });
             data.Append(new InvoiceEntity
             {
@@ -334,13 +337,13 @@ public class SqlServerDbContext : DbContext
                 ClientId = 4,
                 Number = "RT2080",
                 Description = "Logo Concept",
-                UtcDate = new DateTime(2021, 10, 11),
-                UtcDueDate = new DateTime(2021, 10, 12),
+                Date = new DateOnly(2021, 10, 11),
+                DueDate = new DateOnly(2021, 10, 12),
                 Status = 2,
                 PaymentTermDays = 1,
-                UtcCreatedDate = DateTime.UtcNow,
-                UtcUpdatedDate = null,
-                UtcDeletedDate = null
+                CreatedAt = DateTime.Now,
+                UpdatedAt = null,
+                DeletedAt = null
             });
             data.Append(new InvoiceEntity
             {
@@ -349,13 +352,13 @@ public class SqlServerDbContext : DbContext
                 ClientId = 5,
                 Number = "AA1449",
                 Description = "Re-branding",
-                UtcDate = new DateTime(2021, 10, 7),
-                UtcDueDate = new DateTime(2021, 10, 14),
+                Date = new DateOnly(2021, 10, 7),
+                DueDate = new DateOnly(2021, 10, 14),
                 Status = 2,
                 PaymentTermDays = 7,
-                UtcCreatedDate = DateTime.UtcNow,
-                UtcUpdatedDate = null,
-                UtcDeletedDate = null
+                CreatedAt = DateTime.Now,
+                UpdatedAt = null,
+                DeletedAt = null
             });
             data.Append(new InvoiceEntity
             {
@@ -364,13 +367,13 @@ public class SqlServerDbContext : DbContext
                 ClientId = 6,
                 Number = "TY9141",
                 Description = "Landing Page Design",
-                UtcDate = new DateTime(2021, 10, 1),
-                UtcDueDate = new DateTime(2021, 10, 31),
+                Date = new DateOnly(2021, 10, 1),
+                DueDate = new DateOnly(2021, 10, 31),
                 Status = 2,
                 PaymentTermDays = 30,
-                UtcCreatedDate = DateTime.UtcNow,
-                UtcUpdatedDate = null,
-                UtcDeletedDate = null
+                CreatedAt = DateTime.Now,
+                UpdatedAt = null,
+                DeletedAt = null
             });
             data.Append(new InvoiceEntity
             {
@@ -379,13 +382,13 @@ public class SqlServerDbContext : DbContext
                 ClientId = 7,
                 Number = "FV2353",
                 Description = "Logo Re-design",
-                UtcDate = new DateTime(2021, 11, 5),
-                UtcDueDate = new DateTime(2021, 11, 12),
+                Date = new DateOnly(2021, 11, 5),
+                DueDate = new DateOnly(2021, 11, 12),
                 Status = 0,
                 PaymentTermDays = 7,
-                UtcCreatedDate = DateTime.UtcNow,
-                UtcUpdatedDate = null,
-                UtcDeletedDate = null
+                CreatedAt = DateTime.Now,
+                UpdatedAt = null,
+                DeletedAt = null
             });
 
             entity.HasData(data);
@@ -400,15 +403,15 @@ public class SqlServerDbContext : DbContext
             entity.Property(e => e.Description).HasColumnName("Description").HasColumnType("NVARCHAR(128)").IsRequired();
             entity.Property(e => e.Quantity).HasColumnName("Quantity").HasColumnType("INT").IsRequired();
             entity.Property(e => e.Price).HasColumnName("Price").HasColumnType("DECIMAL(19,4)").HasPrecision(19, 4).IsRequired();
-            entity.Property(e => e.UtcCreatedDate).HasColumnName("UtcCreatedDate").HasColumnType("DATETIME2").IsRequired();
-            entity.Property(e => e.UtcUpdatedDate).HasColumnName("UtcUpdatedDate").HasColumnType("DATETIME2").IsRequired(false).HasDefaultValueSql("NULL");
-            entity.Property(e => e.UtcDeletedDate).HasColumnName("UtcDeletedDate").HasColumnType("DATETIME2").IsRequired(false).HasDefaultValueSql("NULL");
+            entity.Property(e => e.CreatedAt).HasColumnName("CreatedAt").HasColumnType("DATETIMEOFFSET(7)").IsRequired();
+            entity.Property(e => e.UpdatedAt).HasColumnName("UpdatedAt").HasColumnType("DATETIMEOFFSET(7)").IsRequired(false).HasDefaultValueSql("NULL");
+            entity.Property(e => e.DeletedAt).HasColumnName("DeletedAt").HasColumnType("DATETIMEOFFSET(7)").IsRequired(false).HasDefaultValueSql("NULL");
 
             entity.HasKey(e => e.InvoiceItemId).HasName("PK_InvoiceItem");
 
             entity.HasOne(e => e.Invoice).WithMany(e => e.InvoiceItems).HasForeignKey(e => e.InvoiceId).HasConstraintName("FK_InvoiceItem_Invoice_InvoiceId").OnDelete(DeleteBehavior.Cascade);
 
-            entity.HasQueryFilter(e => e.UtcDeletedDate == null);
+            entity.HasQueryFilter(e => e.DeletedAt == null);
 
             IEnumerable<InvoiceItemEntity> data = Enumerable.Empty<InvoiceItemEntity>();
             data.Append(new InvoiceItemEntity
@@ -418,9 +421,9 @@ public class SqlServerDbContext : DbContext
                 Description = "Brand Guidelines",
                 Quantity = 1,
                 Price = 1800.90m,
-                UtcCreatedDate = DateTime.UtcNow,
-                UtcUpdatedDate = null,
-                UtcDeletedDate = null
+                CreatedAt = DateTime.Now,
+                UpdatedAt = null,
+                DeletedAt = null
             });
             data.Append(new InvoiceItemEntity
             {
@@ -429,9 +432,9 @@ public class SqlServerDbContext : DbContext
                 Description = "Banner Design",
                 Quantity = 1,
                 Price = 156.00m,
-                UtcCreatedDate = DateTime.UtcNow,
-                UtcUpdatedDate = null,
-                UtcDeletedDate = null
+                CreatedAt = DateTime.Now,
+                UpdatedAt = null,
+                DeletedAt = null
             });
             data.Append(new InvoiceItemEntity
             {
@@ -440,9 +443,9 @@ public class SqlServerDbContext : DbContext
                 Description = "Email Design",
                 Quantity = 2,
                 Price = 200.00m,
-                UtcCreatedDate = DateTime.UtcNow,
-                UtcUpdatedDate = null,
-                UtcDeletedDate = null
+                CreatedAt = DateTime.Now,
+                UpdatedAt = null,
+                DeletedAt = null
             });
             data.Append(new InvoiceItemEntity
             {
@@ -451,9 +454,9 @@ public class SqlServerDbContext : DbContext
                 Description = "Website Redesign",
                 Quantity = 1,
                 Price = 14002.33m,
-                UtcCreatedDate = DateTime.UtcNow,
-                UtcUpdatedDate = null,
-                UtcDeletedDate = null
+                CreatedAt = DateTime.Now,
+                UpdatedAt = null,
+                DeletedAt = null
             });
             data.Append(new InvoiceItemEntity
             {
@@ -462,9 +465,9 @@ public class SqlServerDbContext : DbContext
                 Description = "Logo Sketches",
                 Quantity = 1,
                 Price = 102.04m,
-                UtcCreatedDate = DateTime.UtcNow,
-                UtcUpdatedDate = null,
-                UtcDeletedDate = null
+                CreatedAt = DateTime.Now,
+                UpdatedAt = null,
+                DeletedAt = null
             });
             data.Append(new InvoiceItemEntity
             {
@@ -473,9 +476,9 @@ public class SqlServerDbContext : DbContext
                 Description = "New Logo",
                 Quantity = 1,
                 Price = 1532.33m,
-                UtcCreatedDate = DateTime.UtcNow,
-                UtcUpdatedDate = null,
-                UtcDeletedDate = null
+                CreatedAt = DateTime.Now,
+                UpdatedAt = null,
+                DeletedAt = null
             });
             data.Append(new InvoiceItemEntity
             {
@@ -484,9 +487,9 @@ public class SqlServerDbContext : DbContext
                 Description = "Brand Guidelines",
                 Quantity = 1,
                 Price = 2500.00m,
-                UtcCreatedDate = DateTime.UtcNow,
-                UtcUpdatedDate = null,
-                UtcDeletedDate = null
+                CreatedAt = DateTime.Now,
+                UpdatedAt = null,
+                DeletedAt = null
             });
             data.Append(new InvoiceItemEntity
             {
@@ -495,9 +498,9 @@ public class SqlServerDbContext : DbContext
                 Description = "Web Design",
                 Quantity = 1,
                 Price = 6155.91m,
-                UtcCreatedDate = DateTime.UtcNow,
-                UtcUpdatedDate = null,
-                UtcDeletedDate = null
+                CreatedAt = DateTime.Now,
+                UpdatedAt = null,
+                DeletedAt = null
             });
             data.Append(new InvoiceItemEntity
             {
@@ -506,9 +509,9 @@ public class SqlServerDbContext : DbContext
                 Description = "Logo Re-design",
                 Quantity = 1,
                 Price = 3102.94m,
-                UtcCreatedDate = DateTime.UtcNow,
-                UtcUpdatedDate = null,
-                UtcDeletedDate = null
+                CreatedAt = DateTime.Now,
+                UpdatedAt = null,
+                DeletedAt = null
             });
 
             entity.HasData(data);

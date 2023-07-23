@@ -189,9 +189,9 @@ internal sealed class SqlServerClientAddressRepository : IClientAddressRepositor
                 entity.Region = clientAddress.Region;
                 entity.PostalCode = clientAddress.PostalCode;
                 entity.CountryCode = Enum.GetName(clientAddress.CountryCode) ?? "";
-                entity.UtcCreatedDate = clientAddress.UtcCreatedDate;
-                entity.UtcUpdatedDate = clientAddress.UtcUpdatedDate;
-                entity.UtcDeletedDate = clientAddress.UtcDeletedDate;
+                entity.CreatedAt = clientAddress.CreatedAt;
+                entity.UpdatedAt = clientAddress.UpdatedAt;
+                entity.DeletedAt = clientAddress.DeletedAt;
 
                 await context.SaveChangesAsync();
             }
@@ -218,9 +218,9 @@ internal sealed class SqlServerClientAddressRepository : IClientAddressRepositor
                 entity.Region = clientAddress.Region;
                 entity.PostalCode = clientAddress.PostalCode;
                 entity.CountryCode = Enum.GetName(clientAddress.CountryCode) ?? "";
-                entity.UtcCreatedDate = clientAddress.UtcCreatedDate;
-                entity.UtcUpdatedDate = clientAddress.UtcUpdatedDate;
-                entity.UtcDeletedDate = clientAddress.UtcDeletedDate;
+                entity.CreatedAt = clientAddress.CreatedAt;
+                entity.UpdatedAt = clientAddress.UpdatedAt;
+                entity.DeletedAt = clientAddress.DeletedAt;
             });
 
             await context.SaveChangesAsync();

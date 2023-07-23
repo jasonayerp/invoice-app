@@ -43,7 +43,7 @@ internal sealed class ClientAddressService : IClientAddressService
             Region = address.Region,
             PostalCode = address.PostalCode,
             CountryCode = address.CountryCode,
-            UtcCreatedDate = _dateTimeService.UtcNow
+            CreatedAt = _dateTimeService.Now
         };
 
         var validator = new ClientAddressValidator(ValidationMode.Add);
@@ -76,7 +76,7 @@ internal sealed class ClientAddressService : IClientAddressService
     {
         if (softDelete)
         {
-            address.UtcDeletedDate = _dateTimeService.UtcNow;
+            address.DeletedAt = _dateTimeService.Now;
 
             await _addressRepository.UpdateAsync(address);
         }
@@ -119,8 +119,8 @@ internal sealed class ClientAddressService : IClientAddressService
             Region = address.Region,
             PostalCode = address.PostalCode,
             CountryCode = address.CountryCode,
-            UtcCreatedDate = address.UtcCreatedDate,
-            UtcUpdatedDate = _dateTimeService.UtcNow
+            CreatedAt = address.CreatedAt,
+            UpdatedAt = _dateTimeService.Now
         };
 
         var validator = new ClientAddressValidator(ValidationMode.Update);
@@ -141,7 +141,7 @@ internal sealed class ClientAddressService : IClientAddressService
             if (propertyInfo.PropertyType == typeof(DateTime))
             {
                 DateTime value = (DateTime)propertyInfo.GetValue(obj, null);
-                value = DateTime.SpecifyKind(value, DateTimeKind.Utc);
+                value = DateTime.SpecifyKind(value, DateTimeKind.);
                 propertyInfo.SetValue(obj, value, null);
             }
             else if (propertyInfo.PropertyType == typeof(DateTime?))
@@ -149,7 +149,7 @@ internal sealed class ClientAddressService : IClientAddressService
                 DateTime? dateTime = (DateTime?)propertyInfo.GetValue(obj, null);
                 if (dateTime.HasValue)
                 {
-                    propertyInfo.SetValue(value: new DateTime?(DateTime.SpecifyKind(dateTime.Value, DateTimeKind.Utc)), obj: obj, index: null);
+                    propertyInfo.SetValue(value: new DateTime?(DateTime.SpecifyKind(dateTime.Value, DateTimeKind.)), obj: obj, index: null);
                 }
             }
         }

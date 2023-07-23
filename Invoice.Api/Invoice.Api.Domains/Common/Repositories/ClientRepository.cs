@@ -104,7 +104,7 @@ internal sealed class SqlServerClientRepository : IClientRepository
         {
             var query = AsQueryable(context.Clients.AsQueryable());
 
-            var data = await query.SingleOrDefaultAsync(e => e.ClientId == clientId);
+            var data = await query.SingleOrDefaultAsync(e => e.Id == clientId);
 
             return data != null ? Map(data) : null;
         }
@@ -126,7 +126,7 @@ internal sealed class SqlServerClientRepository : IClientRepository
     {
         using (var context = _factory.CreateDbContext())
         {
-            var data = await context.Clients.SingleOrDefaultAsync(e => e.ClientId == model.Id);
+            var data = await context.Clients.SingleOrDefaultAsync(e => e.Id == model.Id);
 
             if (data != null)
             {
@@ -141,7 +141,7 @@ internal sealed class SqlServerClientRepository : IClientRepository
     {
         using (var context = _factory.CreateDbContext())
         {
-            var data = await context.Clients.Where(e => clients.Select(address => address.Id).Contains(e.ClientId)).ToListAsync();
+            var data = await context.Clients.Where(e => clients.Select(address => address.Id).Contains(e.Id)).ToListAsync();
 
             if (data.Count > 0)
             {
@@ -199,15 +199,15 @@ internal sealed class SqlServerClientRepository : IClientRepository
     {
         using (var context = _factory.CreateDbContext())
         {
-            var entity = await context.Clients.SingleOrDefaultAsync(e => e.ClientId == client.Id);
+            var entity = await context.Clients.SingleOrDefaultAsync(e => e.Id == client.Id);
 
             if (entity != null)
             {
                 entity.Name = client.Name;
                 entity.Email = client.Email;
-                entity.UtcCreatedDate = client.UtcCreatedDate;
-                entity.UtcUpdatedDate = client.UtcUpdatedDate;
-                entity.UtcDeletedDate = client.UtcDeletedDate;
+                entity.CreatedAt = client.CreatedAt;
+                entity.UpdatedAt = client.UpdatedAt;
+                entity.DeletedAt = client.DeletedAt;
 
                 await context.SaveChangesAsync();
             }
@@ -220,17 +220,17 @@ internal sealed class SqlServerClientRepository : IClientRepository
 
         using (var context = _factory.CreateDbContext())
         {
-            var data = await context.Clients.Where(e => ids.Contains(e.ClientId)).ToListAsync();
+            var data = await context.Clients.Where(e => ids.Contains(e.Id)).ToListAsync();
 
             data.ForEach(entity =>
             {
-                var client = clients.Single(e => e.Id == entity.ClientId);
+                var client = clients.Single(e => e.Id == entity.Id);
 
                 entity.Name = client.Name;
                 entity.Email = client.Email;
-                entity.UtcCreatedDate = client.UtcCreatedDate;
-                entity.UtcUpdatedDate = client.UtcUpdatedDate;
-                entity.UtcDeletedDate = client.UtcDeletedDate;
+                entity.CreatedAt = client.CreatedAt;
+                entity.UpdatedAt = client.UpdatedAt;
+                entity.DeletedAt = client.DeletedAt;
             });
 
             await context.SaveChangesAsync();

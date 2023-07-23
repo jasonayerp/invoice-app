@@ -2,7 +2,7 @@
 
 public sealed class ClientAddressEntity
 {
-    public int ClientAddressId { get; set; }
+    public int Id { get; set; }
     public int ClientId { get; set; }
     public string AddressLine1 { get; set; }
     public string? AddressLine2 { get; set; }
@@ -14,9 +14,9 @@ public sealed class ClientAddressEntity
     public string CountryCode { get; set; }
     public bool IsActive { get; set; }
     public bool IsPrimary { get; set; }
-    public DateTime UtcCreatedDate { get; set; }
-    public DateTime? UtcUpdatedDate { get; set; }
-    public DateTime? UtcDeletedDate { get; set; }
+    public DateTimeOffset CreatedAt { get; set; }
+    public DateTimeOffset? UpdatedAt { get; set; }
+    public DateTimeOffset? DeletedAt { get; set; }
 
     public ClientEntity Client { get; set; } = default!;
 }
