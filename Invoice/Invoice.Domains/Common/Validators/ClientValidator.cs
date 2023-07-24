@@ -9,9 +9,10 @@ public class ClientValidator : AbstractValidator<ClientModel>
         When(e => validationMode == ValidationMode.Update || validationMode == ValidationMode.Delete, () =>
         {
             RuleFor(e => e.Id).GreaterThan(0);
-            RuleFor(e => e.Guid).NotEmpty();
+            
             When(e => validationMode == ValidationMode.Add || validationMode == ValidationMode.Update, () =>
             {
+                RuleFor(e => e.Guid).NotEmpty();
                 RuleFor(e => e.Name).NotEmpty().MaximumLength(128);
                 RuleFor(e => e.Addresses).NotEmpty();
                 When(e => e.Email != null, () =>

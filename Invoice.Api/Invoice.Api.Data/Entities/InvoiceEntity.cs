@@ -10,7 +10,8 @@ public sealed class InvoiceEntity
     public DateTime Date { get; set; }
     public DateTime DueDate { get; set; }
     public int Status { get; set; }
-    public int PaymentTermDays { get; set; }    
+    public int PaymentTermDays { get; set; }
+    public decimal Total { get; set; }
     public DateTimeOffset CreatedAt { get; set; }
     public DateTimeOffset? UpdatedAt { get; set; }
     public DateTimeOffset? DeletedAt { get; set; }

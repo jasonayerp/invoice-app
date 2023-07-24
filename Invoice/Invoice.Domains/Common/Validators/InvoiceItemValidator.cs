@@ -14,7 +14,7 @@ public class InvoiceItemValidator : AbstractValidator<InvoiceItemModel>
                 RuleFor(e => e.InvoiceId).GreaterThan(0);
                 RuleFor(e => e.Description).NotEmpty().MaximumLength(50);
                 RuleFor(e => e.Quantity).GreaterThan(0);
-                RuleFor(e => e.Amount).GreaterThan(0);
+                RuleFor(e => e.UnitPrice).GreaterThan(0);
             });
         });
     }

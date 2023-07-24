@@ -1,5 +1,4 @@
 ﻿using Invoice.Api.Domains.Common.Mappers;
-using Invoice.Domains.Common.Models;
 
 namespace Invoice.Api.Domains.Common.Repositories;
 

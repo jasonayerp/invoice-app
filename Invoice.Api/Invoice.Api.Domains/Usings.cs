@@ -9,3 +9,4 @@ global using System.Threading.Tasks;
 global using Microsoft.EntityFrameworkCore;
 global using Invoice.Api.Data.Entities;
 global using Invoice.Api.Data.SqlServer;
+global using Invoice.Domains.Common.Models;

@@ -7,12 +7,12 @@ public class InvoiceModel
     public int ClientId { get; set; }
     public string Number { get; set; } = string.Empty;
     public string Description { get; set; } = string.Empty;
-    public DateOnly Date { get; set; }
-    public DateOnly DueDate { get; set; }
-    public decimal Amount => InvoiceItems.Sum(x => x.Amount);
+    public DateTime Date { get; set; }
+    public DateTime DueDate { get; set; }
+    public decimal Total { get; init; }
     public InvoiceStatus Status { get; set; } = InvoiceStatus.Draft;
     public int PaymentTermDays { get; set; }
-    public DateTimeOffset CreatedAt { get; set; }
+    public DateTimeOffset CreatedAt { get; set; } = DateTimeOffset.UtcNow;
     public DateTimeOffset? UpdatedAt { get; set; }
     public DateTimeOffset? DeletedAt { get; set; }
 
